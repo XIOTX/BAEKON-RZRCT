@@ -1,0 +1,44 @@
+[
+  {
+    "surface_form": "aeshafaf",
+    "gloss": "do",
+    "confidence": 1.0,
+    "source_ref": "stones-seed@local#1",
+    "pos": "verb"
+  },
+  {
+    "surface_form": "ararth",
+    "gloss": "their",
+    "confidence": 1.0,
+    "source_ref": "stones-seed@local#2",
+    "pos": "pron"
+  },
+  {
+    "surface_form": "nebeder",
+    "gloss": "weapon",
+    "confidence": 0.92,
+    "source_ref": "stones-seed@local#3",
+    "pos": "noun"
+  },
+  {
+    "surface_form": "aste\u00f8",
+    "gloss": "potential",
+    "confidence": 1.0,
+    "source_ref": "stones-seed@local#4",
+    "pos": "noun"
+  },
+  {
+    "surface_form": "mesen",
+    "gloss": "civilian",
+    "confidence": 0.85,
+    "source_ref": "stones-seed@local#5",
+    "pos": "noun"
+  },
+  {
+    "surface_form": "ningittkins",
+    "gloss": "destroyed",
+    "confidence": 0.78,
+    "source_ref": "stones-seed@local#6",
+    "pos": "verb"
+  }
+]

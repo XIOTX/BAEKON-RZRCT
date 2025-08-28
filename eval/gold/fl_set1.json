@@ -1,0 +1,44 @@
+{
+  "set": "fl_set1",
+  "description": "Seed eval set of FL spans with human glosses.",
+  "items": [
+    {
+      "id": "fl1-001",
+      "ay_text": "naneitt nebeder aste\u00f8",
+      "human_gloss": [
+        "employed",
+        "weapon",
+        "potential"
+      ],
+      "notes": "Direct mapping from stones list."
+    },
+    {
+      "id": "fl1-002",
+      "ay_text": "aeshafaf ararth",
+      "human_gloss": [
+        "do",
+        "their"
+      ],
+      "notes": "Verb + possessive."
+    },
+    {
+      "id": "fl1-003",
+      "ay_text": "mesen ningittkins",
+      "human_gloss": [
+        "civilian",
+        "destroyed"
+      ],
+      "notes": "Pattern test for -itt."
+    },
+    {
+      "id": "fl1-004",
+      "ay_text": "vilgath aste\u00f8 nebeder",
+      "human_gloss": [
+        "[UNKNOWN]",
+        "potential",
+        "weapon"
+      ],
+      "notes": "Unknown token should remain unresolved."
+    }
+  ]
+}

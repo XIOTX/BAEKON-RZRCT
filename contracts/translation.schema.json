@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResearchModeTranslation",
+  "type": "object",
+  "required": [
+    "span_id",
+    "tokens",
+    "provenance",
+    "mode"
+  ],
+  "properties": {
+    "mode": {
+      "enum": [
+        "research"
+      ]
+    },
+    "span_id": {
+      "type": "string"
+    },
+    "tokens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "surface",
+          "method",
+          "sources",
+          "confidence"
+        ],
+        "properties": {
+          "surface": {
+            "type": "string"
+          },
+          "lemma": {
+            "type": "string"
+          },
+          "gloss": {
+            "type": "string"
+          },
+          "method": {
+            "enum": [
+              "lexicon",
+              "alignment",
+              "distributional",
+              "unknown"
+            ]
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "unresolved": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "prompt_hash",
+        "card_ids",
+        "retrieval_ids",
+        "model"
+      ],
+      "properties": {
+        "prompt_hash": {
+          "type": "string"
+        },
+        "card_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "retrieval_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "model": {
+          "type": "string"
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
