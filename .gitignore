@@ -54,6 +54,9 @@ coverage/
 # Docker
 docker-compose.override.yml
 
+# MinIO data directory (Docker volume)
+data/minio/
+
 # Local development files
 .tmp/
 temp/
