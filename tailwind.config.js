@@ -15,7 +15,10 @@ module.exports = {
         'terminal-green': '#39ff14',
       },
       fontFamily: {
+        'sans': ['Cal Sans', 'Red Hat Display', 'system-ui', 'sans-serif'],
+        'display': ['Red Hat Display', 'system-ui', 'sans-serif'],
         'mono': ['JetBrains Mono', 'Fira Code', 'monospace'],
+        'cal': ['Cal Sans', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         'neon': '0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor',
