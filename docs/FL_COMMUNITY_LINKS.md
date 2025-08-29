@@ -67,6 +67,7 @@ Last updated: 21 July 2023 (original), archived for BÆKON on 2025-01-23
 ### Data Sources
 - **Language groups by color**: https://docs.google.com/spreadsheets/d/1EXr5DEwG96-7CvU6fFCtypHDn2cS7MgEnZ-UYy5oo3c/edit?gid=289996214#gid=289996214
 - **Master Index Scraped**: https://docs.google.com/spreadsheets/d/1fUrOHDUovBBGf2FDLT_n5s9YFb3VopcodOmebjgfUtA/edit?gid=0#gid=0
+- **Aylid-English Lexicon**: https://docs.google.com/spreadsheets/d/1YO8j5TuaZjv1ahiPAwP2hIhmbPfuYW0SIKti8BNMOjU/edit?gid=0#gid=0
 
 ## Media & Coverage
 - **Interview with Ayndryl**: https://sasamilic.medium.com/my-emails-with-ayndryl-5babec2a79a8

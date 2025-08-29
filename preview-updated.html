@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BÆKON Research Console</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Red+Hat+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00ffff',
+                        'neon-purple': '#8b5cf6',
+                        'neon-pink': '#ff69b4',
+                        'cyber-dark': '#0a0b0d',
+                        'cyber-darker': '#14161a',
+                        'terminal-green': '#39ff14',
+                    },
+                    fontFamily: {
+                        'sans': ['Cal Sans', 'Red Hat Display', 'system-ui', 'sans-serif'],
+                        'display': ['Red Hat Display', 'system-ui', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'Fira Code', 'monospace'],
+                        'cal': ['Cal Sans', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'gradient-shift': 'gradient-shift 3s ease infinite',
+                        'glow-pulse': 'glow-pulse 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        'gradient-shift': {
+                            '0%, 100%': { 'background-position': '0% 50%' },
+                            '50%': { 'background-position': '100% 50%' },
+                        },
+                        'glow-pulse': {
+                            '0%': { 'box-shadow': '0 0 20px rgba(0, 255, 255, 0.4)' },
+                            '100%': { 'box-shadow': '0 0 30px rgba(0, 255, 255, 0.8)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cal Sans', 'Red Hat Display', 'JetBrains Mono', monospace;
+            background: 
+                url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='),
+                radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 105, 180, 0.08) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0b0d 0%, #14161a 100%);
+            background-size: 
+                auto,
+                800px 800px,
+                800px 800px, 
+                600px 600px,
+                cover;
+            background-blend-mode: overlay, screen, screen, screen, normal;
+            color: #e4e4e7;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .cyber-border {
+            border: 2px solid rgba(0, 255, 255, 0.6);
+            background: rgba(10, 11, 13, 0.9);
+            backdrop-filter: blur(15px);
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.4),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .cyber-border::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 12px;
+            padding: 2px;
+            background: linear-gradient(45deg, 
+                rgba(0, 255, 255, 0.8),
+                rgba(139, 92, 246, 0.6),
+                rgba(255, 105, 180, 0.7),
+                rgba(0, 255, 255, 0.8)
+            );
+            background-size: 400% 400%;
+            animation: gradient-shift 3s ease infinite;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            -webkit-mask-composite: xor;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .cyber-button {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(139, 92, 246, 0.2));
+            border: 2px solid rgba(0, 255, 255, 0.5);
+            border-radius: 8px;
+            padding: 8px 16px;
+            color: #e4e4e7;
+            font-family: 'Red Hat Display', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-button:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(139, 92, 246, 0.3));
+            border-color: rgba(0, 255, 255, 0.8);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+        }
+
+        .cyber-input {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #e4e4e7;
+            font-family: 'Red Hat Display', sans-serif;
+            backdrop-filter: blur(10px);
+            transition: all 0.2s ease;
+        }
+
+        .cyber-input:focus {
+            outline: none;
+            border-color: rgba(0, 255, 255, 0.7);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+        }
+
+        .cyber-input::placeholder {
+            color: #71717a;
+        }
+
+        .chat-message {
+            max-width: 80%;
+            padding: 16px;
+            border-radius: 12px;
+            font-family: 'Red Hat Display', sans-serif;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        .chat-message.user {
+            background: rgba(0, 255, 255, 0.2);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            color: #a5f3fc;
+            margin-left: auto;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .chat-message.ai {
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: #c4b5fd;
+            margin-right: auto;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-active {
+            background: #39ff14;
+            box-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+            animation: pulse 2s infinite;
+        }
+
+        .status-parsing {
+            background: #fbbf24;
+            box-shadow: 0 0 8px rgba(255, 255, 0, 0.6);
+            animation: pulse 2s infinite;
+        }
+
+        .status-error {
+            background: #ef4444;
+            box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+        }
+
+        .status-standby {
+            background: #71717a;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .progress-bar {
+            width: 128px;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 75%;
+            height: 100%;
+            background: linear-gradient(90deg, #39ff14, #00ffff);
+            border-radius: 4px;
+        }
+
+        .language-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+        }
+
+        .language-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 space-y-4">
+    <!-- Header - Clean without tabs, time, temp -->
+    <header class="cyber-border p-6">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-6">
+                <h1 class="text-5xl font-bold font-cal text-transparent bg-gradient-to-r from-neon-blue to-neon-purple bg-clip-text tracking-wider">
+                    BÆKON
+                </h1>
+                <span class="text-xl text-zinc-400 font-display">Zero-Hallucination FL Research Console</span>
+            </div>
+
+            <!-- Status Indicators - Clean -->
+            <div class="flex items-center space-x-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-4 h-4 rounded-full bg-terminal-green animate-pulse" style="box-shadow: 0 0 15px rgba(57,255,20,0.6);"></div>
+                    <span class="text-sm font-mono text-terminal-green">SYSTEMS ACTIVE</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid - Modified to add space for chat -->
+    <div class="grid grid-cols-[300px_1fr_400px] gap-4" style="height: calc(100vh - 300px);">
+        
+        <!-- Left Sidebar - FL Languages -->
+        <aside class="cyber-border space-y-3 p-4">
+            <h2 class="text-lg font-semibold font-display text-neon-blue border-b border-cyan-400/30 pb-2">
+                FL CORPUS
+            </h2>
+            <div class="space-y-2 text-sm">
+                <div class="language-item">
+                    <span class="text-terminal-green">UIFAIN</span>
+                    <div class="status-dot status-active"></div>
+                </div>
+                <div class="language-item">
+                    <span class="text-yellow-400">FEB</span>
+                    <div class="status-dot status-parsing"></div>
+                </div>
+                <div class="language-item">
+                    <span class="text-zinc-400">AIFUR</span>
+                    <div class="status-dot status-standby"></div>
+                </div>
+                <div class="language-item">
+                    <span class="text-red-400">AITEJE</span>
+                    <div class="status-dot status-error"></div>
+                </div>
+                <div class="language-item">
+                    <span class="text-terminal-green">AEI</span>
+                    <div class="status-dot status-active"></div>
+                </div>
+                <div class="language-item">
+                    <span class="text-zinc-400">UILAIN</span>
+                    <div class="status-dot status-standby"></div>
+                </div>
+                <div class="language-item">
+                    <span class="text-terminal-green">UILAUD</span>
+                    <div class="status-dot status-active"></div>
+                </div>
+                <div class="language-item">
+                    <span class="text-yellow-400">EILAIU</span>
+                    <div class="status-dot status-parsing"></div>
+                </div>
+                <div class="language-item">
+                    <span class="text-zinc-400">EIEIE</span>
+                    <div class="status-dot status-standby"></div>
+                </div>
+                <div class="language-item">
+                    <span class="text-terminal-green">NIJON</span>
+                    <div class="status-dot status-active"></div>
+                </div>
+                <div class="language-item">
+                    <span class="text-zinc-400">AIESU</span>
+                    <div class="status-dot status-standby"></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center Content -->
+        <main class="space-y-4 overflow-auto">
+            <!-- Analysis Dashboard -->
+            <div class="cyber-border p-6">
+                <h2 class="text-xl font-semibold font-display text-neon-blue mb-4">Research Console</h2>
+                
+                <!-- Analysis Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="cyber-border p-4">
+                        <h3 class="text-lg mb-3 font-display text-neon-blue">Ana's Index</h3>
+                        <div class="space-y-3">
+                            <input type="text" placeholder="Search lexicon..." class="cyber-input w-full text-sm">
+                            <div class="text-xs text-zinc-400 font-mono">
+                                <div>📚 stones-seed@local: 1,247 entries</div>
+                                <div>🔍 Last sync: 2 mins ago</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="cyber-border p-4">
+                        <h3 class="text-lg mb-3 font-display text-neon-blue">External Search</h3>
+                        <div class="space-y-3">
+                            <input type="text" placeholder="Query external sources..." class="cyber-input w-full text-sm">
+                            <div class="text-xs text-zinc-400 font-mono">
+                                <div>🌐 fl-community@web: active</div>
+                                <div>📡 cassini-coords@verify: standby</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Translation Preview -->
+            <div class="cyber-border p-6">
+                <h3 class="text-lg mb-3 font-display text-neon-purple">Sample Translation</h3>
+                <div class="space-y-2 font-mono text-sm">
+                    <div class="grid grid-cols-4 gap-2 text-center border-b border-purple-500/30 pb-2">
+                        <div class="text-neon-blue">Surface</div>
+                        <div class="text-neon-purple">Lemma</div>
+                        <div class="text-neon-pink">Gloss</div>
+                        <div class="text-terminal-green">Confidence</div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-2 text-center">
+                        <div class="text-cyan-300">aeshafaf</div>
+                        <div class="text-purple-300">aeshafaf</div>
+                        <div class="text-pink-300">do</div>
+                        <div class="text-green-300">1.0</div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-2 text-center">
+                        <div class="text-cyan-300">ararth</div>
+                        <div class="text-purple-300">ararth</div>
+                        <div class="text-pink-300">their</div>
+                        <div class="text-green-300">1.0</div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-2 text-center">
+                        <div class="text-cyan-300">nebeder</div>
+                        <div class="text-purple-300">nebeder</div>
+                        <div class="text-pink-300">weapon</div>
+                        <div class="text-green-300">0.92</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar - Provenance -->
+        <aside class="cyber-border p-4">
+            <h2 class="text-lg font-semibold font-display text-neon-purple border-b border-purple-500/30 pb-2 mb-4">
+                PROVENANCE
+            </h2>
+            
+            <div class="space-y-4 text-sm">
+                <div class="cyber-border p-3" style="background: rgba(0, 0, 0, 0.2);">
+                    <h4 class="text-purple-400 mb-2 font-display">Current Analysis</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-zinc-400">Model:</span>
+                            <span class="text-terminal-green font-mono">claude-3-5-sonnet</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-zinc-400">Sources:</span>
+                            <span class="text-blue-400">3 active</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-zinc-400">Confidence:</span>
+                            <span class="text-terminal-green">94.2%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cyber-border p-3" style="background: rgba(0, 0, 0, 0.2);">
+                    <h4 class="text-purple-400 mb-2 font-display">Source Chain</h4>
+                    <div class="space-y-1 text-xs">
+                        <div class="text-terminal-green">✓ stones-seed@local</div>
+                        <div class="text-terminal-green">✓ ana-index@db</div>
+                        <div class="text-yellow-400">⧗ fl-community@web</div>
+                        <div class="text-zinc-600">○ cassini-coords@verify</div>
+                    </div>
+                </div>
+
+                <div class="cyber-border p-3" style="background: rgba(0, 0, 0, 0.2);">
+                    <h4 class="text-purple-400 mb-2 font-display">Activity Log</h4>
+                    <div class="space-y-1 text-xs font-mono">
+                        <div class="text-zinc-400">[11:43] Lexicon lookup</div>
+                        <div class="text-zinc-400">[11:43] Vector search</div>
+                        <div class="text-zinc-400">[11:42] Context retrieval</div>
+                        <div class="text-zinc-400">[11:42] Span analysis</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Chat Interface - Bottom Middle -->
+    <div class="space-y-4">
+        <!-- Recent Chat Messages - Compact View -->
+        <div id="recentChat" class="cyber-border p-4 max-w-4xl mx-auto">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-display text-neon-blue">Recent FL Analysis</h3>
+                <div class="flex space-x-2">
+                    <button onclick="expandChat()" class="cyber-button text-xs">
+                        EXPAND
+                    </button>
+                    <button onclick="clearChat()" class="cyber-button text-xs">
+                        CLEAR
+                    </button>
+                </div>
+            </div>
+            <div id="chatMessages" class="space-y-3 max-h-32 overflow-hidden">
+                <!-- Sample messages -->
+                <div class="flex justify-end">
+                    <div class="chat-message user">
+                        Can you analyze "aeshafaf ararth nebeder" for linguistic patterns?
+                    </div>
+                </div>
+                <div class="flex justify-start">
+                    <div class="chat-message ai">
+                        FL Analysis: Detected UIFAIN morphological structures
+                        
+Pattern: [VERB] [POSS] [NOUN]
+Confidence: 0.92
+Lexicon matches: 3/3 tokens verified
+
+Breakdown:
+- aeshafaf → "do" (high confidence)
+- ararth → "their" (possessive marker)
+- nebeder → "weapon" (92% confidence)
+
+Translation: "do their weapon" / "use their weapon"
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expanded Chat View (hidden by default) -->
+        <div id="expandedChat" class="cyber-border p-6 max-w-6xl mx-auto" style="display: none;">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-display text-neon-blue">FL Research Chat</h3>
+                <div class="flex space-x-2">
+                    <button onclick="minimizeChat()" class="cyber-button text-xs">
+                        MINIMIZE
+                    </button>
+                    <button onclick="clearChat()" class="cyber-button text-xs">
+                        CLEAR HISTORY
+                    </button>
+                </div>
+            </div>
+            <div class="h-96 overflow-y-auto space-y-4 mb-4 p-4 cyber-border" style="background: rgba(0, 0, 0, 0.2);">
+                <div id="expandedChatMessages" class="space-y-4">
+                    <!-- Messages will be populated here -->
+                </div>
+                <div id="loadingMessage" style="display: none;" class="flex justify-start">
+                    <div class="chat-message ai">
+                        Analyzing FL text...
+                        <span class="animate-pulse">●●●</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input - Always Visible -->
+        <div class="cyber-border p-4 max-w-4xl mx-auto">
+            <div class="flex space-x-4">
+                <input
+                    id="chatInput"
+                    type="text"
+                    placeholder="Enter FL text for analysis..."
+                    class="cyber-input flex-1 font-display"
+                    onkeypress="if(event.key==='Enter') sendMessage()"
+                />
+                <button
+                    onclick="sendMessage()"
+                    class="cyber-button px-6"
+                >
+                    SEND
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let chatHistory = JSON.parse(localStorage.getItem('baekon-chat-history') || '[]');
+        let isExpanded = false;
+
+        function addMessage(content, type) {
+            const message = {
+                id: Date.now().toString(),
+                type: type,
+                content: content,
+                timestamp: new Date()
+            };
+            
+            chatHistory.push(message);
+            localStorage.setItem('baekon-chat-history', JSON.stringify(chatHistory));
+            
+            updateChatDisplay();
+        }
+
+        function updateChatDisplay() {
+            const recentMessages = chatHistory.slice(-2);
+            const chatMessagesDiv = document.getElementById('chatMessages');
+            const expandedChatDiv = document.getElementById('expandedChatMessages');
+            
+            // Update recent chat
+            chatMessagesDiv.innerHTML = recentMessages.map(msg => 
+                `<div class="flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}">
+                    <div class="chat-message ${msg.type}">
+                        ${msg.content}
+                    </div>
+                </div>`
+            ).join('');
+            
+            // Update expanded chat
+            expandedChatDiv.innerHTML = chatHistory.map(msg => 
+                `<div class="flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}">
+                    <div class="chat-message ${msg.type}">
+                        ${msg.content}
+                        <div class="text-xs text-zinc-400 mt-2">
+                            ${new Date(msg.timestamp).toLocaleTimeString()}
+                        </div>
+                    </div>
+                </div>`
+            ).join('');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Show loading
+            document.getElementById('loadingMessage').style.display = 'block';
+            
+            // Simulate FL analysis
+            setTimeout(() => {
+                document.getElementById('loadingMessage').style.display = 'none';
+                
+                const response = `FL Analysis of "${message}":
+
+Pattern Analysis: Detected possible UIFAIN linguistic structures
+Confidence: ${(Math.random() * 0.3 + 0.7).toFixed(2)}
+Lexicon Matches: ${Math.floor(Math.random() * 3) + 1} potential hits
+Sources: stones-seed@local, fl-community@web
+
+Note: This appears to contain FL morphological patterns. Recommend cross-referencing with Ana's Index for verification.`;
+                
+                addMessage(response, 'ai');
+            }, 1000 + Math.random() * 2000);
+        }
+
+        function expandChat() {
+            isExpanded = true;
+            document.getElementById('recentChat').style.display = 'none';
+            document.getElementById('expandedChat').style.display = 'block';
+            updateChatDisplay();
+        }
+
+        function minimizeChat() {
+            isExpanded = false;
+            document.getElementById('recentChat').style.display = 'block';
+            document.getElementById('expandedChat').style.display = 'none';
+            updateChatDisplay();
+        }
+
+        function clearChat() {
+            chatHistory = [];
+            localStorage.removeItem('baekon-chat-history');
+            updateChatDisplay();
+        }
+
+        // Initialize display
+        updateChatDisplay();
+    </script>
+</body>
+</html>
