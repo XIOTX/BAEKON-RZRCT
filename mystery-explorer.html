@@ -64,21 +64,84 @@
             box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.2);
         }
         
-        .knowledge-item {
-            padding: 8px 16px;
+        .file-explorer-item {
+            padding: 4px 8px;
             cursor: pointer;
-            transition: all 0.2s ease;
             border-radius: 4px;
-            margin: 2px 0;
+            transition: all 0.2s ease;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            min-height: 24px;
         }
-        
-        .knowledge-item:hover {
+
+        .file-explorer-item:hover {
             background: rgba(0, 255, 255, 0.1);
+            color: #00ffff;
         }
-        
-        .knowledge-item.active {
+
+        .file-explorer-item.selected {
             background: rgba(0, 255, 255, 0.2);
+            color: #00ffff;
             border-left: 3px solid #00ffff;
+        }
+
+        .folder-item {
+            font-weight: 500;
+        }
+
+        .file-item {
+            font-weight: 400;
+        }
+
+        .file-icon, .expand-icon {
+            flex-shrink: 0;
+            width: 16px;
+            text-align: center;
+        }
+
+        .item-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-size {
+            flex-shrink: 0;
+            font-size: 11px;
+            color: #888;
+            margin-left: auto;
+        }
+
+        .expand-arrow {
+            flex-shrink: 0;
+            font-size: 10px;
+            color: #666;
+            margin-left: auto;
+        }
+
+        .folder-contents {
+            border-left: 1px solid rgba(0, 255, 255, 0.2);
+            margin-left: 8px;
+        }
+
+        .file-explorer-tree {
+            padding: 8px 0;
+        }
+
+        .breadcrumb-item {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 2px;
+            transition: background 0.2s ease;
+        }
+
+        .breadcrumb-item:hover {
+            background: rgba(0, 255, 255, 0.1);
+            color: #00ffff;
         }
         
         .status-indicator {
@@ -118,101 +181,212 @@
         // API Base URL
         const API_BASE = 'http://127.0.0.1:8787';
 
-        // Knowledge Explorer Component
+        // File Explorer Component
         function KnowledgeExplorer({ onSectionChange }) {
-            const [expandedSections, setExpandedSections] = useState({
-                'forgotten-languages': true,
-                'audio-video': true
+            const [expandedFolders, setExpandedFolders] = useState({
+                'forgotten-languages': true
             });
-            const [activeSection, setActiveSection] = useState('audio-video');
+            const [selectedFile, setSelectedFile] = useState('');
+            const [currentPath, setCurrentPath] = useState([]);
 
-            const toggleSection = (sectionId) => {
-                setExpandedSections(prev => ({
+            const toggleFolder = (folderPath) => {
+                setExpandedFolders(prev => ({
                     ...prev,
-                    [sectionId]: !prev[sectionId]
+                    [folderPath]: !prev[folderPath]
                 }));
             };
 
-            const selectSection = (sectionId, sectionTitle) => {
-                setActiveSection(sectionId);
-                onSectionChange(sectionId, sectionTitle);
+            const selectFile = (filePath, fileName, fileType) => {
+                setSelectedFile(filePath);
+                onSectionChange(filePath, fileName, fileType);
             };
 
-            const knowledgeStructure = [
+            const navigateToPath = (pathArray) => {
+                setCurrentPath(pathArray);
+            };
+
+            const fileSystem = [
                 {
-                    id: 'forgotten-languages',
-                    title: 'Forgotten Languages',
-                    icon: '📁',
+                    type: 'folder',
+                    name: 'forgotten-languages',
+                    path: 'forgotten-languages',
                     children: [
-                        { id: 'official-articles', title: 'Official Articles', icon: '●', color: 'text-cyan' },
-                        { id: 'translation-lexicons', title: 'Translation Lexicons', icon: '●', color: 'text-green' },
-                        { id: 'community-analysis', title: 'Community Analysis', icon: '●', color: 'text-yellow' },
-                        { id: 'theories-speculation', title: 'Theories & Speculation', icon: '●', color: 'text-red' }
+                        {
+                            type: 'folder',
+                            name: 'official',
+                            path: 'forgotten-languages/official',
+                            children: [
+                                { type: 'file', name: 'anas-index.db', path: 'forgotten-languages/official/anas-index.db', size: '21.9MB', fileType: 'database', icon: '🗄️' },
+                                { type: 'file', name: 'articles.json', path: 'forgotten-languages/official/articles.json', size: '2.4MB', fileType: 'json', icon: '📄' },
+                                { type: 'file', name: 'document-index.txt', path: 'forgotten-languages/official/document-index.txt', size: '45KB', fileType: 'text', icon: '📝' }
+                            ]
+                        },
+                        {
+                            type: 'folder',
+                            name: 'languages',
+                            path: 'forgotten-languages/languages',
+                            children: [
+                                { type: 'file', name: 'aylid.lexicon', path: 'forgotten-languages/languages/aylid.lexicon', size: '1.2MB', fileType: 'lexicon', icon: '📜' },
+                                { type: 'file', name: 'yid.lexicon', path: 'forgotten-languages/languages/yid.lexicon', size: '856KB', fileType: 'lexicon', icon: '📜' },
+                                { type: 'file', name: 'ned.lexicon', path: 'forgotten-languages/languages/ned.lexicon', size: '432KB', fileType: 'lexicon', icon: '📜' },
+                                { type: 'file', name: 'drizza.lexicon', path: 'forgotten-languages/languages/drizza.lexicon', size: '234KB', fileType: 'lexicon', icon: '📜' }
+                            ]
+                        },
+                        {
+                            type: 'folder',
+                            name: 'translations',
+                            path: 'forgotten-languages/translations',
+                            children: [
+                                { type: 'file', name: 'aylid-english.dict', path: 'forgotten-languages/translations/aylid-english.dict', size: '2.1MB', fileType: 'dictionary', icon: '🔄' },
+                                { type: 'file', name: 'grammar-patterns.xml', path: 'forgotten-languages/translations/grammar-patterns.xml', size: '567KB', fileType: 'xml', icon: '📋' }
+                            ]
+                        }
                     ]
                 },
                 {
-                    id: 'related-mysteries',
-                    title: 'Related Mysteries',
-                    icon: '📁',
-                    children: []
+                    type: 'folder',
+                    name: 'technical-systems',
+                    path: 'technical-systems',
+                    children: [
+                        {
+                            type: 'folder',
+                            name: 'cassini-diskus',
+                            path: 'technical-systems/cassini-diskus',
+                            children: [
+                                { type: 'file', name: 'coordinates.dat', path: 'technical-systems/cassini-diskus/coordinates.dat', size: '3.2MB', fileType: 'data', icon: '📊' },
+                                { type: 'file', name: 'specifications.md', path: 'technical-systems/cassini-diskus/specifications.md', size: '124KB', fileType: 'markdown', icon: '📝' },
+                                { type: 'file', name: 'defense-integration.enc', path: 'technical-systems/cassini-diskus/defense-integration.enc', size: '892KB', fileType: 'encrypted', icon: '🔒' },
+                                { type: 'file', name: 'spatial-analysis.py', path: 'technical-systems/cassini-diskus/spatial-analysis.py', size: '78KB', fileType: 'python', icon: '🐍' }
+                            ]
+                        },
+                        {
+                            type: 'folder',
+                            name: 'nodespaces',
+                            path: 'technical-systems/nodespaces',
+                            children: [
+                                { type: 'file', name: 'topology.graph', path: 'technical-systems/nodespaces/topology.graph', size: '567KB', fileType: 'graph', icon: '🕸️' },
+                                { type: 'file', name: 'theory.pdf', path: 'technical-systems/nodespaces/theory.pdf', size: '1.8MB', fileType: 'pdf', icon: '📄' },
+                                { type: 'file', name: 'network-map.json', path: 'technical-systems/nodespaces/network-map.json', size: '234KB', fileType: 'json', icon: '🗺️' }
+                            ]
+                        }
+                    ]
                 },
                 {
-                    id: 'audio-video',
-                    title: 'Audio/Video Analysis',
-                    icon: '📁',
-                    children: []
+                    type: 'folder',
+                    name: 'research-vault',
+                    path: 'research-vault',
+                    children: [
+                        { type: 'file', name: 'community-findings.db', path: 'research-vault/community-findings.db', size: '4.7MB', fileType: 'database', icon: '🗄️' },
+                        { type: 'file', name: 'analysis-reports.json', path: 'research-vault/analysis-reports.json', size: '892KB', fileType: 'json', icon: '📄' },
+                        { type: 'file', name: 'collaborative-notes.md', path: 'research-vault/collaborative-notes.md', size: '156KB', fileType: 'markdown', icon: '📝' }
+                    ]
                 },
                 {
-                    id: 'research-tools',
-                    title: 'Research Tools',
-                    icon: '🔧',
-                    children: []
+                    type: 'folder',
+                    name: 'philosophy',
+                    path: 'philosophy',
+                    children: [
+                        { type: 'file', name: 'consciousness-studies.md', path: 'philosophy/consciousness-studies.md', size: '234KB', fileType: 'markdown', icon: '💭' },
+                        { type: 'file', name: 'language-theory.pdf', path: 'philosophy/language-theory.pdf', size: '1.1MB', fileType: 'pdf', icon: '📄' },
+                        { type: 'file', name: 'information-theory.tex', path: 'philosophy/information-theory.tex', size: '445KB', fileType: 'tex', icon: '📡' }
+                    ]
+                },
+                {
+                    type: 'folder',
+                    name: 'esoteric',
+                    path: 'esoteric',
+                    children: [
+                        { type: 'file', name: 'sufism-connections.md', path: 'esoteric/sufism-connections.md', size: '178KB', fileType: 'markdown', icon: '🌙' },
+                        { type: 'file', name: 'theosophy-analysis.pdf', path: 'esoteric/theosophy-analysis.pdf', size: '923KB', fileType: 'pdf', icon: '✨' },
+                        { type: 'file', name: 'alchemy-symbols.svg', path: 'esoteric/alchemy-symbols.svg', size: '67KB', fileType: 'svg', icon: '⚗️' }
+                    ]
+                },
+                {
+                    type: 'folder',
+                    name: 'literary',
+                    path: 'literary',
+                    children: [
+                        { type: 'file', name: 'poetry-collection.txt', path: 'literary/poetry-collection.txt', size: '345KB', fileType: 'text', icon: '📝' },
+                        { type: 'file', name: 'millangivm-complete.epub', path: 'literary/millangivm-complete.epub', size: '2.1MB', fileType: 'epub', icon: '📖' }
+                    ]
                 }
             ];
 
-            return (
-                <div className="cyber-border p-4 h-full">
-                    <h2 className="text-lg font-semibold text-cyan mb-4">Knowledge Explorer</h2>
-                    
-                    <div className="space-y-1">
-                        {knowledgeStructure.map(section => (
-                            <div key={section.id}>
-                                <div 
-                                    className="knowledge-item flex items-center"
-                                    onClick={() => toggleSection(section.id)}
-                                >
-                                    <span className={`expand-icon text-sm mr-2 ${expandedSections[section.id] ? 'expanded' : ''}`}>
-                                        ▶
-                                    </span>
-                                    <span className="mr-2">{section.icon}</span>
-                                    <span className="font-medium">{section.title}</span>
-                                </div>
-                                
-                                {expandedSections[section.id] && section.children.length > 0 && (
-                                    <div className="ml-8 space-y-1">
-                                        {section.children.map(child => (
-                                            <div 
-                                                key={child.id}
-                                                className={`knowledge-item flex items-center ${activeSection === child.id ? 'active' : ''}`}
-                                                onClick={() => selectSection(child.id, child.title)}
-                                            >
-                                                <span className={`status-indicator mr-2 ${child.color}`}>{child.icon}</span>
-                                                <span>{child.title}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                                
-                                {expandedSections[section.id] && section.children.length === 0 && (
-                                    <div 
-                                        className={`knowledge-item ml-8 ${activeSection === section.id ? 'active' : ''}`}
-                                        onClick={() => selectSection(section.id, section.title)}
-                                    >
-                                        <span className="text-gray-400 text-sm">Click to explore</span>
-                                    </div>
-                                )}
+            const renderFileSystemItem = (item, depth = 0) => {
+                const isExpanded = expandedFolders[item.path];
+                const isSelected = selectedFile === item.path;
+                const indentStyle = { paddingLeft: `${depth * 20 + 8}px` };
+
+                if (item.type === 'folder') {
+                    return (
+                        <div key={item.path}>
+                            <div 
+                                className={`file-explorer-item folder-item ${isSelected ? 'selected' : ''}`}
+                                style={indentStyle}
+                                onClick={() => toggleFolder(item.path)}
+                            >
+                                <span className={`expand-icon ${isExpanded ? 'expanded' : ''}`}>
+                                    {isExpanded ? '📂' : '📁'}
+                                </span>
+                                <span className="item-name">{item.name}</span>
+                                <span className="expand-arrow">{isExpanded ? '▼' : '▶'}</span>
                             </div>
-                        ))}
+                            {isExpanded && item.children && (
+                                <div className="folder-contents">
+                                    {item.children.map(child => renderFileSystemItem(child, depth + 1))}
+                                </div>
+                            )}
+                        </div>
+                    );
+                } else {
+                    return (
+                        <div 
+                            key={item.path}
+                            className={`file-explorer-item file-item ${isSelected ? 'selected' : ''}`}
+                            style={indentStyle}
+                            onClick={() => selectFile(item.path, item.name, item.fileType)}
+                        >
+                            <span className="file-icon">{item.icon}</span>
+                            <span className="item-name">{item.name}</span>
+                            <span className="file-size">{item.size}</span>
+                        </div>
+                    );
+                }
+            };
+
+            return (
+                <div className="cyber-border p-0 h-full flex flex-col">
+                    {/* Explorer Header */}
+                    <div className="p-4 border-b border-cyan/30">
+                        <h2 className="text-lg font-semibold text-cyan mb-2">🗂️ FL Research Explorer</h2>
+                        <div className="flex items-center space-x-2 text-sm">
+                            <span className="status-indicator status-online"></span>
+                            <span className="text-green">Connected</span>
+                        </div>
+                    </div>
+
+                    {/* Breadcrumb */}
+                    {currentPath.length > 0 && (
+                        <div className="px-4 py-2 bg-gray-900/50 border-b border-cyan/20">
+                            <div className="flex items-center space-x-1 text-sm text-gray-300">
+                                <span className="cursor-pointer hover:text-cyan" onClick={() => navigateToPath([])}>🏠</span>
+                                {currentPath.map((folder, index) => (
+                                    <React.Fragment key={index}>
+                                        <span>/</span>
+                                        <span className="cursor-pointer hover:text-cyan" onClick={() => navigateToPath(currentPath.slice(0, index + 1))}>
+                                            {folder}
+                                        </span>
+                                    </React.Fragment>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* File Tree */}
+                    <div className="flex-1 overflow-auto">
+                        <div className="file-explorer-tree">
+                            {fileSystem.map(item => renderFileSystemItem(item))}
+                        </div>
                     </div>
                 </div>
             );
@@ -296,6 +470,88 @@
             );
         }
 
+        // Vault Search Component
+        function VaultSearch() {
+            const [query, setQuery] = useState('');
+            const [results, setResults] = useState([]);
+            const [loading, setLoading] = useState(false);
+            const [error, setError] = useState(null);
+
+            const searchVault = async () => {
+                if (!query.trim()) return;
+                
+                setLoading(true);
+                setError(null);
+                try {
+                    const response = await fetch(`http://127.0.0.1:8787/vault/search?q=${encodeURIComponent(query)}`);
+                    if (!response.ok) throw new Error('Vault search failed');
+                    const data = await response.json();
+                    setResults(data);
+                } catch (err) {
+                    setError(err.message);
+                    setResults([]);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            return (
+                <div className="space-y-4">
+                    <div className="flex space-x-3">
+                        <input
+                            type="text"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && searchVault()}
+                            placeholder="Search community research vault..."
+                            className="cyber-input flex-1"
+                        />
+                        <button 
+                            onClick={searchVault}
+                            disabled={loading || !query.trim()}
+                            className="cyber-button"
+                        >
+                            {loading ? 'Searching...' : 'Search'}
+                        </button>
+                    </div>
+
+                    {error && (
+                        <div className="cyber-border p-4 bg-red-900/20 border-red-500/50">
+                            <div className="text-red-400">❌ Search Error: {error}</div>
+                        </div>
+                    )}
+
+                    {results.length > 0 && (
+                        <div className="space-y-3">
+                            <div className="text-sm text-gray-400">
+                                Found {results.length} community research results
+                            </div>
+                            {results.map((result, index) => (
+                                <div key={index} className="cyber-border p-4">
+                                    <div className="flex items-start justify-between mb-2">
+                                        <h4 className="font-semibold text-cyan">{result.title || 'Community Finding'}</h4>
+                                        <span className="text-xs text-gray-500">Community</span>
+                                    </div>
+                                    <p className="text-gray-300 text-sm mb-2">{result.content || result.excerpt}</p>
+                                    {result.confidence && (
+                                        <div className="text-xs text-yellow-400">
+                                            Confidence: {result.confidence}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {query && results.length === 0 && !loading && !error && (
+                        <div className="text-center text-gray-400 py-8">
+                            No community research found for "{query}"
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
         // Lexicon Search Component
         function LexiconSearch() {
             const [query, setQuery] = useState('');
@@ -373,65 +629,172 @@
         }
 
         // Main Content Area
-        function MainContentArea({ currentSection, sectionTitle }) {
+        function MainContentArea({ currentSection, sectionTitle, fileType }) {
             const [contentData, setContentData] = useState(null);
             const [loading, setLoading] = useState(false);
 
             useEffect(() => {
-                loadSectionContent(currentSection);
-            }, [currentSection]);
+                loadSectionContent(currentSection, sectionTitle, fileType);
+            }, [currentSection, sectionTitle, fileType]);
 
-            const loadSectionContent = async (sectionId) => {
+            const loadSectionContent = async (filePath, fileName, fileType) => {
+                console.log('Loading file:', { filePath, fileName, fileType });
+                
+                if (!filePath) {
+                    setContentData({
+                        type: 'welcome',
+                        title: '🗂️ FL Research Explorer',
+                        description: 'Welcome to the Forgotten Languages Research Environment',
+                        content: 'Select a file from the explorer to begin your research journey.',
+                        features: 'Navigate through folders and click on files to access analysis tools and data.'
+                    });
+                    return;
+                }
+
                 setLoading(true);
                 try {
-                    // Simulate content loading based on section
-                    await new Promise(resolve => setTimeout(resolve, 800));
+                    // Simulate file loading
+                    await new Promise(resolve => setTimeout(resolve, 300));
                     
-                    if (sectionId === 'audio-video') {
+                    // Handle different file types based on path and fileType
+                    if (filePath.includes('anas-index.db')) {
                         setContentData({
-                            title: 'FL Audio Analysis',
-                            description: 'This section will contain detailed information about FL Audio Analysis.',
-                            features: 'Features coming soon: document browser, confidence tracking, cross-references.',
-                            relatedContent: [
-                                { title: 'Cross-References', description: 'Connected topics and references' },
-                                { title: 'AI Insights', description: 'Pattern analysis and connections' }
-                            ]
+                            type: 'database',
+                            title: '🗄️ Ana\'s Index Database',
+                            path: filePath,
+                            size: '21.9MB',
+                            description: 'Official Forgotten Languages Document Database',
+                            content: 'This database contains the complete index of official FL documents with full-text search capabilities.',
+                            component: 'anas-search',
+                            metadata: {
+                                'Document Count': '~2,400 articles',
+                                'Last Updated': 'Real-time',
+                                'Confidence Level': 'High (FL Direct)',
+                                'Search Type': 'Semantic full-text'
+                            },
+                            features: 'Live search, document classification, source verification, confidence scoring.'
                         });
-                    } else if (sectionId === 'official-articles') {
+                    } else if (filePath.includes('.lexicon')) {
+                        const language = fileName?.split('.')[0] || 'Unknown';
                         setContentData({
-                            title: 'Official FL Articles - Ana\'s Index Search',
-                            description: 'Browse and analyze official Forgotten Languages publications.',
-                            features: 'Features: Live Ana\'s Index search, document classification, source verification.',
-                            relatedContent: [
-                                { title: 'Document Database', description: 'Search 21.9MB Ana\'s Index' },
-                                { title: 'Classification System', description: 'Automated document categorization' }
-                            ],
-                            component: 'anas-search'
+                            type: 'lexicon',
+                            title: `📜 ${language.charAt(0).toUpperCase() + language.slice(1)} Lexicon`,
+                            path: filePath,
+                            description: `Comprehensive vocabulary and grammar patterns for ${language}`,
+                            content: `Interactive lexicon with translation capabilities and morphological analysis for the ${language} language.`,
+                            component: 'lexicon-search',
+                            metadata: {
+                                'Language': language,
+                                'Term Count': language === 'aylid' ? '~1,200 terms' : '~400-800 terms',
+                                'Confidence Level': language === 'aylid' ? 'High' : 'Medium',
+                                'Translation Pairs': `${language} ↔ English`
+                            },
+                            features: 'Live lexicon search, confidence scoring, pattern matching, morphological analysis.'
                         });
-                    } else if (sectionId === 'translation-lexicons') {
+                    } else if (filePath.includes('community-findings.db')) {
                         setContentData({
-                            title: 'FL Translation Lexicons - Live Search',
-                            description: 'Access comprehensive FL vocabulary and translation tools.',
-                            features: 'Features: Live lexicon search, confidence scoring, pattern matching.',
-                            relatedContent: [
-                                { title: 'Lexicon Database', description: '2,447 FL terms with confidence scores' },
-                                { title: 'Pattern Recognition', description: 'Morphological analysis tools' }
-                            ],
-                            component: 'lexicon-search'
+                            type: 'database',
+                            title: '🗄️ Community Research Vault',
+                            path: filePath,
+                            size: '4.7MB',
+                            description: 'Collaborative Research Findings Database',
+                            content: 'Community-contributed research, analysis, and theories about Forgotten Languages.',
+                            component: 'vault-search',
+                            metadata: {
+                                'Contributors': 'FL Research Community',
+                                'Content Type': 'Analysis & Theories',
+                                'Confidence Level': 'Variable (Community)',
+                                'Last Updated': 'Continuous'
+                            },
+                            features: 'Community search, collaborative findings, theory exploration, cross-references.'
+                        });
+                    } else if (filePath.includes('coordinates.dat')) {
+                        setContentData({
+                            type: 'data',
+                            title: '📊 Cassini Diskus Coordinates',
+                            path: filePath,
+                            size: '3.2MB',
+                            description: 'Spatial Positioning Data',
+                            content: 'Coordinate system data and spatial references from Cassini Diskus research. Contains geographic positioning information and spatial analysis patterns.',
+                            metadata: {
+                                'Data Points': '~50,000 coordinates',
+                                'Format': 'Binary spatial data',
+                                'Confidence Level': 'High (FL Direct)',
+                                'Geographic Scope': 'Global references'
+                            },
+                            features: 'Coordinate visualization, spatial analysis, geographic pattern recognition.'
+                        });
+                    } else if (filePath.includes('defense-integration.enc')) {
+                        setContentData({
+                            type: 'encrypted',
+                            title: '🔒 Defense Integration (Encrypted)',
+                            path: filePath,
+                            size: '892KB',
+                            description: 'Classified Defense Applications',
+                            content: 'This file contains encrypted information related to defense system integration. Access requires proper security clearance and decryption keys.',
+                            metadata: {
+                                'Encryption': 'AES-256',
+                                'Classification': 'Restricted',
+                                'Access Level': 'Authorized Personnel Only',
+                                'Content Type': 'Defense Integration Specs'
+                            },
+                            features: 'Encrypted storage, access control, security protocols, clearance verification.'
+                        });
+                    } else if (filePath.includes('specifications.md')) {
+                        setContentData({
+                            type: 'document',
+                            title: '📝 Cassini Diskus Specifications',
+                            path: filePath,
+                            size: '124KB',
+                            description: 'Technical Specifications Document',
+                            content: 'Detailed technical specifications and operational parameters for the Cassini Diskus system. Includes coordinate systems, positioning algorithms, and integration protocols.',
+                            metadata: {
+                                'Format': 'Markdown',
+                                'Content Type': 'Technical Documentation',
+                                'Editable': 'Yes',
+                                'Version Control': 'Git tracked'
+                            },
+                            features: 'Document viewer, technical analysis, specification browser, cross-references.'
+                        });
+                    } else if (filePath.includes('topology.graph')) {
+                        setContentData({
+                            type: 'graph',
+                            title: '🕸️ NodeSpaces Topology',
+                            path: filePath,
+                            size: '567KB',
+                            description: 'Network Topology Graph',
+                            content: 'NodeSpaces network topology visualization showing information architecture patterns and node relationships within the FL knowledge system.',
+                            metadata: {
+                                'Node Count': '~2,100 nodes',
+                                'Edge Count': '~8,400 connections',
+                                'Graph Type': 'Directed network',
+                                'Visualization': 'Interactive'
+                            },
+                            features: 'Graph visualization, network analysis, node exploration, relationship mapping.'
                         });
                     } else {
                         setContentData({
-                            title: sectionTitle || 'Content Loading...',
-                            description: 'This section is being prepared with relevant FL research data.',
-                            features: 'Features coming soon: specialized analysis tools and data visualization.',
-                            relatedContent: [
-                                { title: 'Research Tools', description: 'Analysis and exploration utilities' },
-                                { title: 'Data Connections', description: 'Cross-referenced information' }
-                            ]
+                            type: 'generic',
+                            title: `📄 ${fileName}`,
+                            path: filePath,
+                            description: 'FL Research File',
+                            content: `Analysis and content for ${fileName} will be displayed here. This file contains FL research data and can be explored using the appropriate tools.`,
+                            metadata: {
+                                'File Type': fileType?.toUpperCase() || 'Unknown',
+                                'Status': 'Available',
+                                'Tools': 'Viewer & Analysis'
+                            },
+                            features: 'File analysis, content exploration, research tools, data visualization.'
                         });
                     }
                 } catch (error) {
                     console.error('Error loading content:', error);
+                    setContentData({
+                        type: 'error',
+                        title: '❌ Error Loading File',
+                        description: 'Unable to load the selected file',
+                        content: 'Please try selecting a different file or check your connection.'
+                    });
                 } finally {
                     setLoading(false);
                 }
@@ -449,53 +812,132 @@
             }
 
             return (
-                <div className="cyber-border p-8 h-full space-y-6">
-                    <h1 className="text-2xl font-bold text-cyan">{contentData?.title}</h1>
+                <div className="cyber-border p-8 h-full space-y-6 overflow-auto">
+                    {/* File Header */}
+                    <div className="border-b border-cyan/30 pb-4">
+                        <h1 className="text-2xl font-bold text-cyan mb-2">{contentData?.title}</h1>
+                        {contentData?.path && (
+                            <div className="text-sm text-gray-400 font-mono">
+                                📁 {contentData.path}
+                                {contentData?.size && <span className="ml-4">📏 {contentData.size}</span>}
+                            </div>
+                        )}
+                    </div>
                     
+                    {/* File Description */}
                     <div className="cyber-border p-6">
-                        <p className="text-gray-300 mb-6">{contentData?.description}</p>
-                        <p className="text-gray-400 text-sm">{contentData?.features}</p>
+                        <h3 className="text-lg font-semibold text-purple mb-3">Description</h3>
+                        <p className="text-gray-300 mb-4">{contentData?.description}</p>
+                        <p className="text-gray-400">{contentData?.content}</p>
                     </div>
 
-                    {/* Render search components based on section */}
+                    {/* File Metadata */}
+                    {contentData?.metadata && (
+                        <div className="cyber-border p-6">
+                            <h3 className="text-lg font-semibold text-cyan mb-4">File Information</h3>
+                            <div className="grid grid-cols-2 gap-4">
+                                {Object.entries(contentData.metadata).map(([key, value]) => (
+                                    <div key={key} className="flex justify-between items-center py-2 border-b border-gray-700">
+                                        <span className="text-gray-400 font-medium">{key}:</span>
+                                        <span className="text-gray-200">{value}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Features */}
+                    {contentData?.features && (
+                        <div className="cyber-border p-6">
+                            <h3 className="text-lg font-semibold text-green mb-3">Available Features</h3>
+                            <p className="text-gray-300">{contentData.features}</p>
+                        </div>
+                    )}
+
+                    {/* Interactive Components */}
                     {contentData?.component === 'anas-search' && (
                         <div className="cyber-border p-6">
-                            <h3 className="text-purple font-semibold mb-4">Ana's Index Search</h3>
+                            <h3 className="text-lg font-semibold text-purple mb-4">🔍 Ana's Index Search Interface</h3>
                             <AnasIndexSearch />
                         </div>
                     )}
 
                     {contentData?.component === 'lexicon-search' && (
                         <div className="cyber-border p-6">
-                            <h3 className="text-purple font-semibold mb-4">FL Lexicon Search</h3>
+                            <h3 className="text-lg font-semibold text-purple mb-4">📜 FL Lexicon Search Interface</h3>
                             <LexiconSearch />
                         </div>
                     )}
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="cyber-border p-4">
-                            <h3 className="text-cyan font-semibold mb-2">Related Content</h3>
-                            <div className="space-y-3">
-                                {contentData?.relatedContent.map((item, i) => (
-                                    <div key={i} className="cyber-border p-3">
-                                        <div className="flex items-center mb-2">
-                                            <span className="status-indicator status-online mr-2"></span>
-                                            <span className="font-medium text-green">{item.title}</span>
-                                        </div>
-                                        <p className="text-gray-400 text-sm">{item.description}</p>
-                                    </div>
-                                ))}
+                    {contentData?.component === 'vault-search' && (
+                        <div className="cyber-border p-6">
+                            <h3 className="text-lg font-semibold text-purple mb-4">🗄️ Research Vault Search Interface</h3>
+                            <VaultSearch />
+                        </div>
+                    )}
+
+                    {/* File Type Specific Content */}
+                    {contentData?.type === 'encrypted' && (
+                        <div className="cyber-border p-6 bg-red-900/20 border-red-500/50">
+                            <h3 className="text-lg font-semibold text-red-400 mb-3">🔒 Access Restricted</h3>
+                            <p className="text-red-300 mb-3">This file requires security clearance to access.</p>
+                            <div className="cyber-border p-4 bg-red-900/30">
+                                <div className="text-red-200 text-sm">
+                                    <div>🔐 Encryption: {contentData.metadata?.['Encryption']}</div>
+                                    <div>🛡️ Classification: {contentData.metadata?.['Classification']}</div>
+                                    <div>👤 Access Level: {contentData.metadata?.['Access Level']}</div>
+                                </div>
                             </div>
                         </div>
+                    )}
 
-                        <div className="cyber-border p-4">
-                            <h3 className="text-purple font-semibold mb-2">System Status</h3>
-                            <div className="cyber-border p-3">
-                                <div className="flex items-center mb-2">
-                                    <span className="status-indicator status-online mr-2"></span>
-                                    <span className="font-medium text-purple">Backend API</span>
+                    {contentData?.type === 'graph' && (
+                        <div className="cyber-border p-6">
+                            <h3 className="text-lg font-semibold text-cyan mb-4">🕸️ Network Visualization</h3>
+                            <div className="bg-gray-900/50 p-6 rounded border border-cyan/30">
+                                <div className="text-center text-gray-400 py-8">
+                                    <div className="text-4xl mb-4">🕸️</div>
+                                    <div>Interactive graph visualization would render here</div>
+                                    <div className="text-sm mt-2">
+                                        {contentData.metadata?.['Node Count']} • {contentData.metadata?.['Edge Count']}
+                                    </div>
                                 </div>
-                                <p className="text-gray-400 text-sm">Connected to http://127.0.0.1:8787</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {contentData?.type === 'data' && (
+                        <div className="cyber-border p-6">
+                            <h3 className="text-lg font-semibold text-cyan mb-4">📊 Data Analysis</h3>
+                            <div className="bg-gray-900/50 p-6 rounded border border-cyan/30">
+                                <div className="text-center text-gray-400 py-8">
+                                    <div className="text-4xl mb-4">📊</div>
+                                    <div>Data visualization and analysis tools would render here</div>
+                                    <div className="text-sm mt-2">
+                                        {contentData.metadata?.['Data Points']} • {contentData.metadata?.['Format']}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* System Status */}
+                    <div className="cyber-border p-4">
+                        <h3 className="text-purple font-semibold mb-3">System Status</h3>
+                        <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center">
+                                    <span className="status-indicator status-online mr-2"></span>
+                                    <span className="text-green">Backend API</span>
+                                </div>
+                                <span className="text-gray-400 text-sm">127.0.0.1:8787</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center">
+                                    <span className="status-indicator status-online mr-2"></span>
+                                    <span className="text-green">File System</span>
+                                </div>
+                                <span className="text-gray-400 text-sm">Connected</span>
                             </div>
                         </div>
                     </div>
@@ -690,12 +1132,14 @@
 
         // Main App
         function MysteryExplorer() {
-            const [currentSection, setCurrentSection] = useState('audio-video');
-            const [sectionTitle, setSectionTitle] = useState('Audio/Video Analysis');
+            const [currentFile, setCurrentFile] = useState('');
+            const [fileName, setFileName] = useState('');
+            const [fileType, setFileType] = useState('');
 
-            const handleSectionChange = (sectionId, title) => {
-                setCurrentSection(sectionId);
-                setSectionTitle(title);
+            const handleFileChange = (filePath, name, type) => {
+                setCurrentFile(filePath);
+                setFileName(name);
+                setFileType(type);
             };
 
             return (
@@ -716,8 +1160,8 @@
 
                     {/* Main Layout */}
                     <div className="grid grid-cols-[300px_1fr] gap-4 min-h-0">
-                        <KnowledgeExplorer onSectionChange={handleSectionChange} />
-                        <MainContentArea currentSection={currentSection} sectionTitle={sectionTitle} />
+                        <KnowledgeExplorer onSectionChange={handleFileChange} />
+                        <MainContentArea currentSection={currentFile} sectionTitle={fileName} fileType={fileType} />
                     </div>
 
                     {/* AI Assistant */}
