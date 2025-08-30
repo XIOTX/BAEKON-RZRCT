@@ -1,0 +1,42 @@
+{
+  "name": "baekon-research-desktop",
+  "version": "1.0.0",
+  "description": "BÆKON FL Research Desktop Application",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "dev": "electron . --dev"
+  },
+  "keywords": ["fl", "research", "linguistics", "electron"],
+  "author": "BÆKON Research Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "chokidar": "^3.5.3"
+  },
+  "build": {
+    "appId": "com.baekon.research",
+    "productName": "BÆKON Research",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.education"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}

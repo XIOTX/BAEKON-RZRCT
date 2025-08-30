@@ -1,0 +1,60 @@
+{
+    "folders": [
+        {
+            "name": "BÆKON Code",
+            "path": "."
+        },
+        {
+            "name": "Research Vault",
+            "path": "../BAEKON-Research-Vault"
+        },
+        {
+            "name": "Logseq Graph",
+            "path": "../BAEKON-Logseq-Graph"
+        }
+    ],
+    "settings": {
+        "baekon.apiUrl": "http://127.0.0.1:8787",
+        "baekon.vaultPath": "../BAEKON-Research-Vault",
+        "files.associations": {
+            "*.md": "markdown"
+        },
+        "markdown.preview.breaks": true,
+        "markdown.preview.linkify": true
+    },
+    "extensions": {
+        "recommendations": [
+            "ms-vscode.vscode-typescript-next",
+            "bradlc.vscode-tailwindcss",
+            "ms-vscode.vscode-json",
+            "yzhang.markdown-all-in-one",
+            "foam.foam-vscode"
+        ]
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Start BÆKON API",
+                "type": "shell",
+                "command": "npm run server",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "runOptions": {
+                    "runOn": "folderOpen"
+                }
+            },
+            {
+                "label": "Launch Research Suite",
+                "type": "shell",
+                "command": "bash scripts/launch_research_suite.sh",
+                "group": "build"
+            }
+        ]
+    }
+}
