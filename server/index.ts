@@ -3,12 +3,14 @@ import pg from 'pg';
 import { researchTranslate } from './rag/orchestrator';
 import externalRoutes from './connectors/external';
 import anasIndexRoutes from './anas/index';
+import vaultRoutes from './vault/index';
 
 const app = Fastify({ logger: true });
 const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
 
 app.register(externalRoutes);
 app.register(anasIndexRoutes);
+app.register(vaultRoutes);
 
 app.get('/lexicon/search', async (req, reply) => {
   const q = String((req.query as any).q || '').toLowerCase();

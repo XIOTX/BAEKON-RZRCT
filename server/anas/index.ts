@@ -36,7 +36,7 @@ export default async function anasIndexRoutes(app: FastifyInstance){
 
     const rows = db.prepare(`
       SELECT title, author, date_posted, tags, english_text, full_text
-      FROM articles
+      FROM posts
       WHERE ${where}
       ORDER BY date_posted DESC, title ASC
       LIMIT 500

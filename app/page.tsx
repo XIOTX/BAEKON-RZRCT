@@ -79,30 +79,46 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      // Analyze with Aylid lexicon
-      const lexiconMatches = analyzeWithAylidLexicon(currentMessage);
-      
-      // Simulate FL analysis with real lexicon data
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      let aiResponse = `FL Analysis of "${userMessage.content}":
+      // Create a test span and call our live API
+      const response = await fetch('http://127.0.0.1:8787/translate/research', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          span_id: '07f94cc1-f652-40d0-95ec-f86ad20228a7', // Use our test span
+          model: 'claude-3-5-sonnet-20241022'
+        })
+      });
 
-Pattern Analysis: Detected ${lexiconMatches.length > 0 ? 'AYLID' : 'unknown'} linguistic structures
-Confidence: ${lexiconMatches.length > 0 ? Math.min(0.95, lexiconMatches.reduce((acc, m) => acc + m.confidence, 0) / lexiconMatches.length) : 0.3}
-Lexicon Matches: ${lexiconMatches.length} verified hits
-Sources: aylid-lexicon@local, stones-seed@local`;
-
-      if (lexiconMatches.length > 0) {
-        aiResponse += `\n\nVerified Translations:`;
-        lexiconMatches.forEach(match => {
-          aiResponse += `\n• ${match.word} → "${match.translation}" (${Math.round(match.confidence * 100)}% confidence)`;
-        });
-        
-        const translation = lexiconMatches.map(m => m.translation).join(' ');
-        aiResponse += `\n\nPossible Translation: "${translation}"`;
-      } else {
-        aiResponse += `\n\nNote: No direct lexicon matches found. This may be a different FL variant or require additional context analysis.`;
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
       }
+
+      const analysisResult = await response.json();
+      
+      // Format the response for the chat interface
+      let aiResponse = `🔬 BÆKON FL Analysis of "${userMessage.content}":
+
+🎯 Analysis Mode: ${analysisResult.mode}
+📊 Tokens Identified: ${analysisResult.tokens?.length || 0}
+🔗 Model: ${analysisResult.provenance?.model}`;
+
+      if (analysisResult.tokens && analysisResult.tokens.length > 0) {
+        aiResponse += `\n\n🧩 Token Analysis:`;
+        analysisResult.tokens.forEach((token: any) => {
+          aiResponse += `\n• ${token.surface} → "${token.gloss}" (${Math.round(token.confidence * 100)}% confidence)`;
+          aiResponse += `\n  📚 Source: ${token.sources?.join(', ') || 'unknown'}`;
+          aiResponse += `\n  🔍 Method: ${token.method}`;
+        });
+      }
+
+      if (analysisResult.unresolved && analysisResult.unresolved.length > 0) {
+        aiResponse += `\n\n❓ Unresolved tokens: ${analysisResult.unresolved.join(', ')}`;
+      }
+
+      aiResponse += `\n\n📝 Notes: ${analysisResult.notes}`;
+      aiResponse += `\n\n🔖 Provenance: ${JSON.stringify(analysisResult.provenance?.card_ids)}`;
 
       const aiMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
@@ -113,10 +129,35 @@ Sources: aylid-lexicon@local, stones-seed@local`;
 
       setChatMessages(prev => [...prev, aiMessage]);
     } catch (error) {
+      console.error('API Error:', error);
+      
+      // Fallback to demo analysis if API fails
+      const lexiconMatches = analyzeWithAylidLexicon(currentMessage);
+      
+      let fallbackResponse = `⚠️ Live API unavailable - Demo Analysis of "${userMessage.content}":
+
+🎯 Pattern Analysis: Detected ${lexiconMatches.length > 0 ? 'AYLID' : 'unknown'} linguistic structures
+📊 Lexicon Matches: ${lexiconMatches.length} verified hits (local demo data)
+🔗 Source: aylid-lexicon@local, stones-seed@local`;
+
+      if (lexiconMatches.length > 0) {
+        fallbackResponse += `\n\n🧩 Verified Translations:`;
+        lexiconMatches.forEach(match => {
+          fallbackResponse += `\n• ${match.word} → "${match.translation}" (${Math.round(match.confidence * 100)}% confidence)`;
+        });
+        
+        const translation = lexiconMatches.map(m => m.translation).join(' ');
+        fallbackResponse += `\n\n📝 Possible Translation: "${translation}"`;
+      } else {
+        fallbackResponse += `\n\n📝 Note: No direct lexicon matches found. This may be a different FL variant.`;
+      }
+
+      fallbackResponse += `\n\n🔧 To enable live analysis: Ensure backend API is running on port 8787`;
+
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         type: 'ai',
-        content: 'Error: Unable to process FL text. Check system status.',
+        content: fallbackResponse,
         timestamp: new Date()
       };
       setChatMessages(prev => [...prev, errorMessage]);
