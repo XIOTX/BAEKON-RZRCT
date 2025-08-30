@@ -25,7 +25,8 @@ class BaekonResearchApp {
       icon: path.join(__dirname, '../assets/icon.png')
     });
 
-    this.mainWindow.loadFile(path.join(__dirname, 'index.html'));
+    this.mainWindow.loadFile(path.join(__dirname, '../../mystery-explorer.html'));
+
 
     // Open DevTools in development
     if (process.argv.includes('--dev')) {
@@ -77,7 +78,7 @@ class BaekonResearchApp {
         label: 'Research',
         submenu: [
           {
-            label: 'Search Ana\\'s Index',
+            label: 'Search Ana\'s Index',
             accelerator: 'CmdOrCtrl+Shift+A',
             click: () => this.focusSearch('anas')
           },

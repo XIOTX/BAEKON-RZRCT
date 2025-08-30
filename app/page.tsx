@@ -1,438 +1,69 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect } from "react";
-import AnaIndex from "../ui/components/AnaIndex";
-import ExternalSearch from "../ui/components/ExternalSearch";
-import Interlinear from "../ui/components/Interlinear";
+import { useState } from 'react';
+import { KnowledgeTree } from '@/components/KnowledgeTree';
+import { ContentArea } from '@/components/ContentArea';
+import { AIAssistant } from '@/components/AIAssistant';
+import { Header } from '@/components/Header';
 
-interface ChatMessage {
-  id: string;
-  type: 'user' | 'ai';
-  content: string;
-  timestamp: Date;
-}
+// AI Context - This defines how the AI should behave and what it knows
+export const AI_CONTEXT = {
+  role: "FL Research Guide",
+  purpose: "Navigate and explain Forgotten Languages research with precision and provenance",
+  principles: [
+    "No Source, No Answer - Always provide provenance",
+    "Structured Navigation - Guide users through the FL knowledge hierarchy", 
+    "Confidence Indicators - Mark information source and reliability",
+    "Progressive Disclosure - Start broad, drill down based on user interest"
+  ],
+  knowledgeAreas: {
+    "Core Languages": ["Aylid", "Yid", "Ned", "Drizza", "Akeyra"],
+    "Technical Systems": ["Cassini Diskus", "NodeSpaces", "Defense Applications"],
+    "Philosophical": ["Philosophy of Language", "Consciousness Studies", "Information Theory"],
+    "Esoteric": ["Religion", "Sufism", "Theosophy", "Alchemy", "Dreams"],
+    "Literary": ["Poetry", "Millangivm", "De Altero Genere"]
+  },
+  dataAccess: {
+    "anasIndex": "21.9MB FL document corpus - primary source",
+    "lexicon": "2,447 FL terms with confidence scores",
+    "vault": "Community-curated research documents",
+    "external": "Cross-referenced community sources"
+  }
+} as const;
 
-export default function Home() {
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
-  const [currentMessage, setCurrentMessage] = useState('');
-  const [chatExpanded, setChatExpanded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const chatInputRef = useRef<HTMLInputElement>(null);
-
-  // Load chat history from localStorage on mount
-  useEffect(() => {
-    const savedChat = localStorage.getItem('baekon-chat-history');
-    if (savedChat) {
-      try {
-        const parsed = JSON.parse(savedChat);
-        setChatMessages(parsed.map((msg: any) => ({
-          ...msg,
-          timestamp: new Date(msg.timestamp)
-        })));
-      } catch (e) {
-        console.error('Failed to parse chat history:', e);
-      }
-    }
-  }, []);
-
-  // Save chat history to localStorage whenever messages change
-  useEffect(() => {
-    if (chatMessages.length > 0) {
-      localStorage.setItem('baekon-chat-history', JSON.stringify(chatMessages));
-    }
-  }, [chatMessages]);
-
-  const analyzeWithAylidLexicon = (text: string) => {
-    // Load and search the Aylid lexicon
-    const words = text.toLowerCase().split(/\s+/);
-    const matches: any[] = [];
-    
-    // Simulate lexicon lookup (would be replaced with actual fetch)
-    const aylidMatches = [
-      { word: "aeshafaf", translation: "do", confidence: 1.0 },
-      { word: "ararth", translation: "their", confidence: 1.0 },
-      { word: "nebeder", translation: "weapon", confidence: 0.92 },
-    ];
-    
-    words.forEach(word => {
-      const match = aylidMatches.find(m => m.word === word);
-      if (match) {
-        matches.push(match);
-      }
-    });
-    
-    return matches;
-  };
-
-  const sendMessage = async () => {
-    if (!currentMessage.trim()) return;
-
-    const userMessage: ChatMessage = {
-      id: Date.now().toString(),
-      type: 'user',
-      content: currentMessage,
-      timestamp: new Date()
-    };
-
-    setChatMessages(prev => [...prev, userMessage]);
-    setCurrentMessage('');
-    setIsLoading(true);
-
-    try {
-      // Create a test span and call our live API
-      const response = await fetch('http://127.0.0.1:8787/translate/research', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          span_id: '07f94cc1-f652-40d0-95ec-f86ad20228a7', // Use our test span
-          model: 'claude-3-5-sonnet-20241022'
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
-      }
-
-      const analysisResult = await response.json();
-      
-      // Format the response for the chat interface
-      let aiResponse = `🔬 BÆKON FL Analysis of "${userMessage.content}":
-
-🎯 Analysis Mode: ${analysisResult.mode}
-📊 Tokens Identified: ${analysisResult.tokens?.length || 0}
-🔗 Model: ${analysisResult.provenance?.model}`;
-
-      if (analysisResult.tokens && analysisResult.tokens.length > 0) {
-        aiResponse += `\n\n🧩 Token Analysis:`;
-        analysisResult.tokens.forEach((token: any) => {
-          aiResponse += `\n• ${token.surface} → "${token.gloss}" (${Math.round(token.confidence * 100)}% confidence)`;
-          aiResponse += `\n  📚 Source: ${token.sources?.join(', ') || 'unknown'}`;
-          aiResponse += `\n  🔍 Method: ${token.method}`;
-        });
-      }
-
-      if (analysisResult.unresolved && analysisResult.unresolved.length > 0) {
-        aiResponse += `\n\n❓ Unresolved tokens: ${analysisResult.unresolved.join(', ')}`;
-      }
-
-      aiResponse += `\n\n📝 Notes: ${analysisResult.notes}`;
-      aiResponse += `\n\n🔖 Provenance: ${JSON.stringify(analysisResult.provenance?.card_ids)}`;
-
-      const aiMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        type: 'ai',
-        content: aiResponse,
-        timestamp: new Date()
-      };
-
-      setChatMessages(prev => [...prev, aiMessage]);
-    } catch (error) {
-      console.error('API Error:', error);
-      
-      // Fallback to demo analysis if API fails
-      const lexiconMatches = analyzeWithAylidLexicon(currentMessage);
-      
-      let fallbackResponse = `⚠️ Live API unavailable - Demo Analysis of "${userMessage.content}":
-
-🎯 Pattern Analysis: Detected ${lexiconMatches.length > 0 ? 'AYLID' : 'unknown'} linguistic structures
-📊 Lexicon Matches: ${lexiconMatches.length} verified hits (local demo data)
-🔗 Source: aylid-lexicon@local, stones-seed@local`;
-
-      if (lexiconMatches.length > 0) {
-        fallbackResponse += `\n\n🧩 Verified Translations:`;
-        lexiconMatches.forEach(match => {
-          fallbackResponse += `\n• ${match.word} → "${match.translation}" (${Math.round(match.confidence * 100)}% confidence)`;
-        });
-        
-        const translation = lexiconMatches.map(m => m.translation).join(' ');
-        fallbackResponse += `\n\n📝 Possible Translation: "${translation}"`;
-      } else {
-        fallbackResponse += `\n\n📝 Note: No direct lexicon matches found. This may be a different FL variant.`;
-      }
-
-      fallbackResponse += `\n\n🔧 To enable live analysis: Ensure backend API is running on port 8787`;
-
-      const errorMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        type: 'ai',
-        content: fallbackResponse,
-        timestamp: new Date()
-      };
-      setChatMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  };
-
-  const clearChat = () => {
-    setChatMessages([]);
-    localStorage.removeItem('baekon-chat-history');
-  };
-
-  const sampleTokens = [
-    { surface: "aeshafaf", lemma: "aeshafaf", gloss: "do", method: "lexicon", confidence: 1.0, sources: ["stones-seed@local#1"] },
-    { surface: "ararth", lemma: "ararth", gloss: "their", method: "lexicon", confidence: 1.0, sources: ["stones-seed@local#2"] },
-    { surface: "nebeder", lemma: "nebeder", gloss: "weapon", method: "lexicon", confidence: 0.92, sources: ["stones-seed@local#3"] },
-  ];
-
-  // Get recent messages for compact view
-  const recentMessages = chatMessages.slice(-2);
+export default function HomePage() {
+  const [selectedPath, setSelectedPath] = useState<string[]>([]);
+  const [currentContent, setCurrentContent] = useState<any>(null);
 
   return (
-    <div className="min-h-screen p-4 space-y-4">
-      {/* Header - Clean without tabs, time, temp */}
-      <header className="cyber-border p-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-6">
-            <h1 className="text-5xl font-bold font-cal bg-gradient-to-r from-neon-blue to-neon-purple bg-clip-text text-transparent tracking-wider">
-              BÆKON
-            </h1>
-            <span className="text-xl text-zinc-400 font-display">Zero-Hallucination FL Research Console</span>
-          </div>
-
-          {/* Status Indicators - Clean */}
-          <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-3">
-              <div className="w-4 h-4 rounded-full bg-terminal-green animate-pulse shadow-[0_0_15px_rgba(57,255,20,0.6)]"></div>
-              <span className="terminal-text text-sm font-mono">SYSTEMS ACTIVE</span>
-            </div>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+      <Header />
+      
+      <div className="flex h-[calc(100vh-4rem)]">
+        {/* Knowledge Tree Sidebar */}
+        <div className="w-80 border-r border-purple-500/30 bg-black/20 backdrop-blur-sm">
+          <KnowledgeTree 
+            selectedPath={selectedPath}
+            onPathSelect={setSelectedPath}
+            onContentLoad={setCurrentContent}
+          />
         </div>
-      </header>
 
-      {/* Main Content Grid - Modified to add space for chat */}
-      <div className="grid grid-cols-[300px_1fr_400px] gap-4 h-[calc(100vh-300px)]">
-        
-        {/* Left Sidebar - FL Languages */}
-        <aside className="cyber-border space-y-3 p-4">
-          <h2 className="text-lg font-semibold font-display text-neon-blue border-b border-cyan-400/30 pb-2">
-            FL CORPUS
-          </h2>
-          <div className="space-y-2 text-sm">
-            {[
-              { lang: "UIFAIN", status: "active", color: "text-terminal-green" },
-              { lang: "FEB", status: "parsing", color: "text-yellow-400" },
-              { lang: "AIFUR", status: "standby", color: "text-zinc-400" },
-              { lang: "AITEJE", status: "error", color: "text-red-400" },
-              { lang: "AEI", status: "active", color: "text-terminal-green" },
-              { lang: "UILAIN", status: "standby", color: "text-zinc-400" },
-              { lang: "UILAUD", status: "active", color: "text-terminal-green" },
-              { lang: "EILAIU", status: "parsing", color: "text-yellow-400" },
-              { lang: "EIEIE", status: "standby", color: "text-zinc-400" },
-              { lang: "NIJON", status: "active", color: "text-terminal-green" },
-              { lang: "AIESU", status: "standby", color: "text-zinc-400" },
-            ].map((lang, i) => (
-              <div key={i} className="flex items-center justify-between hover:bg-white/5 p-2 rounded">
-                <span className={`font-mono ${lang.color}`}>{lang.lang}</span>
-                <div className={`w-2 h-2 rounded-full ${
-                  lang.status === 'active' ? 'bg-terminal-green animate-pulse shadow-[0_0_8px_rgba(57,255,20,0.6)]' :
-                  lang.status === 'parsing' ? 'bg-yellow-400 animate-pulse shadow-[0_0_8px_rgba(255,255,0,0.6)]' :
-                  lang.status === 'error' ? 'bg-red-400 shadow-[0_0_8px_rgba(255,0,0,0.6)]' :
-                  'bg-zinc-600'
-                }`}></div>
-              </div>
-            ))}
-          </div>
-        </aside>
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col">
+          <ContentArea 
+            selectedPath={selectedPath}
+            content={currentContent}
+          />
+        </div>
 
-        {/* Center Content */}
-        <main className="space-y-4 overflow-auto">
-          {/* Analysis Dashboard */}
-          <div className="cyber-border p-6">
-            <h2 className="text-xl font-semibold font-display text-neon-blue mb-4">Research Console</h2>
-            
-            {/* Analysis Grid */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="cyber-border p-4">
-                <h3 className="text-lg mb-3 font-display text-neon-blue">Ana's Index</h3>
-                <AnaIndex />
-              </div>
-              
-              <div className="cyber-border p-4">
-                <h3 className="text-lg mb-3 font-display text-neon-blue">External Search</h3>
-                <ExternalSearch />
-              </div>
-            </div>
-          </div>
-
-          {/* Translation Preview */}
-          <div className="cyber-border p-6">
-            <h3 className="text-lg mb-3 font-display text-neon-purple">Sample Translation</h3>
-            <Interlinear tokens={sampleTokens} />
-          </div>
-        </main>
-
-        {/* Right Sidebar - Provenance */}
-        <aside className="cyber-border p-4">
-          <h2 className="text-lg font-semibold font-display text-neon-purple border-b border-purple-500/30 pb-2 mb-4">
-            PROVENANCE
-          </h2>
-          
-          <div className="space-y-4 text-sm">
-            <div className="cyber-border p-3 bg-black/20">
-              <h4 className="text-purple-400 mb-2 font-display">Current Analysis</h4>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-zinc-400">Model:</span>
-                  <span className="terminal-text">claude-3-5-sonnet</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-zinc-400">Sources:</span>
-                  <span className="text-blue-400">3 active</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-zinc-400">Confidence:</span>
-                  <span className="text-terminal-green">94.2%</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="cyber-border p-3 bg-black/20">
-              <h4 className="text-purple-400 mb-2 font-display">Source Chain</h4>
-              <div className="space-y-1 text-xs">
-                <div className="text-terminal-green">✓ stones-seed@local</div>
-                <div className="text-terminal-green">✓ ana-index@db</div>
-                <div className="text-yellow-400">⧗ fl-community@web</div>
-                <div className="text-zinc-600">○ cassini-coords@verify</div>
-              </div>
-            </div>
-
-            <div className="cyber-border p-3 bg-black/20">
-              <h4 className="text-purple-400 mb-2 font-display">Activity Log</h4>
-              <div className="space-y-1 text-xs font-mono">
-                <div className="text-zinc-400">[11:43] Lexicon lookup</div>
-                <div className="text-zinc-400">[11:43] Vector search</div>
-                <div className="text-zinc-400">[11:42] Context retrieval</div>
-                <div className="text-zinc-400">[11:42] Span analysis</div>
-              </div>
-            </div>
-          </div>
-        </aside>
-      </div>
-
-      {/* Chat Interface - Bottom Middle */}
-      <div className="space-y-4">
-        {/* Recent Chat Messages - Compact View */}
-        {recentMessages.length > 0 && !chatExpanded && (
-          <div className="cyber-border p-4 max-w-4xl mx-auto">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-lg font-display text-neon-blue">Recent FL Analysis</h3>
-              <div className="flex space-x-2">
-                <button 
-                  onClick={() => setChatExpanded(true)}
-                  className="cyber-button text-xs"
-                >
-                  EXPAND
-                </button>
-                <button 
-                  onClick={clearChat}
-                  className="cyber-button text-xs"
-                >
-                  CLEAR
-                </button>
-              </div>
-            </div>
-            <div className="space-y-3 max-h-32 overflow-hidden">
-              {recentMessages.map((message) => (
-                <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[70%] p-3 rounded-lg ${
-                    message.type === 'user' 
-                      ? 'bg-cyan-500/20 border border-cyan-400/30 text-cyan-100' 
-                      : 'bg-purple-500/20 border border-purple-400/30 text-purple-100'
-                  }`}>
-                    <div className="text-sm font-display whitespace-pre-wrap">{message.content}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Expanded Chat View */}
-        {chatExpanded && (
-          <div className="cyber-border p-6 max-w-6xl mx-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-display text-neon-blue">FL Research Chat</h3>
-              <div className="flex space-x-2">
-                <button 
-                  onClick={() => setChatExpanded(false)}
-                  className="cyber-button text-xs"
-                >
-                  MINIMIZE
-                </button>
-                <button 
-                  onClick={clearChat}
-                  className="cyber-button text-xs"
-                >
-                  CLEAR HISTORY
-                </button>
-              </div>
-            </div>
-            <div className="h-96 overflow-y-auto space-y-4 mb-4 p-4 cyber-border bg-black/20">
-              {chatMessages.length === 0 ? (
-                <div className="text-center text-zinc-500 font-display">
-                  Start analyzing FL text by typing below...
-                </div>
-              ) : (
-                chatMessages.map((message) => (
-                  <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[80%] p-4 rounded-lg ${
-                      message.type === 'user' 
-                        ? 'bg-cyan-500/20 border border-cyan-400/50 text-cyan-100 shadow-[0_0_10px_rgba(0,255,255,0.3)]' 
-                        : 'bg-purple-500/20 border border-purple-400/50 text-purple-100 shadow-[0_0_10px_rgba(139,92,246,0.3)]'
-                    }`}>
-                      <div className="text-sm font-display whitespace-pre-wrap">{message.content}</div>
-                      <div className="text-xs text-zinc-400 mt-2">
-                        {message.timestamp.toLocaleTimeString()}
-                      </div>
-                    </div>
-                  </div>
-                ))
-              )}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-purple-500/20 border border-purple-400/50 p-4 rounded-lg">
-                    <div className="text-sm font-display text-purple-100">
-                      Analyzing FL text...
-                      <span className="animate-pulse">●●●</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Chat Input - Always Visible */}
-        <div className="cyber-border p-4 max-w-4xl mx-auto">
-          <div className="flex space-x-4">
-            <input
-              ref={chatInputRef}
-              type="text"
-              value={currentMessage}
-              onChange={(e) => setCurrentMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Enter FL text for analysis..."
-              className="cyber-input flex-1 font-display"
-              disabled={isLoading}
-            />
-            <button
-              onClick={sendMessage}
-              disabled={isLoading || !currentMessage.trim()}
-              className="cyber-button px-6"
-            >
-              {isLoading ? 'ANALYZING...' : 'SEND'}
-            </button>
-          </div>
+        {/* AI Assistant Panel */}
+        <div className="w-96 border-l border-purple-500/30 bg-black/20 backdrop-blur-sm">
+          <AIAssistant 
+            context={AI_CONTEXT}
+            currentPath={selectedPath}
+            currentContent={currentContent}
+          />
         </div>
       </div>
     </div>

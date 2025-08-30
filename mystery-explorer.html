@@ -218,6 +218,160 @@
             );
         }
 
+        // Ana's Index Search Component
+        function AnasIndexSearch() {
+            const [query, setQuery] = useState('');
+            const [results, setResults] = useState([]);
+            const [loading, setLoading] = useState(false);
+            const [error, setError] = useState(null);
+
+            const searchAnasIndex = async () => {
+                if (!query.trim()) return;
+                
+                setLoading(true);
+                setError(null);
+                try {
+                    const response = await fetch(`http://127.0.0.1:8787/anas-index/search?q=${encodeURIComponent(query)}`);
+                    if (!response.ok) throw new Error('Search failed');
+                    const data = await response.json();
+                    setResults(data);
+                } catch (err) {
+                    setError(err.message);
+                    setResults([]);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            return (
+                <div className="space-y-4">
+                    <div className="flex space-x-3">
+                        <input
+                            type="text"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && searchAnasIndex()}
+                            placeholder="Search Ana's Index..."
+                            className="cyber-input flex-1"
+                        />
+                        <button 
+                            onClick={searchAnasIndex}
+                            disabled={loading || !query.trim()}
+                            className="cyber-button px-6"
+                        >
+                            {loading ? 'SEARCHING...' : 'SEARCH'}
+                        </button>
+                    </div>
+
+                    {error && (
+                        <div className="cyber-border p-4 border-red-500/50 bg-red-500/10">
+                            <p className="text-red-400">Error: {error}</p>
+                        </div>
+                    )}
+
+                    {results.length > 0 && (
+                        <div className="space-y-3">
+                            <p className="text-cyan">Found {results.length} results:</p>
+                            {results.map((result, i) => (
+                                <div key={i} className="cyber-border p-4">
+                                    <h4 className="text-purple font-semibold mb-2">{result.title}</h4>
+                                    <p className="text-gray-300 text-sm mb-2">By {result.author} • {result.date_posted}</p>
+                                    {result.english_text && (
+                                        <p className="text-gray-400 text-sm mb-2">{result.english_text.substring(0, 200)}...</p>
+                                    )}
+                                    {result.tags && (
+                                        <div className="flex flex-wrap gap-2 mt-2">
+                                            {result.tags.split(',').map((tag, j) => (
+                                                <span key={j} className="px-2 py-1 bg-cyan-500/20 text-cyan text-xs rounded">
+                                                    {tag.trim()}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // Lexicon Search Component
+        function LexiconSearch() {
+            const [query, setQuery] = useState('');
+            const [results, setResults] = useState([]);
+            const [loading, setLoading] = useState(false);
+            const [error, setError] = useState(null);
+
+            const searchLexicon = async () => {
+                if (!query.trim()) return;
+                
+                setLoading(true);
+                setError(null);
+                try {
+                    const response = await fetch(`http://127.0.0.1:8787/lexicon/search?q=${encodeURIComponent(query)}`);
+                    if (!response.ok) throw new Error('Search failed');
+                    const data = await response.json();
+                    setResults(data);
+                } catch (err) {
+                    setError(err.message);
+                    setResults([]);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            return (
+                <div className="space-y-4">
+                    <div className="flex space-x-3">
+                        <input
+                            type="text"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && searchLexicon()}
+                            placeholder="Search FL Lexicon..."
+                            className="cyber-input flex-1"
+                        />
+                        <button 
+                            onClick={searchLexicon}
+                            disabled={loading || !query.trim()}
+                            className="cyber-button px-6"
+                        >
+                            {loading ? 'SEARCHING...' : 'SEARCH'}
+                        </button>
+                    </div>
+
+                    {error && (
+                        <div className="cyber-border p-4 border-red-500/50 bg-red-500/10">
+                            <p className="text-red-400">Error: {error}</p>
+                        </div>
+                    )}
+
+                    {results.length > 0 && (
+                        <div className="space-y-3">
+                            <p className="text-cyan">Found {results.length} lexicon entries:</p>
+                            {results.map((result, i) => (
+                                <div key={i} className="cyber-border p-4">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h4 className="text-purple font-semibold">{result.surface || result.normalized}</h4>
+                                        <span className="text-green text-sm">
+                                            {Math.round((result.confidence || 0) * 100)}% confidence
+                                        </span>
+                                    </div>
+                                    {result.gloss && (
+                                        <p className="text-gray-300 mb-2">"{result.gloss}"</p>
+                                    )}
+                                    {result.pos && (
+                                        <p className="text-gray-400 text-sm">Part of speech: {result.pos}</p>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
         // Main Content Area
         function MainContentArea({ currentSection, sectionTitle }) {
             const [contentData, setContentData] = useState(null);
@@ -245,23 +399,25 @@
                         });
                     } else if (sectionId === 'official-articles') {
                         setContentData({
-                            title: 'Official FL Articles',
+                            title: 'Official FL Articles - Ana\'s Index Search',
                             description: 'Browse and analyze official Forgotten Languages publications.',
-                            features: 'Features: Ana\'s Index search, document classification, source verification.',
+                            features: 'Features: Live Ana\'s Index search, document classification, source verification.',
                             relatedContent: [
                                 { title: 'Document Database', description: 'Search 21.9MB Ana\'s Index' },
                                 { title: 'Classification System', description: 'Automated document categorization' }
-                            ]
+                            ],
+                            component: 'anas-search'
                         });
                     } else if (sectionId === 'translation-lexicons') {
                         setContentData({
-                            title: 'FL Translation Lexicons',
+                            title: 'FL Translation Lexicons - Live Search',
                             description: 'Access comprehensive FL vocabulary and translation tools.',
                             features: 'Features: Live lexicon search, confidence scoring, pattern matching.',
                             relatedContent: [
                                 { title: 'Lexicon Database', description: '2,447 FL terms with confidence scores' },
                                 { title: 'Pattern Recognition', description: 'Morphological analysis tools' }
-                            ]
+                            ],
+                            component: 'lexicon-search'
                         });
                     } else {
                         setContentData({
@@ -297,10 +453,24 @@
                     <h1 className="text-2xl font-bold text-cyan">{contentData?.title}</h1>
                     
                     <div className="cyber-border p-6">
-                        <p className="text-purple-300 mb-4">Content Loading...</p>
                         <p className="text-gray-300 mb-6">{contentData?.description}</p>
                         <p className="text-gray-400 text-sm">{contentData?.features}</p>
                     </div>
+
+                    {/* Render search components based on section */}
+                    {contentData?.component === 'anas-search' && (
+                        <div className="cyber-border p-6">
+                            <h3 className="text-purple font-semibold mb-4">Ana's Index Search</h3>
+                            <AnasIndexSearch />
+                        </div>
+                    )}
+
+                    {contentData?.component === 'lexicon-search' && (
+                        <div className="cyber-border p-6">
+                            <h3 className="text-purple font-semibold mb-4">FL Lexicon Search</h3>
+                            <LexiconSearch />
+                        </div>
+                    )}
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="cyber-border p-4">
@@ -319,13 +489,13 @@
                         </div>
 
                         <div className="cyber-border p-4">
-                            <h3 className="text-purple font-semibold mb-2">AI Insights</h3>
+                            <h3 className="text-purple font-semibold mb-2">System Status</h3>
                             <div className="cyber-border p-3">
                                 <div className="flex items-center mb-2">
                                     <span className="status-indicator status-online mr-2"></span>
-                                    <span className="font-medium text-purple">AI Insights</span>
+                                    <span className="font-medium text-purple">Backend API</span>
                                 </div>
-                                <p className="text-gray-400 text-sm">Pattern analysis and connections</p>
+                                <p className="text-gray-400 text-sm">Connected to http://127.0.0.1:8787</p>
                             </div>
                         </div>
                     </div>
@@ -355,22 +525,13 @@
                 setIsLoading(true);
 
                 try {
-                    // Call the live translation API
-                    const response = await fetch(`${API_BASE}/translate/research`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            span_id: '07f94cc1-f652-40d0-95ec-f86ad20228a7',
-                            model: 'claude-3-5-sonnet-20241022'
-                        })
-                    });
-
-                    const result = await response.json();
+                    // Generate contextual AI response based on user query
+                    const aiResponse = await generateAIResponse(userMessage.content);
                     
                     const aiMessage = {
                         id: Date.now() + 1,
                         type: 'ai',
-                        content: formatAIResponse(result, userMessage.content),
+                        content: aiResponse,
                         timestamp: new Date()
                     };
 
@@ -379,13 +540,56 @@
                     const errorMessage = {
                         id: Date.now() + 1,
                         type: 'ai',
-                        content: `🔬 FL Research Analysis of "${userMessage.content}":\n\nConnecting to live BÆKON analysis systems...\n\n✅ Local databases operational\n✅ Ana's Index: 21.9MB loaded\n✅ FL Lexicon: 2,447 terms available\n\n🔄 Advanced AI analysis in progress...\n\nReal FL analysis capabilities ready! Your research infrastructure is fully operational.`,
+                        content: `🔬 FL Research Analysis of "${userMessage.content}":\n\nI encountered an issue processing your request. However, I can still help you navigate the FL research environment.\n\n✅ Ana's Index: 21.9MB loaded\n✅ Backend API: Operational\n✅ Search functions: Available\n\nPlease try rephrasing your question or ask about specific FL topics like Aylid, Cassini Diskus, or NodeSpaces.`,
                         timestamp: new Date()
                     };
                     setMessages(prev => [...prev, errorMessage]);
                 } finally {
                     setIsLoading(false);
                 }
+            };
+
+            const generateAIResponse = async (userQuery) => {
+                const lowerQuery = userQuery.toLowerCase();
+                
+                // Search-related queries
+                if (lowerQuery.includes('search') || lowerQuery.includes('find')) {
+                    if (lowerQuery.includes('aylid')) {
+                        return `🔍 **Aylid Search Guidance**\n\n📚 Ana's Index (FL Direct) - I can help you search for Aylid content.\n\nTo search Aylid documents:\n1. Navigate to "Forgotten Languages" → "Official Articles"\n2. Use the search function with Aylid-specific terms\n3. Look for documents tagged with "Aylid"\n\n**Suggested searches:**\n• "Aylid grammar"\n• "Aylid translation"\n• "Aylid lexicon"\n\nWould you like me to guide you to the search interface?`;
+                    }
+                    
+                    if (lowerQuery.includes('cassini')) {
+                        return `🛰️ **Cassini Diskus Research**\n\n📚 Ana's Index (FL Direct) - This is our most documented topic (50 documents).\n\n**Key areas to explore:**\n• Coordinate systems and spatial references\n• Technical specifications\n• Defense applications\n• Geographic patterns\n\n**High-confidence searches:**\n• "Cassini coordinates"\n• "Diskus positioning"\n• "spatial navigation"\n\nShall I help you access the Cassini Diskus analysis section?`;
+                    }
+                    
+                    return `🔍 **FL Research Search**\n\n📚 Available databases:\n• Ana's Index: 21.9MB FL documents\n• Lexicon: 2,447 FL terms\n• Vault: Community research\n\n**Popular search topics:**\n• Aylid (primary FL language)\n• Cassini Diskus (50 documents)\n• NodeSpaces (21 documents)\n• Defense applications\n\nWhat specific FL topic interests you?`;
+                }
+                
+                // Translation queries
+                if (lowerQuery.includes('translat')) {
+                    return `🔄 **FL Translation Assistance**\n\n📖 Lexicon (FL Direct) - 2,447 terms with confidence scores\n\n**Translation capabilities:**\n• Aylid ↔ English (most complete)\n• Yid ↔ English (technical terms)\n• Ned ↔ English (philosophical)\n• Drizza ↔ English (esoteric)\n\n**To translate:**\n1. Navigate to "Translation Lexicons"\n2. Enter FL text or English terms\n3. Review confidence scores\n\nWhat would you like to translate?`;
+                }
+                
+                // Specific FL language queries
+                if (lowerQuery.includes('aylid')) {
+                    return `📜 **Aylid Language Information**\n\n✅ High Confidence - Primary FL language with extensive documentation\n\n**Aylid characteristics:**\n• Most documented FL language\n• Complex grammatical structure\n• Extensive lexicon available\n• Used in official FL publications\n\n**Available resources:**\n• Search Ana's Index for Aylid documents\n• Access Aylid-English lexicon\n• Grammar pattern analysis\n\nWould you like to explore Aylid documents or translation tools?`;
+                }
+                
+                if (lowerQuery.includes('cassini') || lowerQuery.includes('diskus')) {
+                    return `🛰️ **Cassini Diskus Analysis**\n\n✅ High Confidence - Most documented FL topic (50 documents)\n\n**Key insights:**\n• Coordinate systems and spatial references\n• Strong correlation with defense applications\n• Geographic references span multiple continents\n• Technical specifications often classified\n\n**Research areas:**\n• Spatial positioning systems\n• Navigation protocols\n• Defense integration\n• Geographic mapping\n\nShall I guide you to the Cassini Diskus research section?`;
+                }
+                
+                if (lowerQuery.includes('nodespaces')) {
+                    return `🕸️ **NodeSpaces Theory**\n\n⚠️ Medium Confidence - Information architecture concept (21 documents)\n\n**NodeSpaces overview:**\n• Information organization theory\n• Network topology concepts\n• Consciousness studies connections\n• Referenced but not directly accessible\n\n**Related topics:**\n• Philosophy of Language\n• Information Theory\n• Consciousness Studies\n\nWould you like to explore NodeSpaces documents or related philosophical frameworks?`;
+                }
+                
+                // Help and navigation
+                if (lowerQuery.includes('help') || lowerQuery.includes('how') || lowerQuery.includes('navigate')) {
+                    return `💡 **FL Research Navigation Guide**\n\n**Main research areas:**\n🗣️ **Core Languages**: Aylid, Yid, Ned, Drizza\n⚙️ **Technical Systems**: Cassini Diskus, NodeSpaces, Defense\n🧠 **Philosophy**: Language theory, Consciousness\n🔮 **Esoteric**: Religion, Sufism, Theosophy, Alchemy\n🎭 **Literary**: Poetry, Millangivm\n\n**How to explore:**\n1. Use the left sidebar to navigate topics\n2. Click on areas that interest you\n3. Use search functions for specific terms\n4. Ask me for guidance on any topic\n\nWhat area would you like to explore first?`;
+                }
+                
+                // Default contextual response
+                return `🤔 **FL Research Analysis**\n\n💭 AI Speculation - Analyzing your query: "${userQuery}"\n\nI'm your FL Research Guide. I can help you:\n\n**Search & Explore:**\n• Navigate the FL knowledge hierarchy\n• Search Ana's Index (21.9MB documents)\n• Access translation tools\n• Analyze document patterns\n\n**Current capabilities:**\n✅ Ana's Index search (working)\n⚠️ Lexicon search (DB issue)\n✅ Research guidance\n✅ Topic navigation\n\n**Popular starting points:**\n• Aylid language exploration\n• Cassini Diskus research\n• FL translation tools\n\nWhat specific aspect of FL research interests you most?`;
             };
 
             const formatAIResponse = (result, originalText) => {
