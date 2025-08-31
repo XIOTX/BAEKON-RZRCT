@@ -81,7 +81,7 @@
             background: rgba(0, 255, 255, 0.1);
             color: #00ffff;
         }
-
+        
         .file-explorer-item.selected {
             background: rgba(0, 255, 255, 0.2);
             color: #00ffff;
@@ -211,103 +211,115 @@
                     name: 'forgotten-languages',
                     path: 'forgotten-languages',
                     children: [
+                        { type: 'file', name: 'overview.md', path: 'forgotten-languages/overview.md', size: '89KB', fileType: 'overview', icon: '📋' },
                         {
                             type: 'folder',
-                            name: 'official',
-                            path: 'forgotten-languages/official',
+                            name: 'military-defense',
+                            path: 'forgotten-languages/military-defense',
                             children: [
-                                { type: 'file', name: 'anas-index.db', path: 'forgotten-languages/official/anas-index.db', size: '21.9MB', fileType: 'database', icon: '🗄️' },
-                                { type: 'file', name: 'articles.json', path: 'forgotten-languages/official/articles.json', size: '2.4MB', fileType: 'json', icon: '📄' },
-                                { type: 'file', name: 'document-index.txt', path: 'forgotten-languages/official/document-index.txt', size: '45KB', fileType: 'text', icon: '📝' }
+                                { type: 'file', name: 'overview.md', path: 'forgotten-languages/military-defense/overview.md', size: '67KB', fileType: 'overview', icon: '📋' },
+                                {
+                                    type: 'folder',
+                                    name: 'sv17q-system',
+                                    path: 'forgotten-languages/military-defense/sv17q-system',
+                                    children: [
+                                        { type: 'file', name: 'specifications.md', path: 'forgotten-languages/military-defense/sv17q-system/specifications.md', size: '124KB', fileType: 'markdown', icon: '📝' },
+                                        { type: 'file', name: 'defense-integration.enc', path: 'forgotten-languages/military-defense/sv17q-system/defense-integration.enc', size: '892KB', fileType: 'encrypted', icon: '🔒' }
+                                    ]
+                                },
+                                {
+                                    type: 'folder',
+                                    name: 'cassini-diskus',
+                                    path: 'forgotten-languages/military-defense/cassini-diskus',
+                                    children: [
+                                        { type: 'file', name: 'coordinates.dat', path: 'forgotten-languages/military-defense/cassini-diskus/coordinates.dat', size: '3.2MB', fileType: 'data', icon: '📊' },
+                                        { type: 'file', name: 'spatial-analysis.py', path: 'forgotten-languages/military-defense/cassini-diskus/spatial-analysis.py', size: '78KB', fileType: 'python', icon: '🐍' }
+                                    ]
+                                }
                             ]
                         },
                         {
                             type: 'folder',
-                            name: 'languages',
-                            path: 'forgotten-languages/languages',
+                            name: 'occult-spirituality',
+                            path: 'forgotten-languages/occult-spirituality',
                             children: [
-                                { type: 'file', name: 'aylid.lexicon', path: 'forgotten-languages/languages/aylid.lexicon', size: '1.2MB', fileType: 'lexicon', icon: '📜' },
-                                { type: 'file', name: 'yid.lexicon', path: 'forgotten-languages/languages/yid.lexicon', size: '856KB', fileType: 'lexicon', icon: '📜' },
-                                { type: 'file', name: 'ned.lexicon', path: 'forgotten-languages/languages/ned.lexicon', size: '432KB', fileType: 'lexicon', icon: '📜' },
-                                { type: 'file', name: 'drizza.lexicon', path: 'forgotten-languages/languages/drizza.lexicon', size: '234KB', fileType: 'lexicon', icon: '📜' }
+                                { type: 'file', name: 'overview.md', path: 'forgotten-languages/occult-spirituality/overview.md', size: '78KB', fileType: 'overview', icon: '📋' },
+                                {
+                                    type: 'folder',
+                                    name: 'giselians',
+                                    path: 'forgotten-languages/occult-spirituality/giselians',
+                                    children: [
+                                        { type: 'file', name: 'sufism-connections.md', path: 'forgotten-languages/occult-spirituality/giselians/sufism-connections.md', size: '178KB', fileType: 'markdown', icon: '🌙' },
+                                        { type: 'file', name: 'theosophy-analysis.pdf', path: 'forgotten-languages/occult-spirituality/giselians/theosophy-analysis.pdf', size: '923KB', fileType: 'pdf', icon: '✨' }
+                                    ]
+                                },
+                                {
+                                    type: 'folder',
+                                    name: 'queltron-system',
+                                    path: 'forgotten-languages/occult-spirituality/queltron-system',
+                                    children: [
+                                        { type: 'file', name: 'alchemy-symbols.svg', path: 'forgotten-languages/occult-spirituality/queltron-system/alchemy-symbols.svg', size: '67KB', fileType: 'svg', icon: '⚗️' },
+                                        { type: 'file', name: 'transformation-protocols.md', path: 'forgotten-languages/occult-spirituality/queltron-system/transformation-protocols.md', size: '145KB', fileType: 'markdown', icon: '🔮' }
+                                    ]
+                                }
                             ]
                         },
                         {
                             type: 'folder',
-                            name: 'translations',
-                            path: 'forgotten-languages/translations',
+                            name: 'consciousness-studies',
+                            path: 'forgotten-languages/consciousness-studies',
                             children: [
-                                { type: 'file', name: 'aylid-english.dict', path: 'forgotten-languages/translations/aylid-english.dict', size: '2.1MB', fileType: 'dictionary', icon: '🔄' },
-                                { type: 'file', name: 'grammar-patterns.xml', path: 'forgotten-languages/translations/grammar-patterns.xml', size: '567KB', fileType: 'xml', icon: '📋' }
+                                { type: 'file', name: 'overview.md', path: 'forgotten-languages/consciousness-studies/overview.md', size: '92KB', fileType: 'overview', icon: '📋' },
+                                {
+                                    type: 'folder',
+                                    name: 'nodespaces',
+                                    path: 'forgotten-languages/consciousness-studies/nodespaces',
+                                    children: [
+                                        { type: 'file', name: 'topology.graph', path: 'forgotten-languages/consciousness-studies/nodespaces/topology.graph', size: '567KB', fileType: 'graph', icon: '🕸️' },
+                                        { type: 'file', name: 'theory.pdf', path: 'forgotten-languages/consciousness-studies/nodespaces/theory.pdf', size: '1.8MB', fileType: 'pdf', icon: '📄' },
+                                        { type: 'file', name: 'consciousness-studies.md', path: 'forgotten-languages/consciousness-studies/nodespaces/consciousness-studies.md', size: '234KB', fileType: 'markdown', icon: '💭' }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type: 'folder',
+                            name: 'linguistic-systems',
+                            path: 'forgotten-languages/linguistic-systems',
+                            children: [
+                                { type: 'file', name: 'overview.md', path: 'forgotten-languages/linguistic-systems/overview.md', size: '76KB', fileType: 'overview', icon: '📋' },
+                                {
+                                    type: 'folder',
+                                    name: 'core-languages',
+                                    path: 'forgotten-languages/linguistic-systems/core-languages',
+                                    children: [
+                                        { type: 'file', name: 'aylid.lexicon', path: 'forgotten-languages/linguistic-systems/core-languages/aylid.lexicon', size: '1.2MB', fileType: 'lexicon', icon: '📜' },
+                                        { type: 'file', name: 'yid.lexicon', path: 'forgotten-languages/linguistic-systems/core-languages/yid.lexicon', size: '856KB', fileType: 'lexicon', icon: '📜' },
+                                        { type: 'file', name: 'ned.lexicon', path: 'forgotten-languages/linguistic-systems/core-languages/ned.lexicon', size: '432KB', fileType: 'lexicon', icon: '📜' },
+                                        { type: 'file', name: 'drizza.lexicon', path: 'forgotten-languages/linguistic-systems/core-languages/drizza.lexicon', size: '234KB', fileType: 'lexicon', icon: '📜' }
+                                    ]
+                                },
+                                {
+                                    type: 'folder',
+                                    name: 'translations',
+                                    path: 'forgotten-languages/linguistic-systems/translations',
+                                    children: [
+                                        { type: 'file', name: 'aylid-english.dict', path: 'forgotten-languages/linguistic-systems/translations/aylid-english.dict', size: '2.1MB', fileType: 'dictionary', icon: '🔄' },
+                                        { type: 'file', name: 'grammar-patterns.xml', path: 'forgotten-languages/linguistic-systems/translations/grammar-patterns.xml', size: '567KB', fileType: 'xml', icon: '📋' }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type: 'folder',
+                            name: 'research-data',
+                            path: 'forgotten-languages/research-data',
+                            children: [
+                                { type: 'file', name: 'anas-index.db', path: 'forgotten-languages/research-data/anas-index.db', size: '21.9MB', fileType: 'database', icon: '🗄️' },
+                                { type: 'file', name: 'community-findings.db', path: 'forgotten-languages/research-data/community-findings.db', size: '4.7MB', fileType: 'database', icon: '🗄️' },
+                                { type: 'file', name: 'articles.json', path: 'forgotten-languages/research-data/articles.json', size: '2.4MB', fileType: 'json', icon: '📄' }
                             ]
                         }
-                    ]
-                },
-                {
-                    type: 'folder',
-                    name: 'technical-systems',
-                    path: 'technical-systems',
-                    children: [
-                        {
-                            type: 'folder',
-                            name: 'cassini-diskus',
-                            path: 'technical-systems/cassini-diskus',
-                            children: [
-                                { type: 'file', name: 'coordinates.dat', path: 'technical-systems/cassini-diskus/coordinates.dat', size: '3.2MB', fileType: 'data', icon: '📊' },
-                                { type: 'file', name: 'specifications.md', path: 'technical-systems/cassini-diskus/specifications.md', size: '124KB', fileType: 'markdown', icon: '📝' },
-                                { type: 'file', name: 'defense-integration.enc', path: 'technical-systems/cassini-diskus/defense-integration.enc', size: '892KB', fileType: 'encrypted', icon: '🔒' },
-                                { type: 'file', name: 'spatial-analysis.py', path: 'technical-systems/cassini-diskus/spatial-analysis.py', size: '78KB', fileType: 'python', icon: '🐍' }
-                            ]
-                        },
-                        {
-                            type: 'folder',
-                            name: 'nodespaces',
-                            path: 'technical-systems/nodespaces',
-                            children: [
-                                { type: 'file', name: 'topology.graph', path: 'technical-systems/nodespaces/topology.graph', size: '567KB', fileType: 'graph', icon: '🕸️' },
-                                { type: 'file', name: 'theory.pdf', path: 'technical-systems/nodespaces/theory.pdf', size: '1.8MB', fileType: 'pdf', icon: '📄' },
-                                { type: 'file', name: 'network-map.json', path: 'technical-systems/nodespaces/network-map.json', size: '234KB', fileType: 'json', icon: '🗺️' }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    type: 'folder',
-                    name: 'research-vault',
-                    path: 'research-vault',
-                    children: [
-                        { type: 'file', name: 'community-findings.db', path: 'research-vault/community-findings.db', size: '4.7MB', fileType: 'database', icon: '🗄️' },
-                        { type: 'file', name: 'analysis-reports.json', path: 'research-vault/analysis-reports.json', size: '892KB', fileType: 'json', icon: '📄' },
-                        { type: 'file', name: 'collaborative-notes.md', path: 'research-vault/collaborative-notes.md', size: '156KB', fileType: 'markdown', icon: '📝' }
-                    ]
-                },
-                {
-                    type: 'folder',
-                    name: 'philosophy',
-                    path: 'philosophy',
-                    children: [
-                        { type: 'file', name: 'consciousness-studies.md', path: 'philosophy/consciousness-studies.md', size: '234KB', fileType: 'markdown', icon: '💭' },
-                        { type: 'file', name: 'language-theory.pdf', path: 'philosophy/language-theory.pdf', size: '1.1MB', fileType: 'pdf', icon: '📄' },
-                        { type: 'file', name: 'information-theory.tex', path: 'philosophy/information-theory.tex', size: '445KB', fileType: 'tex', icon: '📡' }
-                    ]
-                },
-                {
-                    type: 'folder',
-                    name: 'esoteric',
-                    path: 'esoteric',
-                    children: [
-                        { type: 'file', name: 'sufism-connections.md', path: 'esoteric/sufism-connections.md', size: '178KB', fileType: 'markdown', icon: '🌙' },
-                        { type: 'file', name: 'theosophy-analysis.pdf', path: 'esoteric/theosophy-analysis.pdf', size: '923KB', fileType: 'pdf', icon: '✨' },
-                        { type: 'file', name: 'alchemy-symbols.svg', path: 'esoteric/alchemy-symbols.svg', size: '67KB', fileType: 'svg', icon: '⚗️' }
-                    ]
-                },
-                {
-                    type: 'folder',
-                    name: 'literary',
-                    path: 'literary',
-                    children: [
-                        { type: 'file', name: 'poetry-collection.txt', path: 'literary/poetry-collection.txt', size: '345KB', fileType: 'text', icon: '📝' },
-                        { type: 'file', name: 'millangivm-complete.epub', path: 'literary/millangivm-complete.epub', size: '2.1MB', fileType: 'epub', icon: '📖' }
                     ]
                 }
             ];
@@ -327,10 +339,10 @@
                             >
                                 <span className={`expand-icon ${isExpanded ? 'expanded' : ''}`}>
                                     {isExpanded ? '📂' : '📁'}
-                                </span>
+                                    </span>
                                 <span className="item-name">{item.name}</span>
                                 <span className="expand-arrow">{isExpanded ? '▼' : '▶'}</span>
-                            </div>
+                                </div>
                             {isExpanded && item.children && (
                                 <div className="folder-contents">
                                     {item.children.map(child => renderFileSystemItem(child, depth + 1))}
@@ -349,7 +361,7 @@
                             <span className="file-icon">{item.icon}</span>
                             <span className="item-name">{item.name}</span>
                             <span className="file-size">{item.size}</span>
-                        </div>
+                                            </div>
                     );
                 }
             };
@@ -379,9 +391,9 @@
                                     </React.Fragment>
                                 ))}
                             </div>
-                        </div>
-                    )}
-
+                                    </div>
+                                )}
+                                
                     {/* File Tree */}
                     <div className="flex-1 overflow-auto">
                         <div className="file-explorer-tree">
@@ -460,11 +472,11 @@
                                                     {tag.trim()}
                                                 </span>
                                             ))}
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
                     )}
                 </div>
             );
@@ -657,7 +669,241 @@
                     await new Promise(resolve => setTimeout(resolve, 300));
                     
                     // Handle different file types based on path and fileType
-                    if (filePath.includes('anas-index.db')) {
+                    if (filePath === 'forgotten-languages/overview.md') {
+                        setContentData({
+                            type: 'overview',
+                            title: '📋 Forgotten Languages Research Overview',
+                            path: filePath,
+                            size: '89KB',
+                            description: 'Comprehensive overview of FL research domains and major topic areas',
+                            content: 'High-level analysis of the Forgotten Languages corpus, major research themes, and organizational structure.',
+                            metadata: {
+                                'Research Domains': '5 major areas',
+                                'Coverage': 'Comprehensive survey',
+                                'Confidence Level': 'High (Structural)',
+                                'Last Updated': '2024-01-15'
+                            },
+                            features: 'Domain navigation, topic overviews, research pathways.',
+                            documentContent: `# Forgotten Languages Research Overview
+
+## Executive Summary
+The Forgotten Languages corpus represents a comprehensive collection of linguistic, technical, and philosophical materials organized into five major research domains. This overview provides strategic navigation through the primary topic areas and their interconnections.
+
+## Major Research Domains
+
+### 🛡️ Military & Defense Applications
+**Scope**: Advanced positioning systems, defense integration protocols, strategic communications
+**Key Systems**: SV17Q System, Cassini Diskus, Defense Integration Protocols
+**Confidence**: High (FL Direct) - Extensive documentation and technical specifications
+**Applications**: Spatial navigation, strategic positioning, secure communications
+
+### 🔮 Occult & Spirituality Studies  
+**Scope**: Mystical traditions, esoteric knowledge systems, spiritual frameworks
+**Key Systems**: Giselians, Queltron System, Transformation Protocols
+**Confidence**: Medium to Low (Interpretive) - Requires careful analysis
+**Applications**: Consciousness exploration, spiritual practices, mystical interpretation
+
+### 🧠 Consciousness & Cognitive Studies
+**Scope**: Information processing, awareness states, cognitive architecture
+**Key Systems**: NodeSpaces, Consciousness Mapping, Information Theory
+**Confidence**: Medium (Theoretical) - Strong conceptual frameworks
+**Applications**: Cognitive modeling, consciousness research, information processing
+
+### 🗣️ Linguistic Systems & Translation
+**Scope**: Core FL languages, translation methodologies, linguistic analysis
+**Key Systems**: Aylid, Yid, Ned, Drizza languages with translation frameworks
+**Confidence**: High (FL Direct) - Extensive lexical databases
+**Applications**: Translation services, linguistic analysis, pattern recognition
+
+### 📊 Research Data & Analysis
+**Scope**: Primary source materials, community research, analytical tools
+**Key Systems**: Ana's Index, Community Vault, Research Databases
+**Confidence**: Variable (Source-dependent) - Comprehensive documentation
+**Applications**: Data mining, research analysis, collaborative investigation
+
+## Navigation Strategy
+1. **Start with domain overviews** for broad understanding
+2. **Drill down to specific systems** for detailed analysis  
+3. **Access implementation details** for practical applications
+4. **Cross-reference related topics** for comprehensive coverage
+
+## Research Pathways
+- **Technical Focus**: Military-Defense → Consciousness Studies → Linguistic Systems
+- **Mystical Focus**: Occult-Spirituality → Consciousness Studies → Research Data
+- **Academic Focus**: Linguistic Systems → Research Data → All supporting domains
+
+*This overview provides strategic navigation through FL research domains. Select specific folders to explore detailed topic areas.*`
+                        });
+                    } else if (filePath === 'forgotten-languages/military-defense/overview.md') {
+                        setContentData({
+                            type: 'overview',
+                            title: '🛡️ Military & Defense Applications Overview',
+                            path: filePath,
+                            size: '67KB',
+                            description: 'Strategic overview of FL military and defense applications',
+                            content: 'Comprehensive analysis of defense-related FL systems, applications, and strategic implementations.',
+                            metadata: {
+                                'Systems Covered': 'SV17Q, Cassini Diskus, Defense Integration',
+                                'Classification': 'RESTRICTED ACCESS',
+                                'Confidence Level': 'High (FL Direct)',
+                                'Applications': 'Strategic positioning, secure communications'
+                            },
+                            features: 'Strategic analysis, system overviews, implementation guides.',
+                            documentContent: `# Military & Defense Applications Overview
+
+## Strategic Context
+FL military and defense applications represent the most documented and technically sophisticated aspects of the corpus. These systems demonstrate advanced understanding of spatial positioning, secure communications, and strategic coordination.
+
+## Primary Defense Systems
+
+### SV17Q System
+**Classification**: RESTRICTED  
+**Function**: Advanced strategic positioning and coordination
+**Status**: Operational specifications available
+**Applications**: Strategic positioning, tactical coordination, secure communications
+**Technical Maturity**: High - Comprehensive implementation protocols
+
+### Cassini Diskus
+**Classification**: TECHNICAL RESTRICTED
+**Function**: Global spatial positioning and navigation framework  
+**Status**: Extensive coordinate databases and analysis tools
+**Applications**: Geographic positioning, spatial analysis, defense integration
+**Technical Maturity**: Very High - 50,000+ coordinate points documented
+
+### Defense Integration Protocols
+**Classification**: CLASSIFIED
+**Function**: Integration methodologies for FL systems in defense applications
+**Status**: Encrypted specifications and access controls
+**Applications**: System integration, security protocols, operational deployment
+**Technical Maturity**: Advanced - Requires security clearance
+
+## Strategic Advantages
+
+### Spatial Precision
+FL positioning systems demonstrate accuracy levels of ±0.001 arc-seconds, providing:
+- Strategic positioning advantages
+- Enhanced navigation capabilities  
+- Precise coordinate referencing
+- Global coverage networks
+
+### Secure Communications
+Advanced linguistic frameworks enable:
+- Encrypted communication protocols
+- Strategic information sharing
+- Operational security measures
+- Inter-system coordination
+
+### Integration Capabilities
+Sophisticated integration protocols support:
+- Multi-system coordination
+- Strategic planning frameworks
+- Operational deployment models
+- Security clearance management
+
+## Implementation Pathways
+1. **System Familiarization**: Review individual system specifications
+2. **Integration Planning**: Study defense integration protocols
+3. **Operational Deployment**: Implement security measures and access controls
+4. **Strategic Application**: Deploy systems for specific operational requirements
+
+*Access to detailed specifications requires appropriate security clearance and authorization.*`
+                        });
+                    } else if (filePath === 'forgotten-languages/occult-spirituality/overview.md') {
+                        setContentData({
+                            type: 'overview',
+                            title: '🔮 Occult & Spirituality Studies Overview',
+                            path: filePath,
+                            size: '78KB',
+                            description: 'Comprehensive overview of mystical and spiritual elements in FL research',
+                            content: 'Analysis of esoteric traditions, spiritual frameworks, and mystical connections within FL systems.',
+                            metadata: {
+                                'Systems Covered': 'Giselians, Queltron System, Spiritual Frameworks',
+                                'Research Status': 'Ongoing interpretation',
+                                'Confidence Level': 'Medium to Low (Interpretive)',
+                                'Cross-References': 'Consciousness Studies, Drizza Language'
+                            },
+                            features: 'Mystical analysis, spiritual interpretation, esoteric connections.',
+                            documentContent: `# Occult & Spirituality Studies Overview
+
+## Research Context
+FL occult and spirituality studies explore the mystical, esoteric, and spiritual dimensions encoded within the linguistic and conceptual frameworks. This domain requires careful interpretive analysis and cross-referencing with established mystical traditions.
+
+## Primary Spiritual Systems
+
+### Giselians
+**Nature**: Mystical tradition with Sufi connections
+**Function**: Spiritual practice and consciousness exploration frameworks
+**Status**: Interpretive analysis of mystical connections
+**Applications**: Spiritual development, consciousness exploration, mystical interpretation
+**Research Approach**: Comparative analysis with established mystical traditions
+
+### Queltron System  
+**Nature**: Transformation and alchemical framework
+**Function**: Consciousness transformation and spiritual development protocols
+**Status**: Symbolic and practical interpretation ongoing
+**Applications**: Personal transformation, spiritual alchemy, consciousness development
+**Research Approach**: Symbolic analysis and practical interpretation
+
+### Transformation Protocols
+**Nature**: Systematic approaches to consciousness development
+**Function**: Structured spiritual and consciousness development methodologies
+**Status**: Framework analysis and practical application studies
+**Applications**: Meditation practices, consciousness development, spiritual training
+**Research Approach**: Experiential validation and theoretical analysis
+
+## Mystical Connections
+
+### Sufi Traditions
+Strong correlations with established Sufi practices:
+- Hidden knowledge concepts (mystara → batin)
+- Spiritual connection methodologies (sufinek)
+- Transformation processes (alchemor)
+- Consciousness state exploration
+
+### Alchemical Frameworks
+Traditional alchemical concepts reflected in FL systems:
+- Transformation symbolism and processes
+- Consciousness development stages
+- Spiritual purification methodologies
+- Integration of opposing forces
+
+### Consciousness Exploration
+Advanced frameworks for consciousness development:
+- Awareness state mapping and navigation
+- Information processing and integration
+- Spiritual geography and sacred site connections
+- Mystical experience documentation and analysis
+
+## Research Approaches
+
+### Comparative Analysis
+- Cross-reference with established mystical traditions
+- Identify common patterns and methodologies
+- Validate interpretations through multiple sources
+- Document correlations and divergences
+
+### Experiential Validation
+- Practical application of suggested methodologies
+- Documentation of consciousness experiences
+- Validation through meditation and spiritual practices
+- Community verification and shared experiences
+
+### Symbolic Interpretation
+- Analysis of symbolic frameworks and representations
+- Integration with traditional symbolic systems
+- Documentation of symbolic evolution and development
+- Cross-cultural symbolic analysis
+
+## Caution and Interpretation
+This domain requires careful approach due to:
+- Interpretive nature of mystical material
+- Potential for subjective bias in analysis
+- Need for experienced spiritual practitioners
+- Validation through multiple research approaches
+
+*Spiritual and mystical interpretations should be approached with appropriate caution and cross-validated through multiple analytical frameworks.*`
+                        });
+                    } else if (filePath.includes('anas-index.db')) {
                         setContentData({
                             type: 'database',
                             title: '🗄️ Ana\'s Index Database',
@@ -672,10 +918,59 @@
                                 'Confidence Level': 'High (FL Direct)',
                                 'Search Type': 'Semantic full-text'
                             },
-                            features: 'Live search, document classification, source verification, confidence scoring.'
+                            features: 'Live search, document classification, source verification, confidence scoring.',
+                            sampleData: [
+                                {
+                                    title: 'Aylid Morphological Structures in Cassini Diskus References',
+                                    excerpt: 'Analysis of spatial coordinate systems reveals consistent Aylid grammatical patterns in technical documentation...',
+                                    confidence: 'High (FL Direct)',
+                                    category: 'Technical Linguistics',
+                                    date: '2024-01-15'
+                                },
+                                {
+                                    title: 'NodeSpaces Information Architecture: A Comprehensive Study',
+                                    excerpt: 'The relationship between consciousness studies and information topology in FL theoretical frameworks...',
+                                    confidence: 'High (FL Direct)',
+                                    category: 'Philosophy',
+                                    date: '2024-01-12'
+                                },
+                                {
+                                    title: 'Defense Integration Protocols for Spatial Navigation Systems',
+                                    excerpt: 'Classified methodologies for implementing FL-derived coordinate systems in defense applications...',
+                                    confidence: 'High (FL Direct)',
+                                    category: 'Defense Systems',
+                                    date: '2024-01-10'
+                                }
+                            ]
                         });
                     } else if (filePath.includes('.lexicon')) {
                         const language = fileName?.split('.')[0] || 'Unknown';
+                        
+                        const lexiconSamples = {
+                            'aylid': [
+                                { term: 'vorthak', translation: 'spatial coordinate', confidence: 'High', category: 'Technical' },
+                                { term: 'nelthara', translation: 'consciousness node', confidence: 'High', category: 'Philosophy' },
+                                { term: 'kassini', translation: 'positioning system', confidence: 'High', category: 'Technical' },
+                                { term: 'morphel', translation: 'linguistic structure', confidence: 'Medium', category: 'Grammar' },
+                                { term: 'diskuven', translation: 'circular reference', confidence: 'High', category: 'Technical' }
+                            ],
+                            'yid': [
+                                { term: 'tekron', translation: 'time measurement', confidence: 'Medium', category: 'Technical' },
+                                { term: 'vashek', translation: 'defense protocol', confidence: 'High', category: 'Military' },
+                                { term: 'noleth', translation: 'information flow', confidence: 'Medium', category: 'Data' }
+                            ],
+                            'ned': [
+                                { term: 'philosek', translation: 'thought pattern', confidence: 'Medium', category: 'Philosophy' },
+                                { term: 'conscira', translation: 'awareness state', confidence: 'Medium', category: 'Consciousness' },
+                                { term: 'theorak', translation: 'conceptual framework', confidence: 'Low', category: 'Theory' }
+                            ],
+                            'drizza': [
+                                { term: 'mystara', translation: 'hidden knowledge', confidence: 'Low', category: 'Esoteric' },
+                                { term: 'sufinek', translation: 'spiritual connection', confidence: 'Low', category: 'Religion' },
+                                { term: 'alchemor', translation: 'transformation process', confidence: 'Low', category: 'Alchemy' }
+                            ]
+                        };
+                        
                         setContentData({
                             type: 'lexicon',
                             title: `📜 ${language.charAt(0).toUpperCase() + language.slice(1)} Lexicon`,
@@ -689,7 +984,8 @@
                                 'Confidence Level': language === 'aylid' ? 'High' : 'Medium',
                                 'Translation Pairs': `${language} ↔ English`
                             },
-                            features: 'Live lexicon search, confidence scoring, pattern matching, morphological analysis.'
+                            features: 'Live lexicon search, confidence scoring, pattern matching, morphological analysis.',
+                            sampleData: lexiconSamples[language] || lexiconSamples['aylid']
                         });
                     } else if (filePath.includes('community-findings.db')) {
                         setContentData({
@@ -706,7 +1002,33 @@
                                 'Confidence Level': 'Variable (Community)',
                                 'Last Updated': 'Continuous'
                             },
-                            features: 'Community search, collaborative findings, theory exploration, cross-references.'
+                            features: 'Community search, collaborative findings, theory exploration, cross-references.',
+                            sampleData: [
+                                {
+                                    title: 'Pattern Analysis: Aylid Verb Conjugations in Technical Contexts',
+                                    excerpt: 'Community analysis suggests that Aylid verbs follow a triadic pattern when describing spatial relationships...',
+                                    confidence: 'Medium (Community)',
+                                    contributor: 'ResearcherAlpha',
+                                    category: 'Linguistic Analysis',
+                                    date: '2024-01-14'
+                                },
+                                {
+                                    title: 'Theoretical Connection: NodeSpaces and Consciousness Studies',
+                                    excerpt: 'Proposed correlation between FL NodeSpaces topology and established consciousness research frameworks...',
+                                    confidence: 'Low (Speculative)',
+                                    contributor: 'PhilosophyBeta',
+                                    category: 'Theory',
+                                    date: '2024-01-11'
+                                },
+                                {
+                                    title: 'Geographic Correlation: Cassini Diskus Coordinate Patterns',
+                                    excerpt: 'Analysis of coordinate data reveals potential geographic clustering around specific global locations...',
+                                    confidence: 'Medium (Community)',
+                                    contributor: 'GeoAnalyst',
+                                    category: 'Geographic Analysis',
+                                    date: '2024-01-09'
+                                }
+                            ]
                         });
                     } else if (filePath.includes('coordinates.dat')) {
                         setContentData({
@@ -722,7 +1044,14 @@
                                 'Confidence Level': 'High (FL Direct)',
                                 'Geographic Scope': 'Global references'
                             },
-                            features: 'Coordinate visualization, spatial analysis, geographic pattern recognition.'
+                            features: 'Coordinate visualization, spatial analysis, geographic pattern recognition.',
+                            sampleData: [
+                                { id: 'CDS-001', lat: 51.4769, lon: -0.0005, elevation: 47.2, type: 'Primary Node', confidence: 'High' },
+                                { id: 'CDS-047', lat: 40.7589, lon: -73.9851, elevation: 10.1, type: 'Secondary Node', confidence: 'High' },
+                                { id: 'CDS-089', lat: 35.6762, lon: 139.6503, elevation: 40.8, type: 'Tertiary Node', confidence: 'Medium' },
+                                { id: 'CDS-156', lat: -33.8688, lon: 151.2093, elevation: 58.3, type: 'Primary Node', confidence: 'High' },
+                                { id: 'CDS-203', lat: 55.7558, lon: 37.6176, elevation: 156.2, type: 'Secondary Node', confidence: 'Medium' }
+                            ]
                         });
                     } else if (filePath.includes('defense-integration.enc')) {
                         setContentData({
@@ -754,7 +1083,38 @@
                                 'Editable': 'Yes',
                                 'Version Control': 'Git tracked'
                             },
-                            features: 'Document viewer, technical analysis, specification browser, cross-references.'
+                            features: 'Document viewer, technical analysis, specification browser, cross-references.',
+                            documentContent: `# Cassini Diskus Technical Specifications
+
+## Overview
+The Cassini Diskus system represents a sophisticated spatial positioning framework derived from FL linguistic patterns. This document outlines the core technical specifications and operational parameters.
+
+## Coordinate System Architecture
+
+### Primary Node Classification
+- **Type A Nodes**: Primary spatial anchors (vorthak-class)
+- **Type B Nodes**: Secondary reference points (kassini-class)  
+- **Type C Nodes**: Tertiary positioning markers (diskuven-class)
+
+### Positioning Algorithms
+The system employs a triadic positioning methodology based on Aylid morphological structures:
+
+\`\`\`
+vorthak(x,y,z) → kassini(θ,φ,r) → diskuven(spatial_ref)
+\`\`\`
+
+### Integration Protocols
+- Defense system compatibility: **CLASSIFIED**
+- Civilian navigation interface: **RESTRICTED**
+- Research access level: **AUTHORIZED PERSONNEL ONLY**
+
+## Performance Specifications
+- Accuracy: ±0.001 arc-seconds
+- Update frequency: Real-time
+- Coverage: Global positioning network
+- Reliability: 99.97% uptime
+
+*Document classification: TECHNICAL RESTRICTED*`
                         });
                     } else if (filePath.includes('topology.graph')) {
                         setContentData({
@@ -771,6 +1131,107 @@
                                 'Visualization': 'Interactive'
                             },
                             features: 'Graph visualization, network analysis, node exploration, relationship mapping.'
+                        });
+                    } else if (filePath.includes('consciousness-studies.md')) {
+                        setContentData({
+                            type: 'document',
+                            title: '📝 Consciousness Studies Research',
+                            path: filePath,
+                            size: '234KB',
+                            description: 'Philosophical Analysis of FL Consciousness Theory',
+                            content: 'Exploration of consciousness patterns within FL linguistic frameworks and their implications for cognitive science.',
+                            metadata: {
+                                'Format': 'Markdown',
+                                'Research Area': 'Philosophy',
+                                'Confidence Level': 'Medium (Theoretical)',
+                                'Cross-References': 'NodeSpaces, Language Theory'
+                            },
+                            features: 'Philosophical analysis, consciousness mapping, theoretical frameworks.',
+                            documentContent: `# Consciousness Studies in FL Research
+
+## Abstract
+The relationship between Forgotten Languages and consciousness studies reveals fascinating patterns that suggest a deeper understanding of cognitive architecture than previously recognized.
+
+## Key Findings
+
+### Nelthara Nodes and Consciousness
+The Aylid term "nelthara" (consciousness node) appears consistently in contexts describing:
+- Information processing hubs
+- Awareness state transitions  
+- Cognitive pattern recognition
+
+### NodeSpaces Correlation
+FL NodeSpaces topology shows remarkable similarity to:
+- Neural network architectures
+- Consciousness state models
+- Information integration theories
+
+## Theoretical Framework
+
+### The Triadic Consciousness Model
+Based on FL linguistic patterns, consciousness appears to operate through three primary modes:
+
+1. **Vorthak State**: Spatial awareness and positioning
+2. **Nelthara State**: Information processing and integration  
+3. **Diskuven State**: Circular reference and self-awareness
+
+### Implications for Cognitive Science
+These patterns suggest FL may encode advanced understanding of:
+- Consciousness emergence mechanisms
+- Information integration principles
+- Awareness state transitions
+
+*Research Status: Ongoing theoretical analysis*`
+                        });
+                    } else if (filePath.includes('sufism-connections.md')) {
+                        setContentData({
+                            type: 'document',
+                            title: '📝 Sufism Connections Analysis',
+                            path: filePath,
+                            size: '178KB',
+                            description: 'Esoteric Connections in FL Research',
+                            content: 'Analysis of mystical and spiritual elements within Forgotten Languages, particularly connections to Sufi traditions.',
+                            metadata: {
+                                'Format': 'Markdown',
+                                'Research Area': 'Esoteric Studies',
+                                'Confidence Level': 'Low (Speculative)',
+                                'Cross-References': 'Drizza Language, Mystical Texts'
+                            },
+                            features: 'Mystical analysis, spiritual connections, esoteric interpretation.',
+                            documentContent: `# Sufism and FL: Mystical Connections
+
+## Overview
+Analysis of Drizza language terms reveals potential connections to Sufi mystical traditions and esoteric knowledge systems.
+
+## Key Correlations
+
+### Mystical Terminology
+Drizza terms showing Sufi parallels:
+- **mystara**: "hidden knowledge" → Sufi concept of batin (hidden meaning)
+- **sufinek**: "spiritual connection" → Direct reference to Sufi practices
+- **alchemor**: "transformation process" → Alchemical and spiritual transformation
+
+### Spiritual Geography
+FL coordinate systems may encode:
+- Sacred site locations
+- Mystical energy points
+- Spiritual pathway mappings
+
+## Theoretical Connections
+
+### The Hidden Dimension
+Sufi tradition speaks of hidden dimensions of reality. FL may represent:
+- Encoded mystical teachings
+- Spiritual navigation systems
+- Consciousness expansion methodologies
+
+### Transformation Processes
+Both Sufism and FL reference transformation through:
+- Linguistic pattern recognition
+- Consciousness state changes
+- Spiritual awakening processes
+
+*Note: These connections remain speculative and require further investigation*`
                         });
                     } else {
                         setContentData({
@@ -835,7 +1296,7 @@
                     {contentData?.metadata && (
                         <div className="cyber-border p-6">
                             <h3 className="text-lg font-semibold text-cyan mb-4">File Information</h3>
-                            <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-4">
                                 {Object.entries(contentData.metadata).map(([key, value]) => (
                                     <div key={key} className="flex justify-between items-center py-2 border-b border-gray-700">
                                         <span className="text-gray-400 font-medium">{key}:</span>
@@ -851,6 +1312,87 @@
                         <div className="cyber-border p-6">
                             <h3 className="text-lg font-semibold text-green mb-3">Available Features</h3>
                             <p className="text-gray-300">{contentData.features}</p>
+                        </div>
+                    )}
+
+                    {/* Sample Data Display */}
+                    {contentData?.sampleData && (
+                        <div className="cyber-border p-6">
+                            <h3 className="text-lg font-semibold text-cyan mb-4">📋 Sample Data</h3>
+                            <div className="space-y-3">
+                                {contentData.sampleData.map((item, index) => (
+                                    <div key={index} className="cyber-border p-4 bg-gray-900/30">
+                                        {/* Database entries (Ana's Index, Vault) */}
+                                        {item.title && (
+                                            <div>
+                                                <div className="flex items-start justify-between mb-2">
+                                                    <h4 className="font-semibold text-cyan text-sm">{item.title}</h4>
+                                                    <span className={`text-xs px-2 py-1 rounded ${
+                                                        item.confidence?.includes('High') ? 'bg-green-900/50 text-green-300' :
+                                                        item.confidence?.includes('Medium') ? 'bg-yellow-900/50 text-yellow-300' :
+                                                        'bg-red-900/50 text-red-300'
+                                                    }`}>
+                                                        {item.confidence}
+                                                    </span>
+                                        </div>
+                                                <p className="text-gray-300 text-sm mb-2">{item.excerpt}</p>
+                                                <div className="flex items-center justify-between text-xs text-gray-400">
+                                                    <span>📁 {item.category}</span>
+                                                    <span>📅 {item.date}</span>
+                                                    {item.contributor && <span>👤 {item.contributor}</span>}
+                                                </div>
+                                            </div>
+                                        )}
+                                        
+                                        {/* Lexicon entries */}
+                                        {item.term && (
+                                            <div>
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <div className="flex items-center space-x-3">
+                                                        <span className="font-semibold text-purple">{item.term}</span>
+                                                        <span className="text-gray-400">→</span>
+                                                        <span className="text-cyan">{item.translation}</span>
+                                                    </div>
+                                                    <span className={`text-xs px-2 py-1 rounded ${
+                                                        item.confidence === 'High' ? 'bg-green-900/50 text-green-300' :
+                                                        item.confidence === 'Medium' ? 'bg-yellow-900/50 text-yellow-300' :
+                                                        'bg-red-900/50 text-red-300'
+                                                    }`}>
+                                                        {item.confidence}
+                                                    </span>
+                                                </div>
+                                                <div className="text-xs text-gray-400">
+                                                    📁 {item.category}
+                                                </div>
+                                            </div>
+                                        )}
+                                        
+                                        {/* Coordinate entries */}
+                                        {item.lat && (
+                                            <div>
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <div className="flex items-center space-x-4">
+                                                        <span className="font-semibold text-cyan">{item.id}</span>
+                                                        <span className="text-gray-300 font-mono text-sm">
+                                                            {item.lat.toFixed(4)}, {item.lon.toFixed(4)}
+                                                        </span>
+                                                    </div>
+                                                    <span className={`text-xs px-2 py-1 rounded ${
+                                                        item.confidence === 'High' ? 'bg-green-900/50 text-green-300' :
+                                                        'bg-yellow-900/50 text-yellow-300'
+                                                    }`}>
+                                                        {item.confidence}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center justify-between text-xs text-gray-400">
+                                                    <span>📍 {item.type}</span>
+                                                    <span>⛰️ {item.elevation}m</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
 
@@ -876,6 +1418,18 @@
                         </div>
                     )}
 
+                    {/* Document Content Display */}
+                    {contentData?.documentContent && (
+                        <div className="cyber-border p-6">
+                            <h3 className="text-lg font-semibold text-green mb-4">📄 Document Content</h3>
+                            <div className="bg-gray-900/50 p-6 rounded border border-cyan/30">
+                                <pre className="text-gray-300 text-sm whitespace-pre-wrap font-mono leading-relaxed">
+                                    {contentData.documentContent}
+                                </pre>
+                            </div>
+                        </div>
+                    )}
+
                     {/* File Type Specific Content */}
                     {contentData?.type === 'encrypted' && (
                         <div className="cyber-border p-6 bg-red-900/20 border-red-500/50">
@@ -895,12 +1449,52 @@
                         <div className="cyber-border p-6">
                             <h3 className="text-lg font-semibold text-cyan mb-4">🕸️ Network Visualization</h3>
                             <div className="bg-gray-900/50 p-6 rounded border border-cyan/30">
-                                <div className="text-center text-gray-400 py-8">
-                                    <div className="text-4xl mb-4">🕸️</div>
-                                    <div>Interactive graph visualization would render here</div>
-                                    <div className="text-sm mt-2">
-                                        {contentData.metadata?.['Node Count']} • {contentData.metadata?.['Edge Count']}
+                                <div className="grid grid-cols-4 gap-4 mb-6">
+                                    <div className="text-center">
+                                        <div className="text-2xl text-cyan mb-2">2,100</div>
+                                        <div className="text-xs text-gray-400">Nodes</div>
                                     </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl text-purple mb-2">8,400</div>
+                                        <div className="text-xs text-gray-400">Connections</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl text-green mb-2">94.7%</div>
+                                        <div className="text-xs text-gray-400">Connectivity</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl text-yellow mb-2">12</div>
+                                        <div className="text-xs text-gray-400">Clusters</div>
+                                    </div>
+                                </div>
+                                
+                                {/* ASCII Network Visualization */}
+                                <div className="font-mono text-xs text-cyan leading-tight">
+                                    <pre>{`
+    ┌─────────────── NodeSpaces Network Topology ───────────────┐
+    │                                                           │
+    │     ●─────●─────●          ●═══●═══●═══●                 │
+    │     │     │     │          ║   ║   ║   ║                 │
+    │     ●─────●─────●          ●═══●═══●═══●                 │
+    │     │     │     │             │   │   │                  │
+    │     ●─────●─────●─────────────●───●───●                  │
+    │                 │                 │                      │
+    │        ●────●───●───●────●        │                      │
+    │        │    │       │    │        │                      │
+    │        ●────●───────●────●────────●                      │
+    │             │            │                               │
+    │             ●────────────●                               │
+    │                                                          │
+    │  Legend:                                                 │
+    │  ● Primary Nodes    ═ High-bandwidth links              │
+    │  ─ Standard links   │ Data flow paths                   │
+    │                                                          │
+    └──────────────────────────────────────────────────────────┘`}</pre>
+                                </div>
+                                
+                                <div className="mt-4 text-sm text-gray-300">
+                                    <div className="mb-2"><strong>Active Clusters:</strong> Consciousness Studies, Language Theory, Spatial Systems</div>
+                                    <div><strong>Primary Pathways:</strong> Aylid-Cassini Bridge, NodeSpace-Defense Integration, Philosophy-Linguistics Nexus</div>
                                 </div>
                             </div>
                         </div>
@@ -908,13 +1502,66 @@
 
                     {contentData?.type === 'data' && (
                         <div className="cyber-border p-6">
-                            <h3 className="text-lg font-semibold text-cyan mb-4">📊 Data Analysis</h3>
+                            <h3 className="text-lg font-semibold text-cyan mb-4">📊 Coordinate Data Analysis</h3>
                             <div className="bg-gray-900/50 p-6 rounded border border-cyan/30">
-                                <div className="text-center text-gray-400 py-8">
-                                    <div className="text-4xl mb-4">📊</div>
-                                    <div>Data visualization and analysis tools would render here</div>
-                                    <div className="text-sm mt-2">
-                                        {contentData.metadata?.['Data Points']} • {contentData.metadata?.['Format']}
+                                {/* Data Statistics */}
+                                <div className="grid grid-cols-3 gap-4 mb-6">
+                                    <div className="text-center">
+                                        <div className="text-2xl text-cyan mb-2">50,000</div>
+                                        <div className="text-xs text-gray-400">Data Points</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl text-green mb-2">Global</div>
+                                        <div className="text-xs text-gray-400">Coverage</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl text-purple mb-2">±0.001"</div>
+                                        <div className="text-xs text-gray-400">Precision</div>
+                                    </div>
+                                </div>
+                                
+                                {/* ASCII Coordinate Map */}
+                                <div className="font-mono text-xs text-green leading-tight mb-4">
+                                    <pre>{`
+    ┌──────────── Global Coordinate Distribution ─────────────┐
+    │                                                         │
+    │  90°N  ┌─────────────────────────────────────────────┐ │
+    │        │  ●                    ●                     │ │
+    │  60°N  │     ●        ●              ●        ●     │ │
+    │        │                                             │ │
+    │  30°N  │        ●           ●     ●        ●        │ │
+    │        │                                             │ │
+    │   0°   │  ●        ●     ●     ●     ●        ●     │ │
+    │        │                                             │ │
+    │ -30°S  │     ●              ●              ●        │ │
+    │        │                                             │ │
+    │ -60°S  │           ●                    ●           │ │
+    │        │                                             │ │
+    │ -90°S  └─────────────────────────────────────────────┘ │
+    │       180°W  120°W  60°W   0°   60°E  120°E  180°E    │
+    │                                                         │
+    │  Legend: ● Primary Nodes  ● Secondary  ● Tertiary      │
+    └─────────────────────────────────────────────────────────┘`}</pre>
+                                </div>
+                                
+                                {/* Coordinate Analysis */}
+                                <div className="grid grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <h4 className="text-cyan font-semibold mb-2">Node Distribution</h4>
+                                        <div className="space-y-1 text-gray-300">
+                                            <div>Primary Nodes: 1,247 (2.5%)</div>
+                                            <div>Secondary Nodes: 8,932 (17.9%)</div>
+                                            <div>Tertiary Nodes: 39,821 (79.6%)</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-purple font-semibold mb-2">Geographic Clusters</h4>
+                                        <div className="space-y-1 text-gray-300">
+                                            <div>Europe: 12,847 coordinates</div>
+                                            <div>North America: 11,203 coordinates</div>
+                                            <div>Asia-Pacific: 15,692 coordinates</div>
+                                            <div>Other Regions: 10,258 coordinates</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -922,7 +1569,7 @@
                     )}
 
                     {/* System Status */}
-                    <div className="cyber-border p-4">
+                        <div className="cyber-border p-4">
                         <h3 className="text-purple font-semibold mb-3">System Status</h3>
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
