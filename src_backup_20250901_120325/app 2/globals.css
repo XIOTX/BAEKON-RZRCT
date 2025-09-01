@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Red+Hat+Display:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 100vh !important;
+    font-family: 'Red Hat Display', 'JetBrains Mono', monospace;
+    background: 
+      url('/noise-bg.png'),
+      linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%) !important;
+    background-size: auto, cover !important;
+    background-color: transparent !important;
+    color: #e4e4e7;
+    overflow-x: hidden;
+  }
+
+  /* Cyberpunk scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(20, 22, 26, 0.5);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.6);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.8);
+  }
+}
+
+@layer components {
+  .font-display { font-family: 'Red Hat Display', sans-serif; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .text-cyan { color: #00ffff; }
+  .text-purple { color: #a855f7; }
+  .text-green { color: #10b981; }
+  .text-yellow { color: #f59e0b; }
+  .text-red { color: #ef4444; }
+
+  .cyber-border {
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+  }
+
+  .cyber-button {
+    background: rgba(168, 85, 247, 0.2);
+    border: 1px solid rgba(168, 85, 247, 0.5);
+    color: #a855f7;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-family: 'Red Hat Display', sans-serif;
+  }
+
+  .cyber-button:hover {
+    background: rgba(168, 85, 247, 0.3);
+    border-color: rgba(168, 85, 247, 0.7);
+  }
+
+  .cyber-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .cyber-input {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(100, 116, 139, 0.5);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .cyber-input:focus {
+    border-color: rgba(168, 85, 247, 0.6);
+    box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.2);
+  }
+
+  .file-explorer-item {
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    min-height: 24px;
+  }
+
+  .file-explorer-item:hover {
+    background: rgba(0, 255, 255, 0.1);
+    color: #00ffff;
+  }
+  
+  .file-explorer-item.selected {
+    background: rgba(0, 255, 255, 0.2);
+    color: #00ffff;
+    border-left: 3px solid #00ffff;
+  }
+
+  .folder-item {
+    font-weight: 500;
+  }
+
+  .file-item {
+    font-weight: 400;
+  }
+
+  .file-icon, .expand-icon {
+    flex-shrink: 0;
+    width: 16px;
+    text-align: center;
+  }
+
+  .item-name {
+    flex: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .file-size {
+    font-size: 12px;
+    color: #9ca3af;
+    flex-shrink: 0;
+  }
+
+  .expand-arrow {
+    font-size: 10px;
+    color: #6b7280;
+    flex-shrink: 0;
+  }
+}
