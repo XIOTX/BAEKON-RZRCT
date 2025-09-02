@@ -189,6 +189,21 @@
             drop-shadow(0 0 8px rgba(255, 20, 147, 0.6));
   }
 
+  .fl-post-icon-glow {
+    color: #ff8c00; /* Orange color */
+    stroke: #ff8c00; /* Orange stroke */
+    filter: drop-shadow(0 0 12px rgba(255, 140, 0, 0.4)) 
+            drop-shadow(0 0 20px rgba(255, 140, 0, 0.2))
+            drop-shadow(0 0 8px rgba(255, 140, 0, 0.6));
+  }
+
+  .text-orange-glow {
+    color: #ff8c00;
+    text-shadow: 0 0 12px rgba(255, 140, 0, 0.4),
+                 0 0 20px rgba(255, 140, 0, 0.2),
+                 0 0 8px rgba(255, 140, 0, 0.6);
+  }
+
   .module-header-text {
     font-family: 'Cal Sans', 'Red Hat Display', sans-serif !important;
     font-weight: 600 !important;

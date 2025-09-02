@@ -1,56 +1,61 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
+
 export async function POST(request: NextRequest) {
   try {
-    const { message, context, memory } = await request.json();
-    
+    const { message, memory, context } = await request.json();
+
+    // Call actual Claude API with full FL research context
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY || '',
+        'x-api-key': CLAUDE_API_KEY,
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
         model: 'claude-3-5-sonnet-20241022',
         max_tokens: 1000,
-        system: (context || 'You are a helpful AI assistant.') + (memory ? `\n\nPERSISTENT MEMORY:\n${memory}` : ''),
         messages: [
           {
             role: 'user',
-            content: message
+            content: `${context}
+
+Previous memory: ${memory || 'None'}
+
+User message: ${message}
+
+Please respond as the FL research assistant with full knowledge of the Giselians intelligence, Nodespaces framework, and all FL research methodologies. Maintain the conversational tone and include source citations when relevant.`
           }
         ]
       })
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('API Error:', response.status, errorText);
-      throw new Error(`API call failed: ${response.status} - ${errorText}`);
+      throw new Error(`Claude API error: ${response.status}`);
     }
 
     const data = await response.json();
-    const aiResponse = data.content[0].text;
+    const assistantResponse = data.content[0].text;
 
-    // Extract any memory updates from the AI response
-    let updatedMemory = memory || '';
-    if (aiResponse.includes('[MEMORY:') && aiResponse.includes(']')) {
-      const memoryMatch = aiResponse.match(/\[MEMORY:(.*?)\]/s);
-      if (memoryMatch) {
-        updatedMemory = memoryMatch[1].trim();
-      }
-    }
+    // Extract any memory updates from the response
+    const memoryMatch = assistantResponse.match(/\[MEMORY: ([^\]]+)\]/);
+    const updatedMemory = memoryMatch ? `${memory || ''}\n${memoryMatch[1]}`.trim() : memory;
 
-    return NextResponse.json({ 
-      response: aiResponse.replace(/\[MEMORY:.*?\]/s, '').trim(),
+    return NextResponse.json({
+      response: assistantResponse.replace(/\[MEMORY: [^\]]+\]/g, '').trim(),
       memory: updatedMemory
     });
+
   } catch (error) {
     console.error('Chat API error:', error);
     return NextResponse.json(
-      { error: 'Failed to get AI response' },
-      { status: 500 }
+      { 
+        response: 'Sorry, having trouble connecting to the FL research database right now. The system might be processing other queries. Try again in a moment?',
+        memory: memory
+      },
+      { status: 200 } // Return 200 so the frontend doesn't show an error
     );
   }
 }

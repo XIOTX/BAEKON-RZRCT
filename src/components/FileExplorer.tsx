@@ -26,6 +26,12 @@ const OverviewIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" 
   </svg>
 );
 
+const FLPostIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
+  </svg>
+);
+
 interface FileSystemItem {
   type: 'folder' | 'file';
   name: string;
@@ -43,11 +49,59 @@ interface FileExplorerProps {
 export const FileExplorer: React.FC<FileExplorerProps> = ({ onFileSelect }) => {
   const [expandedFolders, setExpandedFolders] = useState<Record<string, boolean>>({
     'research-modules': true,
+    'fl-knowledge-base': true,
+    'fl-knowledge-base/giselians': true,
+    'fl-knowledge-base/nodespaces': true,
     'forgotten-languages': true,
   });
   const [selectedFile, setSelectedFile] = useState<string>('');
 
   const fileSystem: FileSystemItem[] = [
+    {
+      type: 'folder',
+      name: 'fl-knowledge-base',
+      path: 'fl-knowledge-base',
+      icon: 'cube', // Cube for categories
+      children: [
+        { type: 'file', name: 'overview.md', path: 'fl-knowledge-base/overview.md', size: '45KB', fileType: 'overview', icon: '◈' },
+        {
+          type: 'folder',
+          name: 'giselians',
+          path: 'fl-knowledge-base/giselians',
+          icon: 'cube-transparent',
+          children: [
+            { type: 'file', name: 'tid-279-adaptive-warfare.md', path: 'fl-knowledge-base/giselians/tid-279-adaptive-warfare.md', size: '12KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-213-postbiological-civilization.md', path: 'fl-knowledge-base/giselians/tid-213-postbiological-civilization.md', size: '15KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-208-spacecraft-symbols.md', path: 'fl-knowledge-base/giselians/tid-208-spacecraft-symbols.md', size: '8KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-198-super-intuition.md', path: 'fl-knowledge-base/giselians/tid-198-super-intuition.md', size: '6KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-167-other-enemies.md', path: 'fl-knowledge-base/giselians/tid-167-other-enemies.md', size: '5KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-155-technotopia.md', path: 'fl-knowledge-base/giselians/tid-155-technotopia.md', size: '11KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-144-astral-dreams.md', path: 'fl-knowledge-base/giselians/tid-144-astral-dreams.md', size: '7KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-128-time-entanglement.md', path: 'fl-knowledge-base/giselians/tid-128-time-entanglement.md', size: '13KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-49-time-freezing.md', path: 'fl-knowledge-base/giselians/tid-49-time-freezing.md', size: '6KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-45-proto-dreams.md', path: 'fl-knowledge-base/giselians/tid-45-proto-dreams.md', size: '9KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-43-giselian-viruses.md', path: 'fl-knowledge-base/giselians/tid-43-giselian-viruses.md', size: '5KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-36-beacon-presence.md', path: 'fl-knowledge-base/giselians/tid-36-beacon-presence.md', size: '10KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-35-nabu-tablets.md', path: 'fl-knowledge-base/giselians/tid-35-nabu-tablets.md', size: '8KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-34-1976-gilan.md', path: 'fl-knowledge-base/giselians/tid-34-1976-gilan.md', size: '12KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-33-gilan-excavations.md', path: 'fl-knowledge-base/giselians/tid-33-gilan-excavations.md', size: '9KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-32-semiosis-knowledge.md', path: 'fl-knowledge-base/giselians/tid-32-semiosis-knowledge.md', size: '11KB', fileType: 'fl-post', icon: 'fl-post' }
+          ]
+        },
+        {
+          type: 'folder',
+          name: 'nodespaces',
+          path: 'fl-knowledge-base/nodespaces',
+          icon: 'cube-transparent',
+          children: [
+            { type: 'file', name: 'ayndryl-2010-mathematical-framework.md', path: 'fl-knowledge-base/nodespaces/ayndryl-2010-mathematical-framework.md', size: '18KB', fileType: 'markdown', icon: '◦' },
+            { type: 'file', name: 'ising-model-analysis.md', path: 'fl-knowledge-base/nodespaces/ising-model-analysis.md', size: '14KB', fileType: 'markdown', icon: '◦' },
+            { type: 'file', name: 'vectorial-system.md', path: 'fl-knowledge-base/nodespaces/vectorial-system.md', size: '12KB', fileType: 'markdown', icon: '◦' },
+            { type: 'file', name: 'language-evolution-examples.md', path: 'fl-knowledge-base/nodespaces/language-evolution-examples.md', size: '16KB', fileType: 'markdown', icon: '◦' }
+          ]
+        }
+      ]
+    },
     {
       type: 'folder',
       name: 'forgotten-languages',
@@ -235,11 +289,13 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ onFileSelect }) => {
           <span className="file-icon text-pink-glow flex items-center">
             {item.fileType === 'overview' ? (
               <OverviewIcon className="w-4 h-4 overview-icon-glow" />
+            ) : item.fileType === 'fl-post' ? (
+              <FLPostIcon className="w-4 h-4 fl-post-icon-glow" />
             ) : (
               item.icon
             )}
           </span>
-          <span className="item-name font-tertiary">{item.name}</span>
+          <span className={`item-name font-tertiary ${item.fileType === 'fl-post' ? 'text-orange-glow' : ''}`}>{item.name}</span>
           <span className="file-size">{item.size}</span>
         </div>
       );
