@@ -1,0 +1,116 @@
+# The Dream-Texture of the Cosmos: Why objects and the observers are inseparable
+
+**Source:** [1oo.uk Forum Thread](https://1oo.uk/showthread.php?tid=142)  
+**Original FL Article:** [Forgotten Languages](https://forgottenlanguages-full.forgottenlanguages.org/2016/12/the-dream-texture-of-cosmos.html)  
+**Category:** Denebian Probes  
+**Thread ID:** 142  
+**Posted:** 02-21-2022, 04:54 PM by lake  
+
+## Images
+- ![18.jpg](/images/fl-articles/denebian-probes/18.jpg)
+- ![19.jpg](/images/fl-articles/denebian-probes/19.jpg)
+
+## Summary
+Explores quantum consciousness theory and observer-observed relationships in alien contact. Reveals how Denebian probes exploit human visual processing limitations and why meaningful communication occurs only in dream states.
+
+## Consciousness and Quantum Measurement Theory
+
+### Non-Computational Consciousness
+**Fundamental Principle:** "Not all conscious activities are computational processes"
+- **Observer Requirement:** "Consciousness is a phenomenon experienced by a special type of object, the one we call 'observer'"
+- **Quantum Measurement Dependency:** "All quantum measurements require an observer, a conscious observer"
+- **Cosmic Significance:** "Quantum systems that necessarily involves a certain conscious activity... seem to be essential for explaining the Cosmos"
+
+### Observable-Observer Relationship
+**Conscious Status Representation:** "An observable is considered to represent the conscious status of an observer while observing a given state vector, that is, a phenomenon"
+
+## Denebian Probe-Human Quantum Entanglement
+
+### Inseparable Observer-Observed Dynamic
+**Quantum Binding:** "When a Denebian probe observing, at a given point in time, a conscious being... the observer and the Denebian probe are bound and inseparable, at least for the time the observation takes place"
+
+### Consciousness Ambiguity in Contact
+**Identity Crisis:** "Let's assume instead of a Denebian probe we have a process in which a human and a Giselian meet face to face. Who is the observer? Who's the observed?"
+- Mutual observation creates quantum entanglement
+- Observer-observed roles become indeterminate
+- Both entities simultaneously observe and are observed
+
+## Scientific Paradigm Limitations
+
+### Naïve Realism Problem
+**Instrumental Bias:** "Scientists believe in naïve realism. Only what they see with their instruments seems real"
+- **Probe Invisibility:** "They cannot see Denebian probes, therefore Denebian probes do not exist"
+- **Paradigm Shift:** "That was the paradigm before the Yulara event"
+- Instruments determine reality perception rather than actual reality
+
+## Human Visual Processing Limitations
+
+### Information Processing Rate Constraints
+**Biological Bottleneck:** "Your visual perception has a maximum rate of information processing that cannot be exceeded. That rate is about 45 bits per second"
+
+### Brain Information Processing Model
+**Information as Patterns:** "Your brain treats observations as a message containing information, and... information for you means regularities, patterns, and a definite statistical structure. Otherwise your brain wouldn't be able to process the information"
+
+## Denebian Probe Exploitation Strategy
+
+### Biological Limitation Engineering
+**Adaptive Design:** "The Denebian probe is engineered to cope with those biological limitations in your brain"
+- **Processing Rate Awareness:** Probes understand human 45 bits/second limitation
+- **Pattern Recognition Exploitation:** Leverages human need for regularities and patterns
+- **Information Structure Manipulation:** Designed to exceed human processing capabilities
+
+### Sensory Overload Tactics
+**Deliberate Confusion Strategy:** "That's why the Denebian probe flickers, quickly changes position, shape, colour, etc., so fast your brain simply cannot process what your eyes see"
+
+**Psychological Impact:** "And there you are, puzzled, stoned, amazed at what have just happened in your living room, in front of you, and for which you find no words to describe. It is a heartbreaking and totally distressing experience"
+
+## Consciousness Processing Delays
+
+### Action-Awareness Gap
+**Temporal Disconnect:** "There is a time-delay between when the thought of an action occurs and when the awareness of making an action happens"
+
+### Memory Comparison System
+**Continuous Processing:** "Your brain is always performing a constant comparison of incoming information with that in memory and this process is essential for understanding the meaning of the incoming information"
+
+## Dream State Communication
+
+### Conscious State Limitations
+**Waking State Inadequacy:** "Denebian probes are designed taking these limitations into account, and that's why you can get an approximate idea of what these probes are only when you dream"
+
+### Dream State Advantages
+**Optimal Communication Channel:** "Information exchange with these 'entities' can only be done in the dream state"
+- Dream state bypasses conscious processing limitations
+- Allows direct information transfer without sensory bottlenecks
+- Enables comprehension beyond normal cognitive constraints
+- Provides access to probe communication protocols
+
+## Consciousness State Engineering
+
+### Probe Design Philosophy
+- Recognition and exploitation of human cognitive limitations
+- Engineering specifically designed to overwhelm conscious processing
+- Deliberate creation of incomprehensible experiences
+- Forced reliance on alternative consciousness states for communication
+
+### Communication Protocol Implications
+- Waking consciousness inadequate for probe communication
+- Dream state represents optimal interface for information exchange
+- Conscious confusion serves strategic probe purposes
+- Alternative consciousness states required for meaningful contact
+
+## Quantum Observer Effects
+
+### Mutual Observation Dynamics
+- Both human and probe simultaneously observe each other
+- Quantum entanglement during observation periods
+- Observer-observed distinction becomes meaningless
+- Shared consciousness states during contact events
+
+### Reality Construction Through Observation
+- Observation creates rather than simply records reality
+- Consciousness plays active role in phenomenon manifestation
+- Observer and observed co-create contact experience
+- Quantum measurement requires conscious participation
+
+## FL Research Context
+This article provides fundamental theoretical framework for understanding why alien contact experiences are often confusing and incomprehensible in normal consciousness states. It explains the quantum mechanical basis for observer-observed entanglement and reveals why dream states may be the optimal channel for meaningful communication with non-human intelligence.

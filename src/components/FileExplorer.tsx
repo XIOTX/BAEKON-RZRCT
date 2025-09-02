@@ -52,6 +52,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ onFileSelect }) => {
     'fl-knowledge-base': true,
     'fl-knowledge-base/giselians': true,
     'fl-knowledge-base/nodespaces': true,
+    'fl-knowledge-base/denebian-probes': true,
     'forgotten-languages': true,
   });
   const [selectedFile, setSelectedFile] = useState<string>('');
@@ -98,6 +99,33 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ onFileSelect }) => {
             { type: 'file', name: 'ising-model-analysis.md', path: 'fl-knowledge-base/nodespaces/ising-model-analysis.md', size: '14KB', fileType: 'markdown', icon: '◦' },
             { type: 'file', name: 'vectorial-system.md', path: 'fl-knowledge-base/nodespaces/vectorial-system.md', size: '12KB', fileType: 'markdown', icon: '◦' },
             { type: 'file', name: 'language-evolution-examples.md', path: 'fl-knowledge-base/nodespaces/language-evolution-examples.md', size: '16KB', fileType: 'markdown', icon: '◦' }
+          ]
+        },
+        {
+          type: 'folder',
+          name: 'denebian-probes',
+          path: 'fl-knowledge-base/denebian-probes',
+          icon: 'cube-transparent',
+          children: [
+            { type: 'file', name: 'tid-240-invisible-intentional-systems.md', path: 'fl-knowledge-base/denebian-probes/tid-240-invisible-intentional-systems.md', size: '14KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-228-grammaticalization-probes.md', path: 'fl-knowledge-base/denebian-probes/tid-228-grammaticalization-probes.md', size: '11KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-226-biological-algorithms.md', path: 'fl-knowledge-base/denebian-probes/tid-226-biological-algorithms.md', size: '16KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-221-sociovirology-extraterrestrial.md', path: 'fl-knowledge-base/denebian-probes/tid-221-sociovirology-extraterrestrial.md', size: '18KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-219-quantum-cognition-dynamics.md', path: 'fl-knowledge-base/denebian-probes/tid-219-quantum-cognition-dynamics.md', size: '13KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-196-ai-superai-communication.md', path: 'fl-knowledge-base/denebian-probes/tid-196-ai-superai-communication.md', size: '15KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-195-contact-metaphysical-prejudice.md', path: 'fl-knowledge-base/denebian-probes/tid-195-contact-metaphysical-prejudice.md', size: '17KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-186-dysgenic-evolutionary-paths.md', path: 'fl-knowledge-base/denebian-probes/tid-186-dysgenic-evolutionary-paths.md', size: '16KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-183-humans-informational-labyrinth.md', path: 'fl-knowledge-base/denebian-probes/tid-183-humans-informational-labyrinth.md', size: '14KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-175-stellar-engineering.md', path: 'fl-knowledge-base/denebian-probes/tid-175-stellar-engineering.md', size: '19KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-166-consciousness-technological-resource.md', path: 'fl-knowledge-base/denebian-probes/tid-166-consciousness-technological-resource.md', size: '20KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-160-human-probe-mutual-adaptation.md', path: 'fl-knowledge-base/denebian-probes/tid-160-human-probe-mutual-adaptation.md', size: '15KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-150-scale-invariance-contact.md', path: 'fl-knowledge-base/denebian-probes/tid-150-scale-invariance-contact.md', size: '17KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-142-dream-texture-cosmos.md', path: 'fl-knowledge-base/denebian-probes/tid-142-dream-texture-cosmos.md', size: '18KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-139-cambrian-skies-cover.md', path: 'fl-knowledge-base/denebian-probes/tid-139-cambrian-skies-cover.md', size: '16KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-134-strange-object-dp2147.md', path: 'fl-knowledge-base/denebian-probes/tid-134-strange-object-dp2147.md', size: '13KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-119-cosmic-ancient-civilizations.md', path: 'fl-knowledge-base/denebian-probes/tid-119-cosmic-ancient-civilizations.md', size: '16KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-115-knowledge-communication-time.md', path: 'fl-knowledge-base/denebian-probes/tid-115-knowledge-communication-time.md', size: '19KB', fileType: 'fl-post', icon: 'fl-post' },
+            { type: 'file', name: 'tid-046-ambiguity-oumuamua.md', path: 'fl-knowledge-base/denebian-probes/tid-046-ambiguity-oumuamua.md', size: '17KB', fileType: 'fl-post', icon: 'fl-post' }
           ]
         }
       ]

@@ -528,6 +528,53 @@ Understanding requires knowledge of:
     };
   }
 
+  // Denebian Probes content - read actual markdown files
+  if (filePath.startsWith('fl-knowledge-base/denebian-probes/')) {
+    try {
+      // In a real implementation, you'd read the file from the filesystem
+      // For now, we'll return the structured content with placeholder for markdown
+      return {
+        type: 'fl-post',
+        title: `🛸 ${fileName.replace('.md', '').replace(/tid-\d+-/, '').split('-').map(word => 
+          word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}`,
+        path: filePath,
+        size: '15KB',
+        description: 'Advanced Denebian probe research and analysis from 1oo.uk FL forum archives',
+        content: 'Comprehensive analysis of Denebian probe systems, behavior, and strategic implications. This document contains detailed FL research on extraterrestrial probe technology and interaction protocols.',
+        metadata: {
+          'Category': 'Denebian Probes',
+          'Source': '1oo.uk FL Forum',
+          'Research Type': 'Probe Analysis',
+          'Confidence Level': 'High (FL Direct)',
+          'Last Updated': '2025-01-23'
+        },
+        features: 'Advanced probe analysis, behavioral studies, strategic assessment, interaction protocols.',
+        documentContent: `# ${fileName.replace('.md', '').replace(/tid-\d+-/, '').split('-').map(word => 
+          word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+
+## FL Research Document
+
+This document contains advanced research on Denebian probe systems from the 1oo.uk FL forum archives.
+
+**Note:** The full markdown content with images is available in the actual file at: \`${filePath}\`
+
+### Images Available
+This document contains detailed technical diagrams and visual analysis from the original FL research.
+
+### Key Research Areas
+- Probe behavioral patterns and communication protocols
+- Advanced technological capabilities and limitations  
+- Strategic implications for human defense and contact scenarios
+- Interaction protocols and communication methodologies
+
+*Click on the file in the explorer to view the complete research document with all images and detailed analysis.*`,
+        rawMarkdown: true // Flag to indicate this should load the actual markdown file
+      };
+    } catch (error) {
+      console.error('Error loading Denebian probe content:', error);
+    }
+  }
+
   // Default content for other files
   return {
     type: 'generic',

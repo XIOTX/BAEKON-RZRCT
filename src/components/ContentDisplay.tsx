@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { getFileContent, ContentData } from '@/services/contentService';
+import { MarkdownRenderer } from './MarkdownRenderer';
 
 interface ContentDisplayProps {
   selectedFile: {path: string, name: string, type: string} | null;
@@ -9,13 +10,16 @@ interface ContentDisplayProps {
 
 export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) => {
   const [contentData, setContentData] = useState<ContentData | null>(null);
+  const [rawMarkdown, setRawMarkdown] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [modalImage, setModalImage] = useState<{src: string, alt: string} | null>(null);
 
   useEffect(() => {
     if (selectedFile) {
       loadContent();
     } else {
       setContentData(null);
+      setRawMarkdown(null);
     }
   }, [selectedFile]);
 
@@ -26,6 +30,24 @@ export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) 
     try {
       const content = await getFileContent(selectedFile.path, selectedFile.name, selectedFile.type);
       setContentData(content);
+
+      // If this is an FL article, also load the raw markdown content
+      if (selectedFile.path.startsWith('fl-knowledge-base/') && selectedFile.path.endsWith('.md')) {
+        try {
+          const response = await fetch(`/api/content?path=${encodeURIComponent(selectedFile.path)}`);
+          if (response.ok) {
+            const data = await response.json();
+            setRawMarkdown(data.content);
+          } else {
+            setRawMarkdown(null);
+          }
+        } catch (markdownError) {
+          console.error('Error loading markdown:', markdownError);
+          setRawMarkdown(null);
+        }
+      } else {
+        setRawMarkdown(null);
+      }
     } catch (error) {
       console.error('Error loading content:', error);
       setContentData({
@@ -34,6 +56,7 @@ export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) 
         description: 'Unable to load the selected file',
         content: 'Please try selecting a different file or check your connection.'
       });
+      setRawMarkdown(null);
     } finally {
       setLoading(false);
     }
@@ -202,13 +225,102 @@ export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) 
       )}
 
       {/* Document Content Display */}
-      {contentData.documentContent && (
+      {rawMarkdown ? (
+        <div className="cyber-border p-6">
+          <h3 className="text-lg font-semibold text-green-400 mb-4">📄 FL Research Document</h3>
+          <div className="bg-gray-900/50 p-6 rounded border border-cyan-400/30">
+            {/* Image Gallery */}
+            {(() => {
+              const imageMatches = rawMarkdown.match(/!\[([^\]]*)\]\(([^)]+)\)/g);
+              if (imageMatches) {
+                return (
+                  <div className="mb-6">
+                    <h4 className="text-cyan-400 font-semibold mb-3">🖼️ Technical Diagrams ({imageMatches.length})</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {imageMatches.map((match, index) => {
+                        const [, alt, src] = match.match(/!\[([^\]]*)\]\(([^)]+)\)/) || [];
+                        return (
+                          <div key={index} className="flex flex-col items-center">
+                            <div className="w-20 h-20 bg-gray-800 border border-cyan-400/30 rounded overflow-hidden flex-shrink-0">
+                              <img 
+                                src={src} 
+                                alt={alt}
+                                className="w-full h-full object-cover cursor-pointer hover:scale-110 transition-transform duration-200"
+                                onClick={() => {
+                                  console.log('Image clicked:', src);
+                                  setModalImage({src, alt});
+                                }}
+                                onError={(e) => {
+                                  console.error('Failed to load image:', src);
+                                  const target = e.currentTarget;
+                                  target.style.border = '2px dashed #ef4444';
+                                  target.style.background = '#1f2937';
+                                }}
+                              />
+                            </div>
+                            {alt && (
+                              <span className="text-xs text-gray-400 text-center mt-1 leading-tight w-20">
+                                {alt}
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              }
+              return null;
+            })()}
+            {/* Display the rest of the content (images are skipped in MarkdownRenderer) */}
+            <MarkdownRenderer content={rawMarkdown} />
+          </div>
+        </div>
+      ) : contentData.documentContent && (
         <div className="cyber-border p-6">
           <h3 className="text-lg font-semibold text-green-400 mb-4">📄 Document Content</h3>
           <div className="bg-gray-900/50 p-6 rounded border border-cyan-400/30">
             <pre className="text-gray-300 text-sm whitespace-pre-wrap font-mono leading-relaxed">
               {contentData.documentContent}
             </pre>
+          </div>
+        </div>
+      )}
+
+      {/* Image Modal */}
+      {modalImage && (
+        <div 
+          className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
+          onClick={() => {
+            console.log('Modal background clicked');
+            setModalImage(null);
+          }}
+        >
+          <div className="relative">
+            <img 
+              src={modalImage.src} 
+              alt={modalImage.alt}
+              className="max-w-[90vw] max-h-[90vh] rounded border border-cyan-400/50 shadow-2xl"
+              onClick={(e) => {
+                console.log('Image clicked in modal');
+                e.stopPropagation();
+              }}
+            />
+            <button 
+              className="absolute -top-10 right-0 text-white bg-red-600 hover:bg-red-700 rounded px-3 py-1 text-sm font-bold"
+              onClick={(e) => {
+                console.log('Close button clicked');
+                e.stopPropagation();
+                setModalImage(null);
+              }}
+            >
+              CLOSE
+            </button>
+            {modalImage.alt && (
+              <div className="absolute -bottom-10 left-0 right-0 text-center text-white text-sm">
+                {modalImage.alt}
+              </div>
+            )}
           </div>
         </div>
       )}
