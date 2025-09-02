@@ -262,11 +262,26 @@ export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) 
                         const [, alt, src] = match.match(/!\[([^\]]*)\]\(([^)]+)\)/) || [];
                         return (
                           <div key={index} className="flex flex-col items-center">
-                            <div 
-                              className="w-24 h-24 bg-gray-800 border border-cyan-400/30 rounded overflow-hidden flex-shrink-0 cursor-pointer hover:border-cyan-400 transition-colors duration-200" 
-                              style={{width: '96px', height: '96px', minWidth: '96px', minHeight: '96px', maxWidth: '96px', maxHeight: '96px'}}
-                              onClick={() => setExpandedImage({src, alt})}
-                            >
+                                                                        <div
+                                              className="w-24 h-24 bg-gray-800 rounded overflow-hidden flex-shrink-0 cursor-pointer transition-all duration-200"
+                                              style={{
+                                                width: '96px', 
+                                                height: '96px', 
+                                                minWidth: '96px', 
+                                                minHeight: '96px', 
+                                                maxWidth: '96px', 
+                                                maxHeight: '96px',
+                                                border: '0.5px solid rgb(192, 128, 255)',
+                                                boxShadow: '0 0 8px rgba(192, 128, 255, 0.4)',
+                                              }}
+                                              onClick={() => setExpandedImage({src, alt})}
+                                              onMouseEnter={(e) => {
+                                                e.currentTarget.style.boxShadow = '0 0 12px rgba(192, 128, 255, 0.6)';
+                                              }}
+                                              onMouseLeave={(e) => {
+                                                e.currentTarget.style.boxShadow = '0 0 8px rgba(192, 128, 255, 0.4)';
+                                              }}
+                                            >
                               <img 
                                 src={src} 
                                 alt={alt}
@@ -319,7 +334,7 @@ export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) 
       {/* Expanded Image Modal */}
       {expandedImage && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-2"
+          className="fixed inset-0 bg-black bg-opacity-85"
           style={{ 
             zIndex: 9999, 
             position: 'fixed', 
@@ -327,31 +342,71 @@ export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) 
             left: 0, 
             right: 0, 
             bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.85)'
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '5px'
           }}
           onClick={() => setExpandedImage(null)}
         >
-          {/* Close button - fixed to top right of screen */}
+          {/* Close button - fixed to top right corner of screen */}
           <button 
-            className="fixed top-6 right-6 bg-purple-600 bg-opacity-40 border border-purple-400 text-purple-200 p-3 rounded-lg hover:bg-purple-500 hover:bg-opacity-60 hover:border-purple-300 hover:text-white transition-all duration-200 shadow-xl backdrop-blur-sm"
-            style={{ zIndex: 10000 }}
+            style={{ 
+              position: 'fixed',
+              top: '20px',
+              right: '20px',
+              zIndex: 10001,
+              backgroundColor: 'transparent',
+              border: 'none',
+              padding: '10px',
+                        color: 'rgb(192, 128, 255)',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          filter: 'drop-shadow(0 0 6px rgba(192, 128, 255, 0.5))'
+            }}
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               setExpandedImage(null);
             }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = 'rgb(220, 190, 255)';
+              e.currentTarget.style.filter = 'drop-shadow(0 0 10px rgba(192, 128, 255, 0.7))';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'rgb(192, 128, 255)';
+              e.currentTarget.style.filter = 'drop-shadow(0 0 6px rgba(192, 128, 255, 0.5))';
+            }}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6" style={{ width: '24px', height: '24px' }}>
+              <defs>
+                <filter id="purpleGlow">
+                  <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                  <feMerge> 
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" style={{ filter: 'url(#purpleGlow)' }} />
             </svg>
           </button>
           
           <img 
             src={expandedImage.src} 
             alt={expandedImage.alt}
-            className="max-w-full max-h-full object-contain rounded shadow-2xl"
             style={{ 
-              maxWidth: 'calc(100vw - 20px)', 
-              maxHeight: 'calc(100vh - 20px)'
+              maxWidth: '78vw', 
+              maxHeight: '82vh',
+              minWidth: '70vmin',
+              minHeight: '70vmin',
+              objectFit: 'contain',
+              borderRadius: '4px',
+              border: '0.5px solid rgb(192, 128, 255)',
+              boxShadow: '0 0 20px rgba(192, 128, 255, 0.5), 0 25px 50px -12px rgba(0, 0, 0, 0.25)'
             }}
             onClick={(e) => e.stopPropagation()}
           />

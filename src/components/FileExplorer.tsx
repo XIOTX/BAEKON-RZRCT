@@ -344,11 +344,11 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ onFileSelect }) => {
             height="24" 
             viewBox="0 0 24 24" 
             fill="none" 
-            stroke="#06b6d4" 
+            stroke="#00C3FF" 
             strokeWidth="1.5" 
             strokeLinecap="round" 
             strokeLinejoin="round"
-            style={{width: '24px', height: '24px', minWidth: '24px', minHeight: '24px', filter: 'drop-shadow(0 0 12px rgba(6, 182, 212, 0.4)) drop-shadow(0 0 20px rgba(6, 182, 212, 0.2)) drop-shadow(0 0 8px rgba(6, 182, 212, 0.6))'}}
+            style={{width: '24px', height: '24px', minWidth: '24px', minHeight: '24px', filter: 'drop-shadow(0 0 12px rgba(0, 195, 255, 0.4)) drop-shadow(0 0 20px rgba(0, 195, 255, 0.2)) drop-shadow(0 0 8px rgba(0, 195, 255, 0.6))'}}
           >
             <path d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Zm.75-12h9v9h-9v-9Z" />
           </svg>
@@ -359,7 +359,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ onFileSelect }) => {
       
       {isHeaderExpanded && (
         <div className="flex-1 overflow-auto">
-          <div className="file-explorer-tree">
+          <div className="file-explorer-tree" style={{padding: '8px 0'}}>
             {fileSystem.map(item => renderFileSystemItem(item))}
           </div>
         </div>
