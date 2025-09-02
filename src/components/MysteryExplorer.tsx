@@ -193,7 +193,7 @@ export const MysteryExplorer: React.FC = () => {
     setAnasLoading(true);
     setAnasError(null);
     try {
-      const response = await fetch(`http://127.0.0.1:8787/anas-index/search?q=${encodeURIComponent(anasQuery)}`);
+      const response = await fetch(`/api/anas-index/search?q=${encodeURIComponent(anasQuery)}`);
       if (!response.ok) throw new Error('Search failed');
       const data = await response.json();
       setAnasResults(data);
@@ -504,7 +504,21 @@ What would you like to explore? I can provide overviews, detailed analysis, or h
                         <p className="text-cyan text-sm">Found {anasResults.length} results:</p>
                         {anasResults.map((result, i) => (
                           <div key={i} className="cyber-border p-3">
-                            <h4 className="text-purple font-semibold text-sm mb-1">{result.title}</h4>
+                            {result.url ? (
+                              <a 
+                                href={result.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="ana-link inline-flex items-center gap-2 transition-colors underline"
+                              >
+                                <h4 className="font-semibold text-sm mb-1">
+                                  {result.title}
+                                </h4>
+                                <span className="text-xs text-cyan">↗</span>
+                              </a>
+                            ) : (
+                              <h4 className="text-purple font-semibold text-sm mb-1">{result.title}</h4>
+                            )}
                             <p className="text-gray-400 text-xs">{result.author} • {result.date_posted}</p>
                           </div>
                         ))}

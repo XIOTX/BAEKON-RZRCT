@@ -18,7 +18,7 @@ export default async function anasIndexRoutes(app: FastifyInstance){
     const from = (req.query as any).from?.toString();
     const to   = (req.query as any).to?.toString();
 
-    const root = process.cwd();
+    const root = path.resolve(process.cwd(), '..');
     const gz = process.env.ANAS_INDEX_DB_GZ || path.join(root, "integrations/ana_index/newdb.db.gz");
     const dbp= process.env.ANAS_INDEX_DB    || path.join(root, "integrations/ana_index/newdb.db");
     const dbFile = ensureDb(gz, dbp);
@@ -35,7 +35,7 @@ export default async function anasIndexRoutes(app: FastifyInstance){
     if (to)   params.to   = to;
 
     const rows = db.prepare(`
-      SELECT title, author, date_posted, tags, english_text, full_text
+      SELECT url, title, author, date_posted, tags, english_text, full_text
       FROM posts
       WHERE ${where}
       ORDER BY date_posted DESC, title ASC

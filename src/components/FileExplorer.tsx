@@ -269,7 +269,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ onFileSelect }) => {
   const renderFileSystemItem = (item: FileSystemItem, depth: number = 0): React.ReactNode => {
     const isExpanded = expandedFolders[item.path];
     const isSelected = selectedFile === item.path;
-    const indentStyle = { paddingLeft: `${depth * 20 + 8}px` };
+    const indentStyle = { paddingLeft: `${depth * 20 + 16}px` };
 
     if (item.type === 'folder') {
       return (

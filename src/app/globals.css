@@ -219,6 +219,26 @@
                  0 0 10px rgba(255, 140, 0, 0.2);
   }
 
+  .ana-link {
+    color: #ff8c00 !important;
+  }
+  
+  .ana-link:link {
+    color: #ff8c00 !important;
+  }
+  
+  .ana-link:visited {
+    color: #ff8c00 !important;
+  }
+  
+  .ana-link:hover {
+    color: #00C3FF !important;
+  }
+  
+  .ana-link:active {
+    color: #ff8c00 !important;
+  }
+
   .module-header-text {
     font-family: 'Cal Sans', 'Red Hat Display', sans-serif !important;
     font-weight: 600 !important;

@@ -1,0 +1,23 @@
+{
+  "name": "baekon-server",
+  "version": "1.0.0",
+  "description": "BAEKON Ana's Index Server",
+  "main": "index.ts",
+  "scripts": {
+    "start": "npx ts-node index.ts",
+    "dev": "npx ts-node --watch index.ts"
+  },
+  "dependencies": {
+    "@types/pg": "^8.10.9",
+    "better-sqlite3": "^9.2.2",
+    "chokidar": "^4.0.3",
+    "fastify": "^4.24.3",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^20.10.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.3"
+  }
+}

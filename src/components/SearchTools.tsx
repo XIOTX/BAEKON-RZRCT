@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 
 interface SearchResult {
+  url?: string;
   title?: string;
   author?: string;
   date_posted?: string;
@@ -15,6 +16,7 @@ interface SearchResult {
   pos?: string;
   content?: string;
   excerpt?: string;
+  full_text?: string;
 }
 
 export const SearchTools: React.FC = () => {
@@ -44,7 +46,7 @@ export const SearchTools: React.FC = () => {
     setAnasLoading(true);
     setAnasError(null);
     try {
-      const response = await fetch(`http://127.0.0.1:8787/anas-index/search?q=${encodeURIComponent(anasQuery)}`);
+      const response = await fetch(`/api/anas-index/search?q=${encodeURIComponent(anasQuery)}`);
       if (!response.ok) throw new Error('Search failed');
       const data = await response.json();
       setAnasResults(data);
@@ -62,7 +64,7 @@ export const SearchTools: React.FC = () => {
     setLexiconLoading(true);
     setLexiconError(null);
     try {
-      const response = await fetch(`http://127.0.0.1:8787/lexicon/search?q=${encodeURIComponent(lexiconQuery)}`);
+      const response = await fetch(`/api/lexicon/search?q=${encodeURIComponent(lexiconQuery)}`);
       if (!response.ok) throw new Error('Search failed');
       const data = await response.json();
       setLexiconResults(data);
@@ -80,7 +82,7 @@ export const SearchTools: React.FC = () => {
     setVaultLoading(true);
     setVaultError(null);
     try {
-      const response = await fetch(`http://127.0.0.1:8787/vault/search?q=${encodeURIComponent(vaultQuery)}`);
+      const response = await fetch(`/api/vault/search?q=${encodeURIComponent(vaultQuery)}`);
       if (!response.ok) throw new Error('Vault search failed');
       const data = await response.json();
       setVaultResults(data);
@@ -147,7 +149,21 @@ export const SearchTools: React.FC = () => {
                 <p className="text-cyan-400 text-sm">Found {anasResults.length} results:</p>
                 {anasResults.map((result, i) => (
                   <div key={i} className="cyber-border p-3">
-                    <h4 className="text-purple-400 font-semibold text-sm mb-1">{result.title}</h4>
+                    {result.url ? (
+                      <a 
+                        href={result.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="ana-link inline-flex items-center gap-2 transition-colors underline"
+                      >
+                        <h4 className="font-semibold text-sm mb-1">
+                          {result.title}
+                        </h4>
+                        <span className="text-xs text-cyan-400">↗</span>
+                      </a>
+                    ) : (
+                      <h4 className="text-purple-400 font-semibold text-sm mb-1">{result.title}</h4>
+                    )}
                     <p className="text-gray-400 text-xs mb-2">{result.author} • {result.date_posted}</p>
                     {result.english_text && (
                       <p className="text-gray-300 text-xs">{result.english_text.substring(0, 200)}...</p>
