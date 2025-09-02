@@ -12,7 +12,7 @@ export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) 
   const [contentData, setContentData] = useState<ContentData | null>(null);
   const [rawMarkdown, setRawMarkdown] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [modalImage, setModalImage] = useState<{src: string, alt: string} | null>(null);
+  const [expandedImage, setExpandedImage] = useState<{src: string, alt: string} | null>(null);
 
   useEffect(() => {
     if (selectedFile) {
@@ -23,6 +23,8 @@ export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) 
     }
   }, [selectedFile]);
 
+
+
   const loadContent = async () => {
     if (!selectedFile) return;
     
@@ -32,13 +34,18 @@ export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) 
       setContentData(content);
 
       // If this is an FL article, also load the raw markdown content
+      console.log('ContentDisplay - checking file:', selectedFile.path);
       if (selectedFile.path.startsWith('fl-knowledge-base/') && selectedFile.path.endsWith('.md')) {
+        console.log('ContentDisplay - Loading markdown for FL article:', selectedFile.path);
         try {
           const response = await fetch(`/api/content?path=${encodeURIComponent(selectedFile.path)}`);
+          console.log('ContentDisplay - API response:', response.status, response.ok);
           if (response.ok) {
             const data = await response.json();
+            console.log('ContentDisplay - Raw markdown loaded, length:', data.content?.length);
             setRawMarkdown(data.content);
           } else {
+            console.log('ContentDisplay - API response not ok');
             setRawMarkdown(null);
           }
         } catch (markdownError) {
@@ -46,6 +53,7 @@ export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) 
           setRawMarkdown(null);
         }
       } else {
+        console.log('ContentDisplay - Not an FL article, skipping markdown load');
         setRawMarkdown(null);
       }
     } catch (error) {
@@ -225,31 +233,45 @@ export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) 
       )}
 
       {/* Document Content Display */}
-      {rawMarkdown ? (
+      {(rawMarkdown || (selectedFile?.path.startsWith('fl-knowledge-base/denebian-probes/') && selectedFile?.path.endsWith('.md'))) ? (
         <div className="cyber-border p-6">
           <h3 className="text-lg font-semibold text-green-400 mb-4">📄 FL Research Document</h3>
           <div className="bg-gray-900/50 p-6 rounded border border-cyan-400/30">
             {/* Image Gallery */}
             {(() => {
-              const imageMatches = rawMarkdown.match(/!\[([^\]]*)\]\(([^)]+)\)/g);
+              let imageMatches = null;
+              
+              if (rawMarkdown) {
+                imageMatches = rawMarkdown.match(/!\[([^\]]*)\]\(([^)]+)\)/g);
+              } else if (selectedFile?.path.startsWith('fl-knowledge-base/denebian-probes/')) {
+                // Fallback: show test images for Denebian probes
+                imageMatches = [
+                  '![16a.jpg](/images/fl-articles/denebian-probes/16a.jpg)',
+                  '![16b.jpg](/images/fl-articles/denebian-probes/16b.jpg)',
+                  '![16c.jpg](/images/fl-articles/denebian-probes/16c.jpg)'
+                ];
+              }
+              
+              console.log('Gallery check:', { hasRawMarkdown: !!rawMarkdown, selectedFile: selectedFile?.path, imageMatches });
               if (imageMatches) {
                 return (
                   <div className="mb-6">
                     <h4 className="text-cyan-400 font-semibold mb-3">🖼️ Technical Diagrams ({imageMatches.length})</h4>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-3 mb-4">
                       {imageMatches.map((match, index) => {
                         const [, alt, src] = match.match(/!\[([^\]]*)\]\(([^)]+)\)/) || [];
                         return (
                           <div key={index} className="flex flex-col items-center">
-                            <div className="w-20 h-20 bg-gray-800 border border-cyan-400/30 rounded overflow-hidden flex-shrink-0">
+                            <div 
+                              className="w-24 h-24 bg-gray-800 border border-cyan-400/30 rounded overflow-hidden flex-shrink-0 cursor-pointer hover:border-cyan-400 transition-colors duration-200" 
+                              style={{width: '96px', height: '96px', minWidth: '96px', minHeight: '96px', maxWidth: '96px', maxHeight: '96px'}}
+                              onClick={() => setExpandedImage({src, alt})}
+                            >
                               <img 
                                 src={src} 
                                 alt={alt}
-                                className="w-full h-full object-cover cursor-pointer hover:scale-110 transition-transform duration-200"
-                                onClick={() => {
-                                  console.log('Image clicked:', src);
-                                  setModalImage({src, alt});
-                                }}
+                                className="w-full h-full object-cover block hover:scale-105 transition-transform duration-200"
+                                style={{width: '96px', height: '96px', maxWidth: '96px', maxHeight: '96px', objectFit: 'cover'}}
                                 onError={(e) => {
                                   console.error('Failed to load image:', src);
                                   const target = e.currentTarget;
@@ -259,7 +281,7 @@ export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) 
                               />
                             </div>
                             {alt && (
-                              <span className="text-xs text-gray-400 text-center mt-1 leading-tight w-20">
+                              <span className="text-xs text-gray-400 text-center mt-1 leading-tight w-24">
                                 {alt}
                               </span>
                             )}
@@ -273,7 +295,14 @@ export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) 
               return null;
             })()}
             {/* Display the rest of the content (images are skipped in MarkdownRenderer) */}
-            <MarkdownRenderer content={rawMarkdown} />
+            {rawMarkdown ? (
+              <MarkdownRenderer content={rawMarkdown} />
+            ) : (
+              <div className="text-gray-300">
+                <h4 className="text-purple-400 font-semibold mb-2">Test Content</h4>
+                <p>This is test content for Denebian probe articles. The gallery above shows the images in small squares.</p>
+              </div>
+            )}
           </div>
         </div>
       ) : contentData.documentContent && (
@@ -287,41 +316,45 @@ export const ContentDisplay: React.FC<ContentDisplayProps> = ({ selectedFile }) 
         </div>
       )}
 
-      {/* Image Modal */}
-      {modalImage && (
+      {/* Expanded Image Modal */}
+      {expandedImage && (
         <div 
-          className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
-          onClick={() => {
-            console.log('Modal background clicked');
-            setModalImage(null);
+          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-2"
+          style={{ 
+            zIndex: 9999, 
+            position: 'fixed', 
+            top: 0, 
+            left: 0, 
+            right: 0, 
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.85)'
           }}
+          onClick={() => setExpandedImage(null)}
         >
-          <div className="relative">
-            <img 
-              src={modalImage.src} 
-              alt={modalImage.alt}
-              className="max-w-[90vw] max-h-[90vh] rounded border border-cyan-400/50 shadow-2xl"
-              onClick={(e) => {
-                console.log('Image clicked in modal');
-                e.stopPropagation();
-              }}
-            />
-            <button 
-              className="absolute -top-10 right-0 text-white bg-red-600 hover:bg-red-700 rounded px-3 py-1 text-sm font-bold"
-              onClick={(e) => {
-                console.log('Close button clicked');
-                e.stopPropagation();
-                setModalImage(null);
-              }}
-            >
-              CLOSE
-            </button>
-            {modalImage.alt && (
-              <div className="absolute -bottom-10 left-0 right-0 text-center text-white text-sm">
-                {modalImage.alt}
-              </div>
-            )}
-          </div>
+          {/* Close button - fixed to top right of screen */}
+          <button 
+            className="fixed top-6 right-6 bg-purple-600 bg-opacity-40 border border-purple-400 text-purple-200 p-3 rounded-lg hover:bg-purple-500 hover:bg-opacity-60 hover:border-purple-300 hover:text-white transition-all duration-200 shadow-xl backdrop-blur-sm"
+            style={{ zIndex: 10000 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setExpandedImage(null);
+            }}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          
+          <img 
+            src={expandedImage.src} 
+            alt={expandedImage.alt}
+            className="max-w-full max-h-full object-contain rounded shadow-2xl"
+            style={{ 
+              maxWidth: 'calc(100vw - 20px)', 
+              maxHeight: 'calc(100vh - 20px)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          />
         </div>
       )}
     </div>

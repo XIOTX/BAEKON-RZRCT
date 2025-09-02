@@ -23,6 +23,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, cla
       // Skip images - they're handled in the gallery section above
       const imageMatch = line.match(/!\[([^\]]*)\]\(([^)]+)\)/);
       if (imageMatch) {
+        console.log('MarkdownRenderer skipping image:', imageMatch[0]);
         // Skip image lines entirely - they're shown in the gallery
         continue;
       }
