@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const CpuChipIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor">
@@ -40,6 +40,27 @@ interface FileSystemItem {
   fileType?: string;
   icon?: string;
   children?: FileSystemItem[];
+  tags?: string[];
+  category?: string;
+}
+
+interface FLDocument {
+  id: string;
+  title: string;
+  content: string;
+  excerpt: string;
+  tags: string[];
+  category: string;
+  author?: string;
+  date?: string;
+  filePath: string;
+  images?: string[];
+}
+
+interface SearchResult {
+  document: FLDocument;
+  score: number;
+  matches: string[];
 }
 
 interface FileExplorerProps {
@@ -56,6 +77,15 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ onFileSelect }) => {
     'forgotten-languages': true,
   });
   const [selectedFile, setSelectedFile] = useState<string>('');
+  
+  // Search and filtering state
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [availableTags, setAvailableTags] = useState<string[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const [showTagFilter, setShowTagFilter] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const fileSystem: FileSystemItem[] = [
     {
@@ -266,6 +296,78 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ onFileSelect }) => {
     onFileSelect(filePath, fileName, fileType);
   };
 
+  // Load available tags on mount
+  useEffect(() => {
+    loadTags();
+  }, []);
+
+  const loadTags = async () => {
+    try {
+      const response = await fetch('/api/fl-tags');
+      const data = await response.json();
+      setAvailableTags(data.tags || []);
+    } catch (error) {
+      console.error('Error loading tags:', error);
+    }
+  };
+
+  const performSearch = async () => {
+    if (!searchQuery.trim() && selectedTags.length === 0) {
+      setShowSearchResults(false);
+      setSearchResults([]);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (searchQuery.trim()) params.set('q', searchQuery.trim());
+      if (selectedTags.length > 0) params.set('tags', selectedTags.join(','));
+
+      console.log('Searching with params:', params.toString());
+      const response = await fetch(`/api/fl-search?${params}`);
+      
+      if (!response.ok) {
+        throw new Error(`Search failed: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('Search results:', data);
+      setSearchResults(data.results || []);
+      setShowSearchResults(true);
+    } catch (error) {
+      console.error('Search error:', error);
+      setSearchResults([]);
+      setShowSearchResults(true); // Still show search results section even if empty
+    }
+    setLoading(false);
+  };
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
+
+  const clearFilters = () => {
+    setSearchQuery('');
+    setSelectedTags([]);
+    setShowSearchResults(false);
+    setSearchResults([]);
+  };
+
+  // Only trigger search when tags change (not on text input)
+  useEffect(() => {
+    if (selectedTags.length > 0) {
+      performSearch();
+    } else if (selectedTags.length === 0 && !searchQuery.trim()) {
+      setShowSearchResults(false);
+      setSearchResults([]);
+    }
+  }, [selectedTags]);
+
   const renderFileSystemItem = (item: FileSystemItem, depth: number = 0): React.ReactNode => {
     const isExpanded = expandedFolders[item.path];
     const isSelected = selectedFile === item.path;
@@ -334,10 +436,123 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ onFileSelect }) => {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="pb-4">
+      {/* Search Section - Top Level */}
+      <div className="px-3 pt-3 pb-4">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && performSearch()}
+          onFocus={(e) => {
+            e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+            e.target.style.border = '0.1px solid #C080FF';
+          }}
+          onBlur={(e) => {
+            e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+            e.target.style.border = '0.1px solid rgba(192, 128, 255, 0.7)';
+          }}
+          placeholder="Search FL documents..."
+          className="w-full text-sm focus:outline-none backdrop-blur-sm font-mono purple-placeholder"
+          style={{
+            fontFamily: 'Syne Mono, JetBrains Mono, monospace',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            border: '0.1px solid rgba(192, 128, 255, 0.7)',
+            borderRadius: '20px',
+            color: '#C080FF',
+            boxShadow: '0 0 10px rgba(192, 128, 255, 0.3)',
+            textShadow: '0 0 8px rgba(192, 128, 255, 0.4)',
+            paddingLeft: '20px',
+            paddingRight: '20px',
+            paddingTop: '8px',
+            paddingBottom: '8px'
+          }}
+        />
+        
+        {/* Collapsible Tag Filter Section */}
+        {availableTags.length > 0 && (
+          <div className="mt-6 mb-4">
+            <button
+              onClick={() => setShowTagFilter(!showTagFilter)}
+              className="flex items-center gap-2 text-xs transition-colors mb-3"
+              style={{
+                fontFamily: 'Cal Sans, sans-serif',
+                fontWeight: '600',
+                color: '#FFD20A',
+                textShadow: '0 0 8px rgba(255, 210, 10, 0.7)',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                marginLeft: '24px'
+              }}
+            >
+              <span>FILTER</span>
+              <span style={{
+                fontSize: '10px',
+                textShadow: '0 0 8px rgba(255, 210, 10, 0.7)'
+              }}>{showTagFilter ? '▲' : '▼'}</span>
+            </button>
+            
+            {showTagFilter && (
+              <div className="mt-2">
+                <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+                  {availableTags.map(tag => (
+                    <button
+                      key={tag}
+                      onClick={() => toggleTag(tag)}
+                      className="px-3 py-1 text-xs rounded-full transition-all duration-200 backdrop-blur-sm font-mono"
+                      style={{
+                        fontFamily: 'Syne Mono, JetBrains Mono, monospace',
+                        backgroundColor: selectedTags.includes(tag) 
+                          ? 'rgba(255, 210, 10, 0.8)' 
+                          : 'transparent',
+                        border: '1px solid #FFD20A',
+                        color: selectedTags.includes(tag)
+                          ? 'rgba(0, 0, 0, 0.8)'
+                          : '#FFD20A',
+                        textShadow: selectedTags.includes(tag) 
+                          ? 'none'
+                          : '0 0 8px rgba(255, 210, 10, 0.7)',
+                        boxShadow: selectedTags.includes(tag) 
+                          ? '0 0 15px rgba(255, 210, 10, 0.6), inset 0 0 10px rgba(255, 210, 10, 0.3)' 
+                          : '0 0 10px rgba(255, 210, 10, 0.4)'
+                      }}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+                
+                {selectedTags.length > 0 && (
+                  <button
+                    onClick={clearFilters}
+                    className="mt-3 text-xs transition-colors"
+                    style={{
+                      fontFamily: 'Cal Sans, sans-serif',
+                      fontWeight: '600',
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      color: '#FFD20A',
+                      textShadow: '0 0 8px rgba(255, 210, 10, 0.7)',
+                      padding: 0,
+                      background: 'none'
+                    }}
+                  >
+                    CLEAR ALL
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+      </div>
+
+      {/* MODULES Section */}
+      <div className="px-3 pb-4 pt-4">
         <div 
           className="flex items-center space-x-2 cursor-pointer file-explorer-item folder-item"
           onClick={() => setExpandedFolders(prev => ({ ...prev, 'research-modules': !prev['research-modules'] }))}
+          style={{ marginTop: '20px' }}
         >
           <svg 
             width="24" 
@@ -357,11 +572,86 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ onFileSelect }) => {
         </div>
       </div>
       
-      {isHeaderExpanded && (
-        <div className="flex-1 overflow-auto">
-          <div className="file-explorer-tree" style={{padding: '8px 0'}}>
-            {fileSystem.map(item => renderFileSystemItem(item))}
+      {/* Content Area - Search Results or File System */}
+      {showSearchResults ? (
+        <div className="flex-1 overflow-y-auto px-3">
+          <div className="pb-2">
+            <h3 className="text-sm font-medium text-purple-400 mb-2" style={{textShadow: '0 0 5px rgba(168, 85, 247, 0.7)'}}>
+              Search Results ({searchResults.length})
+              {loading && <span className="text-cyan-400 ml-2 animate-pulse" style={{textShadow: '0 0 5px rgba(34, 211, 238, 0.7)'}}>Searching...</span>}
+            </h3>
           </div>
+          
+          <div className="space-y-1">
+            {searchResults.map((result, i) => (
+              <div
+                key={result.document.id}
+                onClick={() => {
+                  // Convert absolute path to relative path for ContentDisplay
+                  const relativePath = result.document.filePath.includes('fl-knowledge-base') 
+                    ? result.document.filePath.substring(result.document.filePath.indexOf('fl-knowledge-base'))
+                    : result.document.filePath;
+                  selectFile(relativePath, result.document.title, 'fl-document');
+                }}
+                className={`file-explorer-item file-item cursor-pointer backdrop-blur-sm transition-all duration-200 ${
+                  (() => {
+                    const relativePath = result.document.filePath.includes('fl-knowledge-base') 
+                      ? result.document.filePath.substring(result.document.filePath.indexOf('fl-knowledge-base'))
+                      : result.document.filePath;
+                    return selectedFile === relativePath ? 'selected bg-purple-500/30 border-purple-400/70' : 'hover:bg-purple-500/20 border-purple-500/30';
+                  })()
+                }`}
+                style={{ 
+                  paddingLeft: '16px',
+                  border: '1px solid',
+                  borderRadius: '4px',
+                  marginBottom: '4px',
+                  boxShadow: selectedFile === result.document.filePath 
+                    ? '0 0 10px rgba(168, 85, 247, 0.4)' 
+                    : '0 0 5px rgba(168, 85, 247, 0.2)'
+                }}
+              >
+                <span className="file-icon text-pink-glow flex items-center">
+                  <FLPostIcon className="w-4 h-4 fl-post-icon-glow" />
+                </span>
+                <div className="flex-1 min-w-0">
+                  <div className="item-name font-tertiary text-orange-glow text-sm truncate">
+                    {result.document.title}
+                  </div>
+                  <div className="text-xs text-purple-300/70 truncate">
+                    {result.document.category} • {result.document.author}
+                  </div>
+                  {result.document.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {result.document.tags.slice(0, 3).map((tag, j) => (
+                        <span
+                          key={j}
+                          className="px-1 py-0.5 bg-cyan-500/30 text-cyan-300 text-xs rounded border border-cyan-400/50"
+                          style={{
+                            textShadow: '0 0 3px rgba(34, 211, 238, 0.7)',
+                            boxShadow: '0 0 5px rgba(34, 211, 238, 0.2)'
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                      {result.document.tags.length > 3 && (
+                        <span className="text-xs text-purple-400/60">+{result.document.tags.length - 3}</span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="flex-1 overflow-auto px-3">
+          {isHeaderExpanded && (
+            <div className="file-explorer-tree" style={{padding: '8px 0'}}>
+              {fileSystem.map(item => renderFileSystemItem(item))}
+            </div>
+          )}
         </div>
       )}
     </div>

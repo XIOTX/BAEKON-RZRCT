@@ -239,6 +239,33 @@
     color: #ff8c00 !important;
   }
 
+  /* Cyberpunk glow effects for search */
+  .shadow-cyan {
+    box-shadow: 0 0 10px rgba(34, 211, 238, 0.4), 
+                0 0 20px rgba(34, 211, 238, 0.2);
+  }
+
+  .purple-glow {
+    text-shadow: 0 0 5px rgba(168, 85, 247, 0.7),
+                 0 0 10px rgba(168, 85, 247, 0.4);
+  }
+
+  .cyan-glow {
+    text-shadow: 0 0 5px rgba(34, 211, 238, 0.7),
+                 0 0 10px rgba(34, 211, 238, 0.4);
+  }
+
+  /* Ensure Syne Mono font is properly loaded */
+  .font-mono {
+    font-family: 'Syne Mono', 'JetBrains Mono', monospace !important;
+  }
+
+  /* Purple placeholder text for search */
+  .purple-placeholder::placeholder {
+    color: rgba(192, 128, 255, 0.6) !important;
+    text-shadow: 0 0 3px rgba(192, 128, 255, 0.3);
+  }
+
   .module-header-text {
     font-family: 'Cal Sans', 'Red Hat Display', sans-serif !important;
     font-weight: 600 !important;
