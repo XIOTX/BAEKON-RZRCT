@@ -4,13 +4,14 @@ import React, { useState } from 'react';
 import { ProcessingPipeline } from '@/components/ProcessingPipeline';
 import { SearchTools } from '@/components/SearchTools';
 import { AIAssistant } from '@/components/AIAssistant';
-import { VisualizationCanvasAdvanced } from '@/components/VisualizationCanvasAdvanced';
+import { SimpleWebGLCanvas } from '@/components/SimpleWebGLCanvas';
 import { Clock } from '@/components/Clock';
 
 export default function Home() {
   const [processingChain, setProcessingChain] = useState<any[]>([]);
   const [audioData, setAudioData] = useState<Float32Array>();
   const [textInput, setTextInput] = useState<string>('');
+  const [inputAmplitude, setInputAmplitude] = useState<number>(1.0);
 
   return (
             <div className="h-screen w-screen text-white font-tertiary text-glow flex flex-col overflow-hidden" style={{
@@ -45,14 +46,16 @@ export default function Home() {
              bottom: '24px',
              width: '300px'
            }}>
-             <ProcessingPipeline 
-               processingChain={processingChain}
-               setProcessingChain={setProcessingChain}
-               audioData={audioData}
-               setAudioData={setAudioData}
-               textInput={textInput}
-               setTextInput={setTextInput}
-             />
+            <ProcessingPipeline
+              processingChain={processingChain}
+              setProcessingChain={setProcessingChain}
+              audioData={audioData}
+              setAudioData={setAudioData}
+              textInput={textInput}
+              setTextInput={setTextInput}
+              inputAmplitude={inputAmplitude}
+              setInputAmplitude={setInputAmplitude}
+            />
            </div>
 
            {/* Main Canvas Area */}
@@ -63,10 +66,11 @@ export default function Home() {
              bottom: '24px', 
              right: '348px'
            }}>
-          <VisualizationCanvasAdvanced 
+          <SimpleWebGLCanvas 
             processingChain={processingChain}
             audioData={audioData}
             textInput={textInput}
+            inputAmplitude={inputAmplitude}
           />
            </div>
 

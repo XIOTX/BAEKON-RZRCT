@@ -16,6 +16,8 @@ interface ProcessingPipelineProps {
   setAudioData: (data: Float32Array) => void;
   textInput: string;
   setTextInput: (text: string) => void;
+  inputAmplitude?: number;
+  setInputAmplitude?: (amplitude: number) => void;
 }
 
 export const ProcessingPipeline: React.FC<ProcessingPipelineProps> = ({
@@ -24,7 +26,9 @@ export const ProcessingPipeline: React.FC<ProcessingPipelineProps> = ({
   audioData,
   setAudioData,
   textInput,
-  setTextInput
+  setTextInput,
+  inputAmplitude = 1.0,
+  setInputAmplitude
 }) => {
   const [isAudioActive, setIsAudioActive] = useState(false);
 
@@ -144,6 +148,50 @@ export const ProcessingPipeline: React.FC<ProcessingPipelineProps> = ({
             resize: 'vertical'
           }}
         />
+
+        {/* Input Amplitude Control */}
+        {setInputAmplitude && (
+          <div className="mb-3">
+            <label className="block text-xs text-cyan-400 mb-1" style={{ fontFamily: 'Cal Sans, sans-serif' }}>
+              INPUT SENSITIVITY: {inputAmplitude.toFixed(1)}x
+            </label>
+            <input
+              type="range"
+              min="0.1"
+              max="5.0"
+              step="0.1"
+              value={inputAmplitude}
+              onChange={(e) => setInputAmplitude(parseFloat(e.target.value))}
+              className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+              style={{
+                background: `linear-gradient(to right, #00C3FF 0%, #00C3FF ${(inputAmplitude / 5) * 100}%, #374151 ${(inputAmplitude / 5) * 100}%, #374151 100%)`,
+                boxShadow: '0 0 5px rgba(0, 195, 255, 0.3)'
+              }}
+            />
+            <div className="flex justify-between text-xs text-gray-500 mt-1">
+              <span>Subtle</span>
+              <span>Intense</span>
+            </div>
+          </div>
+        )}
+
+        {/* Clear Button */}
+        <button
+          onClick={() => setTextInput('')}
+          className="w-full px-4 py-2 mb-2 text-sm transition-colors backdrop-blur-sm"
+          style={{
+            fontFamily: 'Cal Sans, sans-serif',
+            fontWeight: '600',
+            backgroundColor: 'rgba(255, 89, 131, 0.2)',
+            border: '1px solid #FF5983',
+            borderRadius: '8px',
+            color: '#FF5983',
+            textShadow: '0 0 8px rgba(255, 89, 131, 0.7)',
+            boxShadow: '0 0 10px rgba(255, 89, 131, 0.4)'
+          }}
+        >
+          🗑️ CLEAR TEXT
+        </button>
 
         {/* Audio Input */}
         <button
