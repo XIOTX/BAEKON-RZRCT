@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { ProcessingPipeline } from '@/components/ProcessingPipeline';
 import { SearchTools } from '@/components/SearchTools';
 import { AIAssistant } from '@/components/AIAssistant';
-import { SimpleWebGLCanvas } from '@/components/SimpleWebGLCanvas';
+import { LiquidShaderCanvas } from '@/components/LiquidShaderCanvas';
 import { Clock } from '@/components/Clock';
 
 export default function Home() {
@@ -66,12 +66,12 @@ export default function Home() {
              bottom: '24px', 
              right: '348px'
            }}>
-          <SimpleWebGLCanvas 
-            processingChain={processingChain}
-            audioData={audioData}
-            textInput={textInput}
-            inputAmplitude={inputAmplitude}
-          />
+        <LiquidShaderCanvas 
+          processingChain={processingChain}
+          audioData={audioData}
+          textInput={textInput}
+          inputAmplitude={inputAmplitude}
+        />
            </div>
 
         {/* Search Tools */}
