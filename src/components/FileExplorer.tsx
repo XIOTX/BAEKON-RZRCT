@@ -64,10 +64,29 @@ interface SearchResult {
 }
 
 interface FileExplorerProps {
-  onFileSelect: (path: string, name: string, type: string) => void;
+  processingChain: ProcessingNode[];
+  setProcessingChain: (chain: ProcessingNode[]) => void;
+  audioData?: Float32Array;
+  setAudioData: (data: Float32Array) => void;
+  textInput: string;
+  setTextInput: (text: string) => void;
 }
 
-export const FileExplorer: React.FC<FileExplorerProps> = ({ onFileSelect }) => {
+interface ProcessingNode {
+  id: string;
+  type: 'entropy' | 'chaos-game' | 'gematria' | 'numerology' | 'audio-analyzer';
+  settings: Record<string, any>;
+  enabled: boolean;
+}
+
+export const FileExplorer: React.FC<FileExplorerProps> = ({ 
+  processingChain, 
+  setProcessingChain, 
+  audioData, 
+  setAudioData, 
+  textInput, 
+  setTextInput 
+}) => {
   const [expandedFolders, setExpandedFolders] = useState<Record<string, boolean>>({
     'research-modules': true,
     'fl-knowledge-base': true,

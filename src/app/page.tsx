@@ -1,18 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
-import { FileExplorer } from '@/components/FileExplorer';
+import { ProcessingPipeline } from '@/components/ProcessingPipeline';
 import { SearchTools } from '@/components/SearchTools';
 import { AIAssistant } from '@/components/AIAssistant';
-import { ContentDisplay } from '@/components/ContentDisplay';
+import { VisualizationCanvasAdvanced } from '@/components/VisualizationCanvasAdvanced';
 import { Clock } from '@/components/Clock';
 
 export default function Home() {
-  const [selectedFile, setSelectedFile] = useState<{path: string, name: string, type: string} | null>(null);
-
-  const handleFileSelect = (path: string, name: string, type: string) => {
-    setSelectedFile({ path, name, type });
-  };
+  const [processingChain, setProcessingChain] = useState<any[]>([]);
+  const [audioData, setAudioData] = useState<Float32Array>();
+  const [textInput, setTextInput] = useState<string>('');
 
   return (
             <div className="h-screen w-screen text-white font-tertiary text-glow flex flex-col overflow-hidden" style={{
@@ -39,27 +37,38 @@ export default function Home() {
 
       {/* Main Layout */}
       <div className="flex-1 relative" style={{padding: '0 24px 24px 24px'}}>
-        {/* Left Sidebar - File Explorer */}
-        <div className="cyber-border overflow-hidden" style={{
-          position: 'absolute',
-          left: '24px',
-          top: '12px', 
-          bottom: '24px',
-          width: '300px'
-        }}>
-          <FileExplorer onFileSelect={handleFileSelect} />
-        </div>
+           {/* Left Sidebar - Processing Pipeline */}
+           <div className="cyber-border overflow-hidden" style={{
+             position: 'absolute',
+             left: '24px',
+             top: '12px', 
+             bottom: '24px',
+             width: '300px'
+           }}>
+             <ProcessingPipeline 
+               processingChain={processingChain}
+               setProcessingChain={setProcessingChain}
+               audioData={audioData}
+               setAudioData={setAudioData}
+               textInput={textInput}
+               setTextInput={setTextInput}
+             />
+           </div>
 
-        {/* Main Content Area */}
-        <div className="cyber-border overflow-hidden" style={{
-          position: 'absolute',
-          left: '348px',
-          top: '12px',
-          bottom: '24px', 
-          right: '348px'
-        }}>
-          <ContentDisplay selectedFile={selectedFile} />
-        </div>
+           {/* Main Canvas Area */}
+           <div className="cyber-border overflow-hidden" style={{
+             position: 'absolute',
+             left: '348px',
+             top: '12px',
+             bottom: '24px', 
+             right: '348px'
+           }}>
+          <VisualizationCanvasAdvanced 
+            processingChain={processingChain}
+            audioData={audioData}
+            textInput={textInput}
+          />
+           </div>
 
         {/* Search Tools */}
         <div className="cyber-border overflow-hidden" style={{
